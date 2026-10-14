@@ -1,5 +1,9 @@
 # Practice Metronome
 
+[**Open the live web app: https://practicemetronome.vercel.app/**](https://practicemetronome.vercel.app/)
+
+> **Use it online, save it for later, or install it.** Open the live app link above, then bookmark/favorite the page in your browser. To install it as an app, use your browser’s **Install app** option (desktop/Android) or **Add to Home Screen** option (iPhone/iPad). Installation options vary by browser. After the first successful online visit, the app can also work offline.
+
 A lightweight, responsive, multilingual metronome for focused practice. Features include a standard metronome, configurable Speed Loop, tap tempo, count-in, practice timer, note subdivisions, accent patterns, click sounds, volume control, recent-session history, wake lock, and system/light/dark themes. The interface is available in English (US), Brazilian Portuguese, Spanish, Italian, French, German, Japanese, Simplified Chinese, and Korean. English (US) is the default; the selected language and other preferences are saved locally on the device. Playback pauses safely when the app is hidden and can be restarted with a tap. All app assets are bundled locally, and the app works offline after its first successful load.
 
 Developed by **Fernando Ticon using IA**.
@@ -19,6 +23,12 @@ npx serve .
 ```
 
 Then open the local URL printed by the server. Node.js is only needed for building or serving; the app itself has no runtime package dependencies.
+
+## Save or install the app
+
+- **Bookmark/favorite:** Open the live app and use your browser’s bookmark or favorite control.
+- **Install:** On a supported desktop or Android browser, select **Install app** (sometimes under the browser menu). On iPhone or iPad, open the app in Safari, tap **Share**, then choose **Add to Home Screen**.
+- **Use offline:** Visit the live app while online at least once so the app shell is cached. Launch it later from the browser or installed app; playback is paused if the app is sent to the background and must be started again when you return.
 
 ## Build
 
