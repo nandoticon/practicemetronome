@@ -268,6 +268,7 @@ h3 {
   }
 
   .brand {
+    grid-column: 1 / -1;
     gap: 7px;
   }
 
@@ -303,10 +304,15 @@ h3 {
 
   .language-control select,
   .theme-control select {
-    width: 88px;
-    max-width: 88px;
+    width: 160px;
+    max-width: 160px;
     padding: 0 20px 0 5px;
     font-size: 16px;
+  }
+
+  .theme-control select {
+    width: 96px;
+    max-width: 96px;
   }
 }
 
@@ -320,14 +326,9 @@ h3 {
     font-size: 0.72rem;
   }
 
-  .language-control select {
-    width: 96px;
-    max-width: 96px;
-  }
-
   .theme-control select {
-    width: 72px;
-    max-width: 72px;
+    width: 88px;
+    max-width: 88px;
   }
 }
 
@@ -401,6 +402,37 @@ h3 {
 .console-actions .status-line {
   grid-column: 1 / -1;
   overflow-wrap: anywhere;
+}
+
+.sticky-playback {
+  position: fixed;
+  z-index: 10;
+  right: max(12px, env(safe-area-inset-right));
+  bottom: max(12px, env(safe-area-inset-bottom));
+  left: max(12px, env(safe-area-inset-left));
+  display: grid;
+  width: min(100% - 24px, 648px);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  margin: 0 auto;
+  padding: 10px;
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  background: color-mix(in srgb, var(--surface) 94%, transparent);
+  box-shadow: var(--shadow);
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
+}
+
+.sticky-playback .btn-play,
+.sticky-playback .btn-tap {
+  min-height: 48px;
+  border-radius: 12px;
+  font-size: 0.92rem;
+}
+
+body.has-sticky-playback .app {
+  padding-bottom: calc(112px + env(safe-area-inset-bottom));
 }
 
 .beat-row {
@@ -504,6 +536,14 @@ h3 {
 }
 
 @media (min-width: 760px) {
+  .sticky-playback {
+    display: none !important;
+  }
+
+  body.has-sticky-playback .app {
+    padding-bottom: 48px;
+  }
+
   .app {
     width: min(100%, 1040px);
     grid-template-columns: minmax(0, 1.08fr) minmax(330px, 0.92fr);
@@ -613,6 +653,14 @@ h3 {
   font-weight: 700;
   letter-spacing: 0.16em;
   line-height: 1.2;
+}
+
+.tempo-context {
+  max-width: 28rem;
+  color: var(--text-dim);
+  font-size: 0.78rem;
+  line-height: 1.4;
+  text-align: center;
 }
 
 .stepper-row {
@@ -938,7 +986,7 @@ h3 {
   color: var(--text);
   font-size: 0.9rem;
   line-height: 1.4;
-  overflow-wrap: anywhere;
+  overflow-wrap: normal;
 }
 
 .field-row .icon-label {
@@ -1012,21 +1060,33 @@ h3 {
 
 .field-row input[type="checkbox"] {
   position: relative;
-  width: 52px;
-  height: 32px;
+  width: 60px;
+  height: 44px;
   flex: 0 0 auto;
   border: 0;
   border-radius: 999px;
-  background: var(--border);
+  background: transparent;
   cursor: pointer;
   appearance: none;
   transition: background-color 150ms ease;
 }
 
+.field-row input[type="checkbox"]::before {
+  position: absolute;
+  top: 6px;
+  left: 4px;
+  width: 52px;
+  height: 32px;
+  border-radius: 999px;
+  background: var(--border);
+  content: "";
+  transition: background-color 150ms ease;
+}
+
 .field-row input[type="checkbox"]::after {
   position: absolute;
-  top: 3px;
-  left: 3px;
+  top: 9px;
+  left: 7px;
   width: 26px;
   height: 26px;
   border-radius: 50%;
@@ -1036,6 +1096,10 @@ h3 {
 }
 
 .field-row input[type="checkbox"]:checked {
+  background: transparent;
+}
+
+.field-row input[type="checkbox"]:checked::before {
   background: var(--accent);
 }
 
@@ -1133,7 +1197,7 @@ h3 {
 .history-clear {
   display: inline-flex;
   justify-self: start;
-  min-height: 38px;
+  min-height: 44px;
   align-items: center;
   gap: 8px;
   padding: 0 12px;
@@ -1203,6 +1267,66 @@ select:disabled {
 @media (min-width: 620px) {
   .speedloop-inputs {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 460px) {
+  .panel {
+    gap: 16px;
+    padding: 16px;
+  }
+
+  .setting-grid {
+    gap: 12px;
+  }
+
+  .setting-group {
+    padding: 12px;
+  }
+
+  .setting-group h3 {
+    margin-bottom: 8px;
+  }
+
+  .field-row {
+    gap: 10px;
+    padding: 5px 0;
+  }
+
+  .field-row .icon-label {
+    gap: 6px;
+  }
+
+  .volume-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0;
+    padding: 8px 0;
+  }
+
+  .volume-row > label {
+    flex: initial;
+  }
+
+  .volume-row .range-control {
+    width: 100%;
+    max-width: none;
+    flex: initial;
+    gap: 12px;
+  }
+
+  .volume-row input[type="range"] {
+    max-width: none;
+  }
+
+  .speedloop-inputs .field-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(90px, 36%);
+    gap: 10px;
+  }
+
+  .speedloop-inputs .field-row label {
+    flex: initial;
   }
 }
 

@@ -16,6 +16,7 @@
       bar: "Bar {current} of {total}",
       setYourPace: "SET YOUR PACE",
       tempo: "Tempo",
+      manualTempo: "Manual tempo",
       adjustTempo: "Adjust tempo",
       decrease5: "Decrease 5 BPM",
       decrease1: "Decrease 1 BPM",
@@ -37,6 +38,7 @@
       speedLoopDescription: "Build speed in structured phrases. Tempo changes only at the start of each selected bar group.",
       rampSettings: "Ramp settings",
       startBpm: "Start BPM",
+      speedLoopTempoContext: "Speed Loop starts at {bpm} BPM.",
       targetBpm: "Target BPM",
       rampDuration: "Ramp duration (min)",
       barsPerChange: "Bars per tempo change",
@@ -80,6 +82,7 @@
       screenWillStayAwake: "Screen will stay awake during playback.",
       screenLockFailed: "Could not keep the screen awake. Playback will continue normally.",
       stopPlaybackToChangeMode: "Stop playback to change mode",
+      playbackControls: "Playback controls",
       tapResult: "Tap: {bpm} BPM",
       keepTapping: "Keep tapping…",
       audioUnsupported: "Audio is not supported in this browser. Try a current browser with Web Audio support.",
@@ -122,6 +125,7 @@
       bar: "Compasso {current} de {total}",
       setYourPace: "DEFINA SEU RITMO",
       tempo: "Andamento",
+      manualTempo: "Andamento manual",
       adjustTempo: "Ajustar andamento",
       decrease5: "Diminuir 5 BPM",
       decrease1: "Diminuir 1 BPM",
@@ -143,6 +147,7 @@
       speedLoopDescription: "Aumente o andamento em frases estruturadas. A mudança acontece somente no início de cada grupo de compassos selecionado.",
       rampSettings: "Configurações do aumento gradual",
       startBpm: "BPM inicial",
+      speedLoopTempoContext: "O Speed Loop começa em {bpm} BPM.",
       targetBpm: "BPM desejado",
       rampDuration: "Duração do aumento (min)",
       barsPerChange: "Compassos por mudança",
@@ -186,6 +191,7 @@
       screenWillStayAwake: "A tela permanecerá ativa durante a reprodução.",
       screenLockFailed: "Não foi possível manter a tela ativa. A reprodução continuará normalmente.",
       stopPlaybackToChangeMode: "Pare a reprodução para mudar de modo",
+      playbackControls: "Controles de reprodução",
       tapResult: "Andamento medido: {bpm} BPM",
       keepTapping: "Continue marcando…",
       audioUnsupported: "Este navegador não oferece suporte a áudio. Experimente um navegador atualizado com Web Audio.",
@@ -228,6 +234,7 @@
       bar: "Compás {current} de {total}",
       setYourPace: "MARCA TU RITMO",
       tempo: "Tempo",
+      manualTempo: "Tempo manual",
       adjustTempo: "Ajustar tempo",
       decrease5: "Reducir 5 BPM",
       decrease1: "Reducir 1 BPM",
@@ -249,6 +256,7 @@
       speedLoopDescription: "Aumenta el tempo en frases estructuradas. Solo cambia al comienzo de cada grupo de compases seleccionado.",
       rampSettings: "Ajustes de subida gradual",
       startBpm: "BPM inicial",
+      speedLoopTempoContext: "Speed Loop comienza a {bpm} BPM.",
       targetBpm: "BPM objetivo",
       rampDuration: "Duración de progresión (min)",
       barsPerChange: "Compases por cambio",
@@ -292,6 +300,7 @@
       screenWillStayAwake: "La pantalla permanecerá activa durante la reproducción.",
       screenLockFailed: "No se pudo mantener activa la pantalla. La reproducción continuará normalmente.",
       stopPlaybackToChangeMode: "Detén la reproducción para cambiar de modo",
+      playbackControls: "Controles de reproducción",
       tapResult: "Tempo medido: {bpm} BPM",
       keepTapping: "Sigue marcando…",
       audioUnsupported: "Este navegador no admite audio. Prueba un navegador actualizado compatible con Web Audio.",
@@ -334,6 +343,7 @@
       bar: "Battuta {current} di {total}",
       setYourPace: "IMPOSTA IL TUO TEMPO",
       tempo: "Tempo",
+      manualTempo: "Tempo manuale",
       adjustTempo: "Regola il tempo",
       decrease5: "Riduci di 5 BPM",
       decrease1: "Riduci di 1 BPM",
@@ -355,6 +365,7 @@
       speedLoopDescription: "Aumenta il tempo con frasi strutturate. Il cambio avviene solo all'inizio di ogni gruppo di battute selezionato.",
       rampSettings: "Impostazioni dell'aumento graduale",
       startBpm: "BPM iniziali",
+      speedLoopTempoContext: "Speed Loop inizia a {bpm} BPM.",
       targetBpm: "BPM obiettivo",
       rampDuration: "Durata progressione (min)",
       barsPerChange: "Battute prima di cambiare tempo",
@@ -398,6 +409,7 @@
       screenWillStayAwake: "Lo schermo resterà attivo durante la riproduzione.",
       screenLockFailed: "Impossibile mantenere lo schermo attivo. La riproduzione continuerà normalmente.",
       stopPlaybackToChangeMode: "Ferma la riproduzione per cambiare modalità",
+      playbackControls: "Controlli di riproduzione",
       tapResult: "Tempo rilevato: {bpm} BPM",
       keepTapping: "Continua a toccare…",
       audioUnsupported: "L'audio non è supportato da questo browser. Prova un browser aggiornato con Web Audio.",
@@ -440,6 +452,7 @@
       bar: "Mesure {current} sur {total}",
       setYourPace: "RÉGLEZ VOTRE TEMPO",
       tempo: "Tempo",
+      manualTempo: "Tempo manuel",
       adjustTempo: "Régler le tempo",
       decrease5: "Diminuer de 5 BPM",
       decrease1: "Diminuer de 1 BPM",
@@ -461,6 +474,7 @@
       speedLoopDescription: "Augmentez le tempo par phrases structurées. Il change uniquement au début de chaque groupe de mesures sélectionné.",
       rampSettings: "Réglages de la progression",
       startBpm: "BPM de départ",
+      speedLoopTempoContext: "La boucle de vitesse démarre à {bpm} BPM.",
       targetBpm: "BPM cible",
       rampDuration: "Durée de progression (min)",
       barsPerChange: "Mesures avant le changement de tempo",
@@ -504,6 +518,7 @@
       screenWillStayAwake: "L’écran restera allumé pendant la lecture.",
       screenLockFailed: "Impossible de garder l’écran allumé. La lecture continuera normalement.",
       stopPlaybackToChangeMode: "Arrêtez la lecture pour changer de mode",
+      playbackControls: "Commandes de lecture",
       tapResult: "Tempo mesuré : {bpm} BPM",
       keepTapping: "Continuez à taper…",
       audioUnsupported: "Le son n’est pas pris en charge par ce navigateur. Essayez un navigateur récent compatible avec Web Audio.",
@@ -546,6 +561,7 @@
       bar: "Takt {current} von {total}",
       setYourPace: "TEMPO FESTLEGEN",
       tempo: "Tempo",
+      manualTempo: "Manuelles Tempo",
       adjustTempo: "Tempo anpassen",
       decrease5: "5 BPM verringern",
       decrease1: "1 BPM verringern",
@@ -567,6 +583,7 @@
       speedLoopDescription: "Steigere das Tempo in klar gegliederten Phrasen. Es ändert sich nur am Anfang der ausgewählten Taktgruppe.",
       rampSettings: "Temposteigerung",
       startBpm: "Start-BPM",
+      speedLoopTempoContext: "Speed Loop startet bei {bpm} BPM.",
       targetBpm: "Ziel-BPM",
       rampDuration: "Dauer des Aufbaus (Min.)",
       barsPerChange: "Takte pro Tempowechsel",
@@ -610,6 +627,7 @@
       screenWillStayAwake: "Der Bildschirm bleibt während der Wiedergabe eingeschaltet.",
       screenLockFailed: "Der Bildschirm konnte nicht aktiv gehalten werden. Die Wiedergabe läuft normal weiter.",
       stopPlaybackToChangeMode: "Stoppe die Wiedergabe, um den Modus zu wechseln",
+      playbackControls: "Wiedergabesteuerung",
       tapResult: "Ermitteltes Tempo: {bpm} BPM",
       keepTapping: "Weiter tippen…",
       audioUnsupported: "Dieser Browser unterstützt keine Audiowiedergabe. Verwende einen aktuellen Browser mit Web Audio.",
@@ -652,6 +670,7 @@
       bar: "{total}小節中 {current}小節目",
       setYourPace: "テンポを設定",
       tempo: "テンポ",
+      manualTempo: "手動テンポ",
       adjustTempo: "テンポを調整",
       decrease5: "テンポを5 BPM下げる",
       decrease1: "テンポを1 BPM下げる",
@@ -673,6 +692,7 @@
       speedLoopDescription: "決めたフレーズごとにテンポを上げます。テンポが変わるのは、選択した小節数のまとまりの先頭だけです。",
       rampSettings: "テンポアップの設定",
       startBpm: "開始 BPM",
+      speedLoopTempoContext: "スピードループは {bpm} BPM から開始します。",
       targetBpm: "目標 BPM",
       rampDuration: "加速時間（分）",
       barsPerChange: "何小節ごとにテンポを変更するか",
@@ -716,6 +736,7 @@
       screenWillStayAwake: "再生中は画面がスリープしません。",
       screenLockFailed: "画面をスリープさせない設定にできませんでした。再生は通常どおり続きます。",
       stopPlaybackToChangeMode: "モードを変更するには再生を停止してください",
+      playbackControls: "再生コントロール",
       tapResult: "計測テンポ: {bpm} BPM",
       keepTapping: "続けてタップしてください…",
       audioUnsupported: "このブラウザーはオーディオに対応していません。Web Audio対応の最新ブラウザーをお試しください。",
@@ -758,6 +779,7 @@
       bar: "第 {current} 小节，共 {total} 小节",
       setYourPace: "设置速度",
       tempo: "速度",
+      manualTempo: "手动速度",
       adjustTempo: "调整速度",
       decrease5: "降低 5 BPM",
       decrease1: "降低 1 BPM",
@@ -779,6 +801,7 @@
       speedLoopDescription: "按固定乐句逐步加快速度。只有到达所选小节组的开头时才会改变速度。",
       rampSettings: "速度递增设置",
       startBpm: "起始 BPM",
+      speedLoopTempoContext: "速度循环从 {bpm} BPM 开始。",
       targetBpm: "目标 BPM",
       rampDuration: "提速时长（分钟）",
       barsPerChange: "每隔多少小节改变速度",
@@ -822,6 +845,7 @@
       screenWillStayAwake: "播放期间屏幕将保持常亮。",
       screenLockFailed: "无法保持屏幕常亮。播放仍会正常继续。",
       stopPlaybackToChangeMode: "请停止播放后再切换模式",
+      playbackControls: "播放控制",
       tapResult: "测得速度：{bpm} BPM",
       keepTapping: "请继续敲击…",
       audioUnsupported: "此浏览器不支持音频。请尝试使用支持 Web Audio 的新版浏览器。",
@@ -864,6 +888,7 @@
       bar: "전체 {total}마디 중 {current}마디",
       setYourPace: "템포 설정",
       tempo: "템포",
+      manualTempo: "수동 템포",
       adjustTempo: "템포 조절",
       decrease5: "5 BPM 낮추기",
       decrease1: "1 BPM 낮추기",
@@ -885,6 +910,7 @@
       speedLoopDescription: "정해진 프레이즈에 맞춰 템포를 높입니다. 선택한 마디 묶음이 시작될 때만 템포가 바뀝니다.",
       rampSettings: "템포 높이기 설정",
       startBpm: "시작 BPM",
+      speedLoopTempoContext: "스피드 루프는 {bpm} BPM에서 시작합니다.",
       targetBpm: "목표 BPM",
       rampDuration: "향상 시간(분)",
       barsPerChange: "몇 마디마다 템포를 변경할지",
@@ -928,6 +954,7 @@
       screenWillStayAwake: "재생 중에는 화면이 켜진 상태로 유지됩니다.",
       screenLockFailed: "화면 켜짐을 유지할 수 없습니다. 재생은 정상적으로 계속됩니다.",
       stopPlaybackToChangeMode: "모드를 변경하려면 재생을 중지하세요",
+      playbackControls: "재생 컨트롤",
       tapResult: "측정된 템포: {bpm} BPM",
       keepTapping: "계속 탭하세요…",
       audioUnsupported: "이 브라우저는 오디오를 지원하지 않습니다. Web Audio를 지원하는 최신 브라우저를 사용하세요.",
@@ -1524,6 +1551,8 @@
       // DOM refs
       this.el = {
         bpmValue: document.getElementById("bpmValue"),
+        tempoTitle: document.getElementById("tempoTitle"),
+        loopTempoContext: document.getElementById("loopTempoContext"),
         slider: document.getElementById("tempoSlider"),
         minus5: document.getElementById("minus5"),
         minus1: document.getElementById("minus1"),
@@ -1532,6 +1561,11 @@
         playBtn: document.getElementById("playBtn"),
         playLabel: document.getElementById("playLabel"),
         tapBtn: document.getElementById("tapBtn"),
+        consoleActions: document.querySelector(".console-actions"),
+        stickyPlayback: document.getElementById("stickyPlayback"),
+        stickyPlayBtn: document.getElementById("stickyPlayBtn"),
+        stickyPlayLabel: document.getElementById("stickyPlayLabel"),
+        stickyTapBtn: document.getElementById("stickyTapBtn"),
         beatRow: document.getElementById("beatRow"),
         meterLabel: document.getElementById("meterLabel"),
         statusLine: document.getElementById("statusLine"),
@@ -1601,6 +1635,7 @@
       this.alertShown = false;
       this.sessionLogged = false;
       this.bindEvents();
+      this.observePlaybackControls();
       this.applyStateToUI();
       this.applyTheme(this.state.theme);
       this.applyLanguage(this.state.language);
@@ -1621,6 +1656,8 @@
 
       e.playBtn.addEventListener("click", () => this.toggle());
       e.tapBtn.addEventListener("click", () => this.handleTap());
+      e.stickyPlayBtn.addEventListener("click", () => e.playBtn.click());
+      e.stickyTapBtn.addEventListener("click", () => e.tapBtn.click());
       e.themeSelect.addEventListener("change", () => {
         this.state.theme = e.themeSelect.value;
         this.applyTheme(this.state.theme);
@@ -1720,6 +1757,7 @@
           this.state[key] = clamp(toInt(input.value, this.state[key]), min, max);
           input.value = this.state[key];
           if (key === "loopBars") this.updateLoopPhraseText();
+          if (key === "loopStart") this.updateLoopTempoContext();
           this.persist();
         });
       });
@@ -1819,6 +1857,8 @@
       this.setStatus(this.statusMessageKey, this.statusMessageParams);
       this.setWakeLockStatus(this.wakeLockMessageKey);
       this.updateTempoControlAvailability();
+      this.el.tempoTitle.textContent = t(this.state.mode === MODES.SPEEDLOOP ? "manualTempo" : "tempo");
+      this.updateLoopTempoContext();
       this.updateLoopPhraseText();
       this.renderBpm();
       this.renderHistory();
@@ -1862,7 +1902,36 @@
         tab.disabled = this.running;
         tab.title = this.running ? t("stopPlaybackToChangeMode") : "";
       });
+      this.el.stickyPlayLabel.textContent = t(this.running ? "stop" : "start");
+      this.el.stickyPlayBtn.classList.toggle("running", this.running);
+      this.el.stickyPlayBtn.setAttribute("aria-pressed", String(this.running));
+      this.el.stickyTapBtn.disabled = this.el.tapBtn.disabled;
       this.el.settingsHint.hidden = !this.running;
+    }
+
+    observePlaybackControls() {
+      if (!("IntersectionObserver" in window) || !this.el.consoleActions) return;
+      const mobile = window.matchMedia("(max-width: 759px)");
+      let actionsVisible = true;
+      const update = () => {
+        const visible = mobile.matches && !actionsVisible;
+        this.el.stickyPlayback.hidden = !visible;
+        document.body.classList.toggle("has-sticky-playback", visible);
+      };
+      const observer = new IntersectionObserver(([entry]) => {
+        actionsVisible = entry.isIntersecting && entry.intersectionRatio >= 0.25;
+        update();
+      }, { threshold: [0, 0.25] });
+      observer.observe(this.el.consoleActions);
+      if (mobile.addEventListener) mobile.addEventListener("change", update);
+      else mobile.addListener(update);
+      update();
+    }
+
+    updateLoopTempoContext() {
+      this.el.tempoTitle.textContent = t(this.state.mode === MODES.SPEEDLOOP ? "manualTempo" : "tempo");
+      this.el.loopTempoContext.textContent = t("speedLoopTempoContext", { bpm: this.state.loopStart });
+      this.el.loopTempoContext.hidden = this.state.mode !== MODES.SPEEDLOOP;
     }
 
     updateBeatCounter() {
@@ -1880,6 +1949,7 @@
       });
       this.el.speedloopFields.hidden = mode !== MODES.SPEEDLOOP;
       this.el.metronomePanel.hidden = mode !== MODES.METRONOME;
+      this.updateLoopTempoContext();
       this.updateTempoControlAvailability();
       if (persistChange) this.persist();
     }

@@ -125,13 +125,14 @@
       <div class="section-heading">
         <div>
           <p class="eyebrow" data-i18n="setYourPace">SET YOUR PACE</p>
-          <h2 data-i18n="tempo">Tempo</h2>
+          <h2 id="tempoTitle" data-i18n="tempo">Tempo</h2>
         </div>
         <span class="tempo-range">30–300 BPM</span>
       </div>
       <div class="bpm-display">
         <span class="bpm-value" id="bpmValue" aria-live="polite">120</span>
         <span class="bpm-unit">BPM</span>
+        <span class="tempo-context" id="loopTempoContext" data-i18n="speedLoopTempoContext" hidden></span>
       </div>
 
       <div class="stepper-row" aria-label="Adjust tempo" data-i18n-aria-label="adjustTempo">
@@ -287,7 +288,7 @@
               <option value="none" data-i18n="noAccents">No accents</option>
             </select>
           </div>
-          <div class="field-row">
+          <div class="field-row volume-row">
             <label class="icon-label" for="volume"><svg class="icon" aria-hidden="true"><use href="#volume"></use></svg><span data-i18n="volume">Volume</span></label>
             <div class="range-control">
               <input type="range" id="volume" min="0" max="1" step="0.01" value="0.65" aria-label="Metronome volume" data-i18n-aria-label="metronomeVolume" />
@@ -318,6 +319,17 @@
     <!-- Timer / countdown readout -->
     <div class="readout" id="readout" aria-live="polite"></div>
 
-  </main>  <script src="bundle.js"></script>
+  </main>  <nav class="sticky-playback" id="stickyPlayback" aria-label="Playback controls" data-i18n-aria-label="playbackControls" hidden>
+    <button class="btn btn-play" id="stickyPlayBtn" type="button">
+      <svg class="play-icon" aria-hidden="true"><use href="#play"></use></svg>
+      <svg class="pause-icon" aria-hidden="true"><use href="#pause"></use></svg>
+      <span id="stickyPlayLabel" data-i18n="start">Start</span>
+    </button>
+    <button class="btn btn-tap" id="stickyTapBtn" type="button">
+      <svg class="icon" aria-hidden="true"><use href="#hand"></use></svg>
+      <span data-i18n="tapTempo">Tap tempo</span>
+    </button>
+  </nav>
+  <script src="bundle.js"></script>
 </body>
 </html>

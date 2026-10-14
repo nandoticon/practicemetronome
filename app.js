@@ -172,6 +172,8 @@
       // DOM refs
       this.el = {
         bpmValue: document.getElementById("bpmValue"),
+        tempoTitle: document.getElementById("tempoTitle"),
+        loopTempoContext: document.getElementById("loopTempoContext"),
         slider: document.getElementById("tempoSlider"),
         minus5: document.getElementById("minus5"),
         minus1: document.getElementById("minus1"),
@@ -180,6 +182,11 @@
         playBtn: document.getElementById("playBtn"),
         playLabel: document.getElementById("playLabel"),
         tapBtn: document.getElementById("tapBtn"),
+        consoleActions: document.querySelector(".console-actions"),
+        stickyPlayback: document.getElementById("stickyPlayback"),
+        stickyPlayBtn: document.getElementById("stickyPlayBtn"),
+        stickyPlayLabel: document.getElementById("stickyPlayLabel"),
+        stickyTapBtn: document.getElementById("stickyTapBtn"),
         beatRow: document.getElementById("beatRow"),
         meterLabel: document.getElementById("meterLabel"),
         statusLine: document.getElementById("statusLine"),
@@ -249,6 +256,7 @@
       this.alertShown = false;
       this.sessionLogged = false;
       this.bindEvents();
+      this.observePlaybackControls();
       this.applyStateToUI();
       this.applyTheme(this.state.theme);
       this.applyLanguage(this.state.language);
@@ -269,6 +277,8 @@
 
       e.playBtn.addEventListener("click", () => this.toggle());
       e.tapBtn.addEventListener("click", () => this.handleTap());
+      e.stickyPlayBtn.addEventListener("click", () => e.playBtn.click());
+      e.stickyTapBtn.addEventListener("click", () => e.tapBtn.click());
       e.themeSelect.addEventListener("change", () => {
         this.state.theme = e.themeSelect.value;
         this.applyTheme(this.state.theme);
@@ -368,6 +378,7 @@
           this.state[key] = clamp(toInt(input.value, this.state[key]), min, max);
           input.value = this.state[key];
           if (key === "loopBars") this.updateLoopPhraseText();
+          if (key === "loopStart") this.updateLoopTempoContext();
           this.persist();
         });
       });
@@ -467,6 +478,8 @@
       this.setStatus(this.statusMessageKey, this.statusMessageParams);
       this.setWakeLockStatus(this.wakeLockMessageKey);
       this.updateTempoControlAvailability();
+      this.el.tempoTitle.textContent = t(this.state.mode === MODES.SPEEDLOOP ? "manualTempo" : "tempo");
+      this.updateLoopTempoContext();
       this.updateLoopPhraseText();
       this.renderBpm();
       this.renderHistory();
@@ -510,7 +523,36 @@
         tab.disabled = this.running;
         tab.title = this.running ? t("stopPlaybackToChangeMode") : "";
       });
+      this.el.stickyPlayLabel.textContent = t(this.running ? "stop" : "start");
+      this.el.stickyPlayBtn.classList.toggle("running", this.running);
+      this.el.stickyPlayBtn.setAttribute("aria-pressed", String(this.running));
+      this.el.stickyTapBtn.disabled = this.el.tapBtn.disabled;
       this.el.settingsHint.hidden = !this.running;
+    }
+
+    observePlaybackControls() {
+      if (!("IntersectionObserver" in window) || !this.el.consoleActions) return;
+      const mobile = window.matchMedia("(max-width: 759px)");
+      let actionsVisible = true;
+      const update = () => {
+        const visible = mobile.matches && !actionsVisible;
+        this.el.stickyPlayback.hidden = !visible;
+        document.body.classList.toggle("has-sticky-playback", visible);
+      };
+      const observer = new IntersectionObserver(([entry]) => {
+        actionsVisible = entry.isIntersecting && entry.intersectionRatio >= 0.25;
+        update();
+      }, { threshold: [0, 0.25] });
+      observer.observe(this.el.consoleActions);
+      if (mobile.addEventListener) mobile.addEventListener("change", update);
+      else mobile.addListener(update);
+      update();
+    }
+
+    updateLoopTempoContext() {
+      this.el.tempoTitle.textContent = t(this.state.mode === MODES.SPEEDLOOP ? "manualTempo" : "tempo");
+      this.el.loopTempoContext.textContent = t("speedLoopTempoContext", { bpm: this.state.loopStart });
+      this.el.loopTempoContext.hidden = this.state.mode !== MODES.SPEEDLOOP;
     }
 
     updateBeatCounter() {
@@ -528,6 +570,7 @@
       });
       this.el.speedloopFields.hidden = mode !== MODES.SPEEDLOOP;
       this.el.metronomePanel.hidden = mode !== MODES.METRONOME;
+      this.updateLoopTempoContext();
       this.updateTempoControlAvailability();
       if (persistChange) this.persist();
     }
