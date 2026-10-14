@@ -1,20 +1,34 @@
     <header class="app-header">
-      <a class="brand" href="./" aria-label="Practice Metronome home">
+      <a class="brand" href="./" aria-label="Practice Metronome home" data-i18n-aria-label="homeLabel">
         <span class="brand-mark" aria-hidden="true">
           <svg class="icon" aria-hidden="true"><use href="./icons/lucide.svg#metronome"></use></svg>
         </span>
         <span class="brand-copy">
-          <strong>Practice Metronome</strong>
-          <span>Find your rhythm. Build your pace.</span>
+          <strong data-i18n="appName">Practice Metronome</strong>
+          <span data-i18n="tagline">Find your rhythm. Build your pace.</span>
         </span>
       </a>
+      <label class="language-control" for="languageSelect">
+        <span data-i18n="language">Language</span>
+        <select id="languageSelect" aria-label="Language" data-i18n-aria-label="language">
+          <option value="en-US">English</option>
+          <option value="pt-BR">Português (Brasil)</option>
+          <option value="es">Español</option>
+          <option value="it">Italiano</option>
+          <option value="fr">Français</option>
+          <option value="de">Deutsch</option>
+          <option value="ja">日本語</option>
+          <option value="zh-CN">简体中文</option>
+          <option value="ko">한국어</option>
+        </select>
+      </label>
       <label class="theme-control" for="themeSelect">
         <svg class="icon" aria-hidden="true"><use href="./icons/lucide.svg#monitor"></use></svg>
-        <span>Theme</span>
-        <select id="themeSelect" aria-label="Color theme">
-          <option value="system">System</option>
-          <option value="dark">Dark</option>
-          <option value="light">Light</option>
+        <span data-i18n="theme">Theme</span>
+        <select id="themeSelect" aria-label="Color theme" data-i18n-aria-label="theme">
+          <option value="system" data-i18n="themeSystem">System</option>
+          <option value="dark" data-i18n="themeDark">Dark</option>
+          <option value="light" data-i18n="themeLight">Light</option>
         </select>
       </label>
     </header>

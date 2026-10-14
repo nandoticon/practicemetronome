@@ -21,11 +21,13 @@
     clickTone: "classic",
     wakeLockEnabled: false,
     theme: "dark",
+    language: "en-US",
     subdivisions: 1,
     accentPattern: "downbeat",
   });
   const validTones = new Set(["soft", "classic", "bright"]);
   const validAccents = new Set(["downbeat", "backbeat", "every", "none"]);
+  const validLanguages = new Set(["en-US", "pt-BR", "es", "it", "fr", "de", "ja", "zh-CN", "ko"]);
   let saveTimer = 0;
 
   const load = () => {
@@ -55,6 +57,7 @@
         clickTone: validTones.has(parsed.clickTone) ? parsed.clickTone : defaults.clickTone,
         wakeLockEnabled: typeof parsed.wakeLockEnabled === "boolean" ? parsed.wakeLockEnabled : defaults.wakeLockEnabled,
         theme: ["system", "dark", "light"].includes(parsed.theme) ? parsed.theme : defaults.theme,
+        language: validLanguages.has(parsed.language) ? parsed.language : defaults.language,
         subdivisions: [1, 2, 4].includes(Number(parsed.subdivisions)) ? Number(parsed.subdivisions) : defaults.subdivisions,
         accentPattern: validAccents.has(parsed.accentPattern) ? parsed.accentPattern : defaults.accentPattern,
       };

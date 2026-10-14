@@ -1,6 +1,6 @@
 # Practice Metronome
 
-A lightweight, responsive metronome for focused practice. It includes a standard metronome, a configurable Speed Loop, tap tempo, count-in, practice timer, click subdivisions and accents, custom click sounds, volume control, and system/light/dark themes. Playback pauses safely when the app is hidden; start again to begin a fresh session. App assets, including the Lucide icon sprite, are bundled locally and cached for offline use after the first successful load.
+A lightweight, responsive, multilingual metronome for focused practice. Features include a standard metronome, configurable Speed Loop, tap tempo, count-in, practice timer, note subdivisions, accent patterns, click sounds, volume control, recent-session history, wake lock, and system/light/dark themes. The interface is available in English (US), Brazilian Portuguese, Spanish, Italian, French, German, Japanese, Simplified Chinese, and Korean. English (US) is the default; the selected language and other preferences are saved locally on the device. Playback pauses safely when the app is hidden and can be restarted with a tap. All app assets are bundled locally, and the app works offline after its first successful load.
 
 Developed by **Fernando Ticon using IA**.
 
@@ -12,7 +12,7 @@ Developed by **Fernando Ticon using IA**.
 
 ## Run locally
 
-You can open `index.html` directly for basic practice. For service-worker offline caching and the screen-awake option, serve it from `localhost`:
+For full functionality—including service-worker offline caching and the screen-awake option—serve the app from `localhost`:
 
 ```sh
 npx serve .
@@ -32,9 +32,12 @@ The build combines:
 
 - HTML components from `src/html/`
 - CSS modules from `styles/`
-- `storage.js`, `audio.js`, `timing.js`, `app.js`, and `pwa.js`
+- JavaScript modules: `storage.js`, `audio.js`, `timing.js`, `i18n.js`, `app.js`, and `pwa.js`
+- `locales/` — one translation catalog per supported language
 
-into `index.html`, `style.css`, and `bundle.js`. The locally bundled Lucide sprite is in `icons/lucide.svg`. Commit both the source files and generated files so the published site can be served as static content.
+into the static `index.html`, `style.css`, and `bundle.js` files. The build embeds the Lucide sprite from `icons/lucide.svg` into the HTML. There are no runtime package or network dependencies. When changing source files, rebuild and commit both the source and generated files so the published site stays current.
+
+To add or edit a translation, update the matching file in `locales/` and keep its message keys and `{placeholders}` consistent with `locales/en-US.js`. Run the build and tests before publishing.
 
 Run the dependency-free automated tests with:
 
@@ -68,7 +71,7 @@ The service worker caches the static app shell on the first successful visit. Su
 
 ## Speed Loop
 
-Set the start and target tempos, choose the ramp duration, then set **Bars per tempo change** from 1 to 32. The tempo only changes at the beginning of each selected phrase; its displayed ramp duration is approximate because changes wait for the next phrase boundary. Optional quarter-, eighth-, and sixteenth-note subdivisions and downbeat/backbeat/every-beat/no-accent patterns are also available.
+Set the start and target tempos, choose the ramp duration, then set **Bars per tempo change** from 1 to 32. Tempo changes only at the beginning of each selected phrase. The displayed ramp duration is approximate because updates wait for phrase boundaries. Optional quarter-, eighth-, and sixteenth-note subdivisions and first-beat, even-beat, every-beat, or no-accent patterns are also available.
 
 Recent session history stays in this browser on this device. It is not uploaded.
 

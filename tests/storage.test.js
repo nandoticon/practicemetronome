@@ -32,6 +32,16 @@ test("system theme and supported rhythm options restore from storage", () => {
   assert.equal(state.accentPattern, "backbeat");
 });
 
+test("supported language choice is restored and invalid language falls back to English", () => {
+  global.localStorage = {
+    getItem: () => JSON.stringify({ language: "ja" }),
+    setItem: () => {},
+  };
+  assert.equal(storage.load().language, "ja");
+  global.localStorage.getItem = () => JSON.stringify({ language: "xx" });
+  assert.equal(storage.load().language, "en-US");
+});
+
 test("session history is local, ordered, and capped at ten entries", () => {
   const values = new Map();
   global.localStorage = {

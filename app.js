@@ -49,8 +49,13 @@
     const s = Math.max(0, Math.ceil(totalSeconds));
     const m = Math.floor(s / 60);
     const r = s % 60;
-    return `${String(m).padStart(2, "0")}:${String(r).padStart(2, "0")}`;
+    const format = new Intl.NumberFormat(window.MetronomeI18n?.language || "en-US", {
+      minimumIntegerDigits: 2,
+      useGrouping: false,
+    });
+    return `${format.format(m)}:${format.format(r)}`;
   };
+  const t = (key, params) => window.MetronomeI18n.translate(key, params);
   const { SpeedRamp, SpeedLoopCadence, initialBpm, practiceTimerEnd } = window.MetronomeTiming;
   const { AudioEngine, Scheduler } = window.createMetronomeAudio({ CONFIG, clamp });
 
@@ -109,7 +114,7 @@
 
     draw(index) {
       this.dots.forEach((dot, i) => dot.classList.toggle("active", i === index));
-      this.container.setAttribute("aria-label", `Beat ${index + 1} of ${this.dots.length}`);
+      this.container.setAttribute("aria-label", t("beat", { current: index + 1, total: this.dots.length }));
     }
 
     clear() {
@@ -206,6 +211,7 @@
         wakeLockStatus: document.getElementById("wakeLockStatus"),
         settingsHint: document.getElementById("settingsHint"),
         themeSelect: document.getElementById("themeSelect"),
+        languageSelect: document.getElementById("languageSelect"),
         historyList: document.getElementById("historyList"),
         historyEmpty: document.getElementById("historyEmpty"),
         historyClear: document.getElementById("historyClear"),
@@ -235,12 +241,16 @@
       this.countInEndTime = null;
       this.wakeLock = null;
       this.wakeLockPending = false;
+      this.wakeLockMessageKey = "";
+      this.statusMessageKey = "";
+      this.statusMessageParams = {};
       this.rafId = null;
       this.alertShown = false;
       this.sessionLogged = false;
       this.bindEvents();
       this.applyStateToUI();
       this.applyTheme(this.state.theme);
+      this.applyLanguage(this.state.language);
       this.bindColorScheme();
       this.visualizer.rebuild(this.state.beatsPerBar);
       this.updateBeatCounter();
@@ -261,6 +271,11 @@
       e.themeSelect.addEventListener("change", () => {
         this.state.theme = e.themeSelect.value;
         this.applyTheme(this.state.theme);
+        this.persist();
+      });
+      e.languageSelect.addEventListener("change", () => {
+        this.state.language = e.languageSelect.value;
+        this.applyLanguage(this.state.language);
         this.persist();
       });
       e.historyClear.addEventListener("click", () => {
@@ -417,7 +432,7 @@
       this.el.countdownBeats.value = String(s.countdownBeats);
       this.el.wakeLockEnabled.checked = s.wakeLockEnabled;
       this.el.wakeLockEnabled.disabled = this.running || !("wakeLock" in navigator);
-      if (!("wakeLock" in navigator)) this.el.wakeLockStatus.textContent = "Screen wake lock is not supported by this browser.";
+      if (!("wakeLock" in navigator)) this.setWakeLockStatus("screenLockUnsupported");
       this.el.loopStart.value = s.loopStart;
       this.el.loopTarget.value = s.loopTarget;
       this.el.loopMinutes.value = s.loopMinutes;
@@ -444,6 +459,21 @@
       );
     }
 
+    applyLanguage(language) {
+      this.state.language = window.MetronomeI18n.setLanguage(language);
+      this.el.languageSelect.value = this.state.language;
+      this.el.playLabel.textContent = t(this.running ? "stop" : "start");
+      this.setStatus(this.statusMessageKey, this.statusMessageParams);
+      this.setWakeLockStatus(this.wakeLockMessageKey);
+      this.updateTempoControlAvailability();
+      this.updateLoopPhraseText();
+      this.renderBpm();
+      this.renderHistory();
+      if (this.el.readout.classList.contains("alert")) {
+        this.el.readout.textContent = t("practiceComplete");
+      }
+    }
+
     bindColorScheme() {
       const query = window.matchMedia?.("(prefers-color-scheme: light)");
       if (!query) return;
@@ -460,7 +490,7 @@
       this.el.slider.value = String(bpm);
       const fill = ((bpm - CONFIG.MIN_BPM) / (CONFIG.MAX_BPM - CONFIG.MIN_BPM)) * 100;
       this.el.slider.style.setProperty("--fill", `${fill}%`);
-      this.el.slider.setAttribute("aria-valuetext", `${bpm} beats per minute`);
+      this.el.slider.setAttribute("aria-valuetext", t("bpmAccessible", { bpm }));
     }
 
     updateTempoControlAvailability() {
@@ -477,7 +507,7 @@
       this.el.wakeLockEnabled.disabled = this.running || !("wakeLock" in navigator);
       this.el.tabs.forEach((tab) => {
         tab.disabled = this.running;
-        tab.title = this.running ? "Stop playback to change mode" : "";
+        tab.title = this.running ? t("stopPlaybackToChangeMode") : "";
       });
       this.el.settingsHint.hidden = !this.running;
     }
@@ -522,7 +552,7 @@
       if (this.running && this.state.mode === MODES.SPEEDLOOP) return;
       const bpm = this.tap.tap(performance.now());
       if (bpm !== null) this.flashTap();
-      this.setStatus(bpm !== null ? `Tap: ${bpm} BPM` : "Keep tapping…");
+      this.setStatus(bpm !== null ? "tapResult" : "keepTapping", bpm === null ? {} : { bpm });
     }
 
     flashTap() {
@@ -552,8 +582,8 @@
       } catch (err) {
         console.warn("Audio could not start.", err);
         this.setStatus(err instanceof Error && err.message.includes("not supported")
-          ? "Audio is not supported in this browser. Try a current browser with Web Audio support."
-          : "Audio couldn't start. Check browser audio permissions, then tap Start to try again.");
+          ? "audioUnsupported"
+          : "audioStartFailed");
         return;
       }
 
@@ -581,8 +611,8 @@
         const beats = this.state.countdownBeats;
         const spb = 60 / this.currentBpm();
         this.countInEndTime = now + leadIn + beats * spb;
-        this.setStatus("Count-in");
-        this.el.playLabel.textContent = "Stop";
+        this.setStatus("countInStatus");
+        this.el.playLabel.textContent = t("stop");
         this.scheduler.start(now + leadIn);
         this.scheduleCountInTicks(now + leadIn, beats, spb);
       } else {
@@ -602,7 +632,7 @@
           this.beginMainSession(this.countInEndTime);
           return;
         }
-        this.setStatus(`Count-in: ${remaining}`);
+        this.setStatus("countInRemaining", { count: remaining });
         setTimeout(update, 40);
       };
       update();
@@ -614,14 +644,14 @@
       this.sessionStartedBpm = this.state.bpm;
       this.sessionLogged = false;
       this.setStatus("");
-      this.el.playLabel.textContent = "Stop";
+      this.el.playLabel.textContent = t("stop");
 
       const mode = this.state.mode;
       if (mode === MODES.SPEEDLOOP) {
         this.speedLoopCadence.reset(this.state.loopBars);
         this.speedLoopBar = 0;
         this.el.phraseLabel.hidden = false;
-        this.el.phraseLabel.textContent = `Bar 1 of ${this.state.loopBars}`;
+        this.el.phraseLabel.textContent = t("bar", { current: 1, total: this.state.loopBars });
         this.ramp.configure({
           start: this.state.loopStart,
           target: this.state.loopTarget,
@@ -684,7 +714,7 @@
         beatIndex !== 0
       ) return;
       this.speedLoopBar = this.speedLoopCadence.bar;
-      this.el.phraseLabel.textContent = `Bar ${this.speedLoopBar} of ${this.state.loopBars}`;
+      this.el.phraseLabel.textContent = t("bar", { current: this.speedLoopBar, total: this.state.loopBars });
     }
 
     nextSpeedLoopBpm(now) {
@@ -708,7 +738,7 @@
       this.visualizer.clear();
       this.el.playBtn.classList.remove("running");
       this.el.playBtn.setAttribute("aria-pressed", "false");
-      this.el.playLabel.textContent = "Start";
+      this.el.playLabel.textContent = t("start");
       this.el.loopProgress.hidden = true;
       this.el.progressFill.style.width = "0%";
       this.el.progressTrack.setAttribute("aria-valuenow", "0");
@@ -738,13 +768,13 @@
       this.rafId = null;
       this.el.playBtn.classList.remove("running");
       this.el.playBtn.setAttribute("aria-pressed", "false");
-      this.el.playLabel.textContent = "Start";
+      this.el.playLabel.textContent = t("start");
       this.el.phraseLabel.hidden = true;
       this.el.loopProgress.hidden = true;
       this.countInEndTime = null;
       this.timerEndTime = null;
       this.updateTempoControlAvailability();
-      this.setStatus("Session paused when the app left the screen. Tap Start to begin again.");
+      this.setStatus("sessionInterrupted");
       this.persist();
       if (this.engine.ctx?.state === "running") {
         this.engine.ctx.suspend().catch((error) => {
@@ -778,8 +808,9 @@
         const details = document.createElement("span");
         const date = new Date(session.startedAt);
         const duration = formatTime(session.durationSec);
-        title.textContent = `${session.mode === MODES.SPEEDLOOP ? "Speed Loop" : "Metronome"} · ${session.startBpm} → ${session.endBpm} BPM`;
-        details.textContent = `${date.toLocaleString()} · ${duration}${session.interrupted ? " · interrupted" : ""}`;
+        const mode = t(session.mode === MODES.SPEEDLOOP ? "speedLoop" : "metronome");
+        title.textContent = t("historyEntry", { mode, start: session.startBpm, end: session.endBpm });
+        details.textContent = `${date.toLocaleString(this.state.language)} · ${duration}${session.interrupted ? ` · ${t("interrupted")}` : ""}`;
         item.append(title, details);
         this.el.historyList.appendChild(item);
       });
@@ -810,16 +841,21 @@
         this.el.progressTrack.setAttribute("aria-valuenow", String(pct));
         this.el.progressText.textContent = rampDone
           ? this.state.bpm === this.ramp.target
-            ? `${this.state.bpm} BPM · target reached, holding`
-            : `${this.state.bpm} BPM now · next phrase ${this.nextSpeedLoopBpm(now)} BPM`
-          : `${this.state.bpm} BPM now · next phrase ${this.nextSpeedLoopBpm(now)} BPM · ${pct}% · ${formatTime(this.ramp.durationSec - (now - this.ramp.startedAt))} left`;
+            ? t("rampTargetReached", { bpm: this.state.bpm })
+            : t("rampNextPhrase", { bpm: this.state.bpm, next: this.nextSpeedLoopBpm(now) })
+          : t("rampProgressText", {
+            bpm: this.state.bpm,
+            next: this.nextSpeedLoopBpm(now),
+            percent: pct,
+            time: formatTime(this.ramp.durationSec - (now - this.ramp.startedAt)),
+          });
         // Ramp finishes and holds at target indefinitely; no stop.
       }
 
       // Practice timer.
       if (this.phase === "playing" && this.timerEndTime !== null) {
         const remaining = this.timerEndTime - now;
-        this.el.readout.textContent = `Time left ${formatTime(remaining)}`;
+        this.el.readout.textContent = t("timeLeft", { time: formatTime(remaining) });
         if (remaining <= 0 && !this.alertShown) {
           this.alertShown = true;
           this.fireTimerAlert(now);
@@ -828,7 +864,7 @@
       } else if (this.phase === "playing" && this.state.mode === MODES.SPEEDLOOP) {
         // Show elapsed time in speed loop mode.
         const elapsed = now - this.sessionStartTime;
-        this.el.readout.textContent = `Elapsed ${formatTime(elapsed)}`;
+        this.el.readout.textContent = t("elapsed", { time: formatTime(elapsed) });
       } else {
         this.el.readout.textContent = "";
       }
@@ -839,7 +875,7 @@
       this.engine.scheduleAlert(now + 0.0, 880, 0.3);
       this.engine.scheduleAlert(now + 0.4, 880, 0.3);
       this.engine.scheduleAlert(now + 0.8, 1100, 0.5);
-      this.el.readout.textContent = "Practice time complete";
+      this.el.readout.textContent = t("practiceComplete");
       this.el.readout.classList.add("alert");
       this.setStatus("");
       if (navigator.vibrate) navigator.vibrate([200, 100, 200]);
@@ -858,14 +894,14 @@
         this.wakeLock.addEventListener("release", () => {
           this.wakeLock = null;
           if (this.running && this.state.wakeLockEnabled && !document.hidden) {
-            this.el.wakeLockStatus.textContent = "Screen may dim while the metronome continues.";
+            this.setWakeLockStatus("screenMayDim");
           }
         }, { once: true });
-        this.el.wakeLockStatus.textContent = "Screen will stay awake during playback.";
+        this.setWakeLockStatus("screenWillStayAwake");
       } catch (error) {
         this.wakeLockPending = false;
         console.warn("Screen wake lock could not be acquired.", error);
-        this.el.wakeLockStatus.textContent = "Could not keep the screen awake. Playback will continue normally.";
+        this.setWakeLockStatus("screenLockFailed");
       }
     }
 
@@ -874,17 +910,30 @@
       const wakeLock = this.wakeLock;
       this.wakeLock = null;
       wakeLock.release().catch((error) => console.warn("Screen wake lock could not be released.", error));
-      this.el.wakeLockStatus.textContent = "";
+      this.setWakeLockStatus("");
     }
 
-    setStatus(text) {
-      this.el.statusLine.textContent = text;
+    setWakeLockStatus(key) {
+      this.wakeLockMessageKey = key;
+      this.el.wakeLockStatus.textContent = key ? t(key) : "";
+    }
+
+    setStatus(key, params = {}) {
+      this.statusMessageKey = key;
+      this.statusMessageParams = params;
+      this.el.statusLine.textContent = key ? t(key, params) : "";
     }
 
     updateLoopPhraseText() {
-      this.el.loopHint.textContent = `Ramp duration is approximate; tempo updates every ${this.state.loopBars} ${this.state.loopBars === 1 ? "bar" : "bars"}.`;
+      this.el.loopHint.textContent = t("rampHint", {
+        count: this.state.loopBars,
+        unit: t(this.state.loopBars === 1 ? "barUnit" : "barsUnit"),
+      });
       if (this.state.mode === MODES.SPEEDLOOP && this.phase === "playing") {
-        this.el.phraseLabel.textContent = `Bar ${Math.min(this.speedLoopBar || 1, this.state.loopBars)} of ${this.state.loopBars}`;
+        this.el.phraseLabel.textContent = t("bar", {
+          current: Math.min(this.speedLoopBar || 1, this.state.loopBars),
+          total: this.state.loopBars,
+        });
       }
     }
   }
@@ -898,7 +947,7 @@
     } catch (err) {
       console.error(err);
       const line = document.getElementById("statusLine");
-      if (line) line.textContent = "Could not initialize the app.";
+      if (line) line.textContent = window.MetronomeI18n.translate("appInitFailed");
     }
   };
 

@@ -199,9 +199,30 @@
   min-height: 48px;
   align-items: center;
   gap: 8px;
+  list-style: none;
   cursor: pointer;
   font-size: 0.88rem;
   font-weight: 700;
+}
+
+.history-panel summary::-webkit-details-marker {
+  display: none;
+}
+
+.history-panel summary::after {
+  width: 8px;
+  height: 8px;
+  flex: 0 0 auto;
+  margin-left: auto;
+  border-right: 2px solid var(--text-dim);
+  border-bottom: 2px solid var(--text-dim);
+  content: "";
+  transform: rotate(45deg) translateY(-2px);
+  transition: transform 150ms ease;
+}
+
+.history-panel[open] summary::after {
+  transform: rotate(225deg) translateY(-2px);
 }
 
 .history-content {

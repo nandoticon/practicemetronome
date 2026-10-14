@@ -100,6 +100,13 @@ input {
   stroke-width: 2;
 }
 
+.icon-definitions {
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+}
+
 button {
   cursor: pointer;
   user-select: none;
@@ -110,7 +117,8 @@ button:focus-visible,
 select:focus-visible,
 input:focus-visible,
 a:focus-visible,
-.panel:focus-visible {
+.panel:focus-visible,
+summary:focus-visible {
   outline: 3px solid var(--accent);
   outline-offset: 3px;
 }
@@ -196,6 +204,7 @@ a:focus-visible,
   font-size: 0.78rem;
 }
 
+.language-control,
 .theme-control {
   display: flex;
   align-items: center;
@@ -205,6 +214,7 @@ a:focus-visible,
   font-weight: 650;
 }
 
+.language-control select,
 .theme-control select {
   min-height: 48px;
   max-width: 120px;
@@ -225,34 +235,39 @@ a:focus-visible,
   height: 16px;
 }
 
-@media (max-width: 380px) {
+@media (max-width: 460px) {
   .app-header {
-    gap: 10px;
-  }
-
-  .brand {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto auto;
     gap: 8px;
   }
 
+  .brand {
+    gap: 7px;
+  }
+
   .brand-mark {
-    width: 40px;
-    height: 40px;
-    border-radius: 13px;
+    width: 36px;
+    height: 36px;
+    border-radius: 11px;
   }
 
   .brand-copy strong {
-    font-size: 0.88rem;
+    font-size: 0.8rem;
   }
 
   .brand-copy span {
     display: none;
   }
 
+  .language-control,
   .theme-control {
     gap: 0;
   }
 
-  .theme-control > span {
+  .language-control > span,
+  .theme-control > span,
+  .theme-control > .icon {
     position: absolute;
     width: 1px;
     height: 1px;
@@ -261,8 +276,32 @@ a:focus-visible,
     white-space: nowrap;
   }
 
+  .language-control select,
   .theme-control select {
+    width: 88px;
     max-width: 88px;
-    padding: 0 23px 0 6px;
+    padding: 0 20px 0 5px;
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 360px) {
+  .app-header {
+    grid-template-columns: minmax(0, 1fr) auto auto;
+    gap: 5px;
+  }
+
+  .brand-copy strong {
+    font-size: 0.72rem;
+  }
+
+  .language-control select {
+    width: 96px;
+    max-width: 96px;
+  }
+
+  .theme-control select {
+    width: 72px;
+    max-width: 72px;
   }
 }

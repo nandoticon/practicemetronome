@@ -1,17 +1,17 @@
-    <section class="panel card" id="settingsPanel" aria-label="Shared practice settings" tabindex="0">
+    <section class="panel card" id="settingsPanel" aria-label="Shared practice settings" data-i18n-aria-label="practiceSettings" tabindex="0">
       <div class="section-heading settings-heading">
         <div>
-          <p class="eyebrow">MAKE IT YOURS</p>
-          <h2>Practice settings</h2>
+          <p class="eyebrow" data-i18n="makeItYours">MAKE IT YOURS</p>
+          <h2 data-i18n="practiceSettings">Practice settings</h2>
         </div>
-        <p class="settings-hint" id="settingsHint" hidden>Stop playback to change settings.</p>
+        <p class="settings-hint" id="settingsHint" hidden data-i18n="stopToChange">Stop playback to change settings.</p>
       </div>
 
       <div class="setting-grid">
-        <section class="setting-group" aria-label="Meter and session">
-          <h3><svg class="icon" aria-hidden="true"><use href="./icons/lucide.svg#music-2"></use></svg>Meter &amp; session</h3>
+        <section class="setting-group" aria-label="Meter and session" data-i18n-aria-label="meterSession">
+          <h3><svg class="icon" aria-hidden="true"><use href="./icons/lucide.svg#music-2"></use></svg><span data-i18n="meterSession">Meter &amp; session</span></h3>
           <div class="field-row">
-            <label for="beatsPerBar">Beats per bar</label>
+            <label for="beatsPerBar" data-i18n="beatsPerBar">Beats per bar</label>
             <select id="beatsPerBar">
               <option value="2">2</option>
               <option value="3">3</option>
@@ -23,19 +23,19 @@
             </select>
           </div>
           <div class="field-row toggle-row">
-            <label for="timerEnabled"><svg class="icon" aria-hidden="true"><use href="./icons/lucide.svg#timer"></use></svg>Practice timer</label>
+            <label for="timerEnabled"><svg class="icon" aria-hidden="true"><use href="./icons/lucide.svg#timer"></use></svg><span data-i18n="practiceTimer">Practice timer</span></label>
             <input type="checkbox" id="timerEnabled" />
           </div>
           <div class="field-row" id="timerFields">
-            <label for="timerMinutes">Duration (minutes)</label>
+            <label for="timerMinutes" data-i18n="durationMinutes">Duration (minutes)</label>
             <input type="number" id="timerMinutes" min="1" max="180" step="1" value="5" inputmode="numeric" />
           </div>
           <div class="field-row toggle-row">
-            <label for="countdownEnabled">Count-in</label>
+            <label for="countdownEnabled" data-i18n="countIn">Count-in</label>
             <input type="checkbox" id="countdownEnabled" />
           </div>
           <div class="field-row" id="countdownFields">
-            <label for="countdownBeats">Count-in beats</label>
+            <label for="countdownBeats" data-i18n="countInBeats">Count-in beats</label>
             <select id="countdownBeats">
               <option value="4" selected>4</option>
               <option value="8">8</option>
@@ -43,42 +43,42 @@
           </div>
         </section>
 
-        <section class="setting-group" aria-label="Sound and display">
-          <h3><svg class="icon" aria-hidden="true"><use href="./icons/lucide.svg#volume-2"></use></svg>Sound &amp; display</h3>
+        <section class="setting-group" aria-label="Sound and display" data-i18n-aria-label="soundDisplay">
+          <h3><svg class="icon" aria-hidden="true"><use href="./icons/lucide.svg#volume-2"></use></svg><span data-i18n="soundDisplay">Sound &amp; display</span></h3>
           <div class="field-row">
-            <label for="clickTone">Click sound</label>
+            <label for="clickTone" data-i18n="clickSound">Click sound</label>
             <select id="clickTone">
-              <option value="soft">Soft</option>
-              <option value="classic" selected>Classic</option>
-              <option value="bright">Bright</option>
+              <option value="soft" data-i18n="toneSoft">Soft</option>
+              <option value="classic" selected data-i18n="toneClassic">Classic</option>
+              <option value="bright" data-i18n="toneBright">Bright</option>
             </select>
           </div>
           <div class="field-row">
-            <label for="subdivisions">Subdivision</label>
+            <label for="subdivisions" data-i18n="subdivision">Subdivision</label>
             <select id="subdivisions">
-              <option value="1">Quarter notes</option>
-              <option value="2">Eighth notes</option>
-              <option value="4">Sixteenth notes</option>
+              <option value="1" data-i18n="quarterNotes">Quarter notes</option>
+              <option value="2" data-i18n="eighthNotes">Eighth notes</option>
+              <option value="4" data-i18n="sixteenthNotes">Sixteenth notes</option>
             </select>
           </div>
           <div class="field-row">
-            <label for="accentPattern">Accent pattern</label>
+            <label for="accentPattern" data-i18n="accentPattern">Accent pattern</label>
             <select id="accentPattern">
-              <option value="downbeat">Downbeat</option>
-              <option value="backbeat">Backbeat (2 &amp; 4)</option>
-              <option value="every">Every beat</option>
-              <option value="none">No accents</option>
+              <option value="downbeat" data-i18n="downbeat">Downbeat</option>
+              <option value="backbeat" data-i18n="backbeat">Backbeat (2 &amp; 4)</option>
+              <option value="every" data-i18n="everyBeat">Every beat</option>
+              <option value="none" data-i18n="noAccents">No accents</option>
             </select>
           </div>
           <div class="field-row">
-            <label for="volume">Volume</label>
+            <label for="volume" data-i18n="volume">Volume</label>
             <div class="range-control">
-              <input type="range" id="volume" min="0" max="1" step="0.01" value="0.65" aria-label="Metronome volume" />
+              <input type="range" id="volume" min="0" max="1" step="0.01" value="0.65" aria-label="Metronome volume" data-i18n-aria-label="metronomeVolume" />
               <output id="volumeValue" for="volume">65%</output>
             </div>
           </div>
           <div class="field-row toggle-row">
-            <label for="wakeLockEnabled">Keep screen awake</label>
+            <label for="wakeLockEnabled" data-i18n="keepScreenAwake">Keep screen awake</label>
             <input type="checkbox" id="wakeLockEnabled" />
           </div>
           <p class="wake-lock-status" id="wakeLockStatus" aria-live="polite"></p>
@@ -86,13 +86,13 @@
       </div>
 
       <details class="history-panel">
-        <summary><svg class="icon" aria-hidden="true"><use href="./icons/lucide.svg#history"></use></svg>Recent practice</summary>
+        <summary><svg class="icon" aria-hidden="true"><use href="./icons/lucide.svg#history"></use></svg><span data-i18n="recentPractice">Recent practice</span></summary>
         <div class="history-content">
-          <p class="history-empty" id="historyEmpty">Completed sessions will appear here on this device.</p>
+          <p class="history-empty" id="historyEmpty" data-i18n="historyEmpty">Completed sessions will appear here on this device.</p>
           <ol class="history-list" id="historyList"></ol>
           <button class="history-clear" id="historyClear" type="button" hidden>
             <svg class="icon" aria-hidden="true"><use href="./icons/lucide.svg#trash-2"></use></svg>
-            Clear history
+            <span data-i18n="clearHistory">Clear history</span>
           </button>
         </div>
       </details>

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en-US">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
@@ -7,49 +7,99 @@
   <meta name="theme-color" content="#101114" />
   <link rel="manifest" href="manifest.webmanifest" />
   <link rel="icon" href="icon.svg" type="image/svg+xml" />
-  <title>Practice Metronome — Find your rhythm</title>
+  <title data-i18n="pageTitle">Practice Metronome — Find your rhythm</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+<svg class="icon-definitions" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg"><symbol id="activity" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-2.48a2 2 0 0 0-1.93 1.46l-2.35 8.36a.25.25 0 0 1-.48 0L9.24 2.18a.25.25 0 0 0-.48 0l-2.35 8.36A2 2 0 0 1 4.49 12H2" />
+</symbol><symbol id="hand" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 11V6a2 2 0 0 0-2-2a2 2 0 0 0-2 2" />
+  <path d="M14 10V4a2 2 0 0 0-2-2a2 2 0 0 0-2 2v2" />
+  <path d="M10 10.5V6a2 2 0 0 0-2-2a2 2 0 0 0-2 2v8" />
+  <path d="M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15" />
+</symbol><symbol id="history" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
+  <path d="M3 3v5h5" />
+  <path d="M12 7v5l4 2" />
+</symbol><symbol id="metronome" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 11.4V9.1" />
+  <path d="m12 17 6.59-6.59" />
+  <path d="m15.05 5.7-.218-.691a3 3 0 0 0-5.663 0L4.418 19.695A1 1 0 0 0 5.37 21h13.253a1 1 0 0 0 .951-1.31L18.45 16.2" />
+  <circle cx="20" cy="9" r="2" />
+</symbol><symbol id="monitor" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="3" rx="2" />
+  <line x1="8" x2="16" y1="21" y2="21" />
+  <line x1="12" x2="12" y1="17" y2="21" />
+</symbol><symbol id="music-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="18" r="4" />
+  <path d="M12 18V2l7 4" />
+</symbol><symbol id="pause" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="14" y="3" width="5" height="18" rx="1" />
+  <rect x="5" y="3" width="5" height="18" rx="1" />
+</symbol><symbol id="play" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 5a2 2 0 0 1 3.008-1.728l11.997 6.998a2 2 0 0 1 .003 3.458l-12 7A2 2 0 0 1 5 19z" />
+</symbol><symbol id="repeat" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m17 2 4 4-4 4" />
+  <path d="M3 11v-1a4 4 0 0 1 4-4h14" />
+  <path d="m7 22-4-4 4-4" />
+  <path d="M21 13v1a4 4 0 0 1-4 4H3" />
+</symbol><symbol id="timer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="10" x2="14" y1="2" y2="2" />
+  <line x1="12" x2="15" y1="14" y2="11" />
+  <circle cx="12" cy="14" r="8" />
+</symbol><symbol id="trash-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 11v6" />
+  <path d="M14 11v6" />
+  <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6" />
+  <path d="M3 6h18" />
+  <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+</symbol><symbol id="volume-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4.702a.705.705 0 0 0-1.203-.498L6.413 7.587A1.4 1.4 0 0 1 5.416 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.416a1.4 1.4 0 0 1 .997.413l3.383 3.384A.705.705 0 0 0 11 19.298z" />
+  <path d="M16 9a5 5 0 0 1 0 6" />
+  <path d="M19.364 18.364a9 9 0 0 0 0-12.728" />
+</symbol></svg>
   <main class="app" id="app">
     <header class="app-header">
-      <a class="brand" href="./" aria-label="Practice Metronome home">
+      <a class="brand" href="./" aria-label="Practice Metronome home" data-i18n-aria-label="homeLabel">
         <span class="brand-mark" aria-hidden="true">
-          <svg class="icon" aria-hidden="true"><use href="./icons/lucide.svg#metronome"></use></svg>
+          <svg class="icon" aria-hidden="true"><use href="#metronome"></use></svg>
         </span>
         <span class="brand-copy">
-          <strong>Practice Metronome</strong>
-          <span>Find your rhythm. Build your pace.</span>
+          <strong data-i18n="appName">Practice Metronome</strong>
+          <span data-i18n="tagline">Find your rhythm. Build your pace.</span>
         </span>
       </a>
+      <label class="language-control" for="languageSelect">
+        <span data-i18n="language">Language</span>
+        <select id="languageSelect" aria-label="Language" data-i18n-aria-label="language">
+          <option value="en-US">English</option>
+          <option value="pt-BR">Português (Brasil)</option>
+          <option value="es">Español</option>
+          <option value="it">Italiano</option>
+          <option value="fr">Français</option>
+          <option value="de">Deutsch</option>
+          <option value="ja">日本語</option>
+          <option value="zh-CN">简体中文</option>
+          <option value="ko">한국어</option>
+        </select>
+      </label>
       <label class="theme-control" for="themeSelect">
-        <svg class="icon" aria-hidden="true"><use href="./icons/lucide.svg#monitor"></use></svg>
-        <span>Theme</span>
-        <select id="themeSelect" aria-label="Color theme">
-          <option value="system">System</option>
-          <option value="dark">Dark</option>
-          <option value="light">Light</option>
+        <svg class="icon" aria-hidden="true"><use href="#monitor"></use></svg>
+        <span data-i18n="theme">Theme</span>
+        <select id="themeSelect" aria-label="Color theme" data-i18n-aria-label="theme">
+          <option value="system" data-i18n="themeSystem">System</option>
+          <option value="dark" data-i18n="themeDark">Dark</option>
+          <option value="light" data-i18n="themeLight">Light</option>
         </select>
       </label>
     </header>
     <!-- Beat indicator -->
-    <section class="beats card" aria-label="Beat indicator">
+    <section class="beats card" aria-label="Beat indicator" data-i18n-aria-label="beatIndicator">
       <div class="section-heading">
         <div>
-          <p class="eyebrow">YOUR PULSE</p>
-          <h2>Beat indicator</h2>
+          <p class="eyebrow" data-i18n="yourPulse">YOUR PULSE</p>
+          <h2 data-i18n="beatIndicator">Beat indicator</h2>
         </div>
         <div class="meter-badge" id="meterLabel">4/4</div>
       </div>
-      <div class="beat-row" id="beatRow" role="img" aria-label="Beat indicator"></div>
-      <div class="phrase-label" id="phraseLabel" hidden>Bar 1 of 4</div>
+      <div class="beat-row" id="beatRow" role="img" aria-label="Beat indicator" data-i18n-aria-label="beatIndicator"></div>
+      <div class="phrase-label" id="phraseLabel" hidden></div>
     </section>
     <!-- BPM display + slider -->
-    <section class="tempo card" aria-label="Tempo">
+    <section class="tempo card" aria-label="Tempo" data-i18n-aria-label="tempo">
       <div class="section-heading">
         <div>
-          <p class="eyebrow">SET YOUR PACE</p>
-          <h2>Tempo</h2>
+          <p class="eyebrow" data-i18n="setYourPace">SET YOUR PACE</p>
+          <h2 data-i18n="tempo">Tempo</h2>
         </div>
         <span class="tempo-range">30–300 BPM</span>
       </div>
@@ -58,11 +108,11 @@
         <span class="bpm-unit">BPM</span>
       </div>
 
-      <div class="stepper-row" aria-label="Adjust tempo">
-        <button class="btn btn-step" id="minus5" aria-label="Decrease 5 BPM">−5</button>
-        <button class="btn btn-step" id="minus1" aria-label="Decrease 1 BPM">−1</button>
-        <button class="btn btn-step" id="plus1" aria-label="Increase 1 BPM">+1</button>
-        <button class="btn btn-step" id="plus5" aria-label="Increase 5 BPM">+5</button>
+      <div class="stepper-row" aria-label="Adjust tempo" data-i18n-aria-label="adjustTempo">
+        <button class="btn btn-step" id="minus5" aria-label="Decrease 5 BPM" data-i18n-aria-label="decrease5">−5</button>
+        <button class="btn btn-step" id="minus1" aria-label="Decrease 1 BPM" data-i18n-aria-label="decrease1">−1</button>
+        <button class="btn btn-step" id="plus1" aria-label="Increase 1 BPM" data-i18n-aria-label="increase1">+1</button>
+        <button class="btn btn-step" id="plus5" aria-label="Increase 5 BPM" data-i18n-aria-label="increase5">+5</button>
       </div>
 
       <input
@@ -74,78 +124,80 @@
         step="1"
         value="120"
         aria-label="Tempo slider"
+        data-i18n-aria-label="tempoSlider"
       />
       <div class="slider-scale" aria-hidden="true">
         <span>30</span><span>300</span>
       </div>
-      <p class="keyboard-hint">↑/↓ adjust · Shift + arrows: ±5 · Space: start/stop · T: tap</p>
+      <p class="keyboard-hint" data-i18n="keyboardHint">↑/↓ adjust · Shift + arrows: ±5 · Space: start/stop · T: tap</p>
     </section>
     <!-- Play / Stop -->
     <section class="transport">
       <button class="btn btn-play" id="playBtn" aria-pressed="false">
-        <svg class="play-icon" aria-hidden="true"><use href="./icons/lucide.svg#play"></use></svg>
-        <svg class="pause-icon" aria-hidden="true"><use href="./icons/lucide.svg#pause"></use></svg>
-        <span id="playLabel">Start</span>
+        <svg class="play-icon" aria-hidden="true"><use href="#play"></use></svg>
+        <svg class="pause-icon" aria-hidden="true"><use href="#pause"></use></svg>
+        <span id="playLabel" data-i18n="start">Start</span>
       </button>
       <div class="status-line" id="statusLine" role="status" aria-live="polite"></div>
     </section>
     <!-- Tap tempo -->
     <section class="tap-section">
-      <button class="btn btn-tap" id="tapBtn">
-        <svg class="icon" aria-hidden="true"><use href="./icons/lucide.svg#hand"></use></svg>
-        <span>Tap Tempo</span>
+      <button class="btn btn-tap" id="tapBtn" aria-label="Tap tempo" data-i18n-aria-label="tapTempo">
+        <svg class="icon" aria-hidden="true"><use href="#hand"></use></svg>
+        <span data-i18n="tapTempo">Tap Tempo</span>
       </button>
     </section>
     <!-- Mode selector -->
-    <nav class="mode-tabs" role="tablist" aria-label="Mode">
+    <nav class="mode-tabs" role="tablist" aria-label="Mode" data-i18n-aria-label="mode">
       <button class="tab active" id="metronomeTab" role="tab" aria-controls="metronomePanel" data-mode="metronome" aria-selected="true">
-        <svg class="icon" aria-hidden="true"><use href="./icons/lucide.svg#metronome"></use></svg>
-        <span>Metronome</span>
+        <svg class="icon" aria-hidden="true"><use href="#metronome"></use></svg>
+        <span data-i18n="metronome">Metronome</span>
       </button>
       <button class="tab" id="speedloopTab" role="tab" aria-controls="speedloopFields" data-mode="speedloop" aria-selected="false">
-        <svg class="icon" aria-hidden="true"><use href="./icons/lucide.svg#repeat"></use></svg>
-        <span>Speed Loop</span>
+        <svg class="icon" aria-hidden="true"><use href="#repeat"></use></svg>
+        <span data-i18n="speedLoop">Speed Loop</span>
       </button>
     </nav>
     <section class="mode-panel card" id="metronomePanel" role="tabpanel" aria-labelledby="metronomeTab">
-      <p class="eyebrow">FIXED TEMPO</p>
-      <h2>Metronome practice</h2>
-      <p>Set your tempo above and start a steady beat. Shared meter, sound, count-in, and timer options are below.</p>
+      <p class="eyebrow" data-i18n="fixedTempo">FIXED TEMPO</p>
+      <h2 data-i18n="metronomePractice">Metronome practice</h2>
+      <p data-i18n="metronomeDescription">Set your tempo above and start a steady beat. Shared meter, sound, count-in, and timer options are below.</p>
     </section>
     <section class="mode-panel card speedloop-only" id="speedloopFields" role="tabpanel" aria-labelledby="speedloopTab" hidden>
       <div>
-        <p class="eyebrow">PROGRESSIVE TEMPO</p>
-        <h2>Speed Loop setup</h2>
-        <p class="mode-description">Build speed in structured phrases. Tempo changes only at the start of each selected bar group.</p>
+        <p class="eyebrow" data-i18n="progressiveTempo">PROGRESSIVE TEMPO</p>
+        <h2 data-i18n="speedLoopSetup">Speed Loop setup</h2>
+        <p class="mode-description" data-i18n="speedLoopDescription">Build speed in structured phrases. Tempo changes only at the start of each selected bar group.</p>
       </div>
       <div class="setting-group speedloop-settings-group">
-        <h3><svg class="icon" aria-hidden="true"><use href="./icons/lucide.svg#activity"></use></svg>Ramp settings</h3>
+        <h3><svg class="icon" aria-hidden="true"><use href="#activity"></use></svg><span data-i18n="rampSettings">Ramp settings</span></h3>
         <div class="speedloop-inputs">
           <div class="field-row">
-            <label for="loopStart">Start BPM</label>
+            <label for="loopStart" data-i18n="startBpm">Start BPM</label>
             <input type="number" id="loopStart" min="30" max="300" step="1" value="60" inputmode="numeric" />
           </div>
           <div class="field-row">
-            <label for="loopTarget">Target BPM</label>
+            <label for="loopTarget" data-i18n="targetBpm">Target BPM</label>
             <input type="number" id="loopTarget" min="30" max="300" step="1" value="120" inputmode="numeric" />
           </div>
           <div class="field-row">
-            <label for="loopMinutes">Ramp duration (min)</label>
+            <label for="loopMinutes" data-i18n="rampDuration">Ramp duration (min)</label>
             <input type="number" id="loopMinutes" min="1" max="120" step="1" value="10" inputmode="numeric" />
           </div>
           <div class="field-row">
-            <label for="loopBars">Bars per tempo change</label>
+            <label for="loopBars" data-i18n="barsPerChange">Bars per tempo change</label>
             <input type="number" id="loopBars" min="1" max="32" step="1" value="4" inputmode="numeric" />
           </div>
         </div>
       </div>
-      <p class="loop-hint" id="loopHint">Ramp duration is approximate; tempo updates every 4 bars.</p>
+      <p class="loop-hint" id="loopHint"></p>
       <div class="loop-progress" id="loopProgress" hidden>
         <div
           class="progress-track"
           id="progressTrack"
           role="progressbar"
           aria-label="Speed Loop ramp progress"
+          data-i18n-aria-label="rampProgress"
           aria-valuemin="0"
           aria-valuemax="100"
           aria-valuenow="0"
@@ -153,20 +205,20 @@
         <div class="progress-text" id="progressText">0%</div>
       </div>
     </section>
-    <section class="panel card" id="settingsPanel" aria-label="Shared practice settings" tabindex="0">
+    <section class="panel card" id="settingsPanel" aria-label="Shared practice settings" data-i18n-aria-label="practiceSettings" tabindex="0">
       <div class="section-heading settings-heading">
         <div>
-          <p class="eyebrow">MAKE IT YOURS</p>
-          <h2>Practice settings</h2>
+          <p class="eyebrow" data-i18n="makeItYours">MAKE IT YOURS</p>
+          <h2 data-i18n="practiceSettings">Practice settings</h2>
         </div>
-        <p class="settings-hint" id="settingsHint" hidden>Stop playback to change settings.</p>
+        <p class="settings-hint" id="settingsHint" hidden data-i18n="stopToChange">Stop playback to change settings.</p>
       </div>
 
       <div class="setting-grid">
-        <section class="setting-group" aria-label="Meter and session">
-          <h3><svg class="icon" aria-hidden="true"><use href="./icons/lucide.svg#music-2"></use></svg>Meter &amp; session</h3>
+        <section class="setting-group" aria-label="Meter and session" data-i18n-aria-label="meterSession">
+          <h3><svg class="icon" aria-hidden="true"><use href="#music-2"></use></svg><span data-i18n="meterSession">Meter &amp; session</span></h3>
           <div class="field-row">
-            <label for="beatsPerBar">Beats per bar</label>
+            <label for="beatsPerBar" data-i18n="beatsPerBar">Beats per bar</label>
             <select id="beatsPerBar">
               <option value="2">2</option>
               <option value="3">3</option>
@@ -178,19 +230,19 @@
             </select>
           </div>
           <div class="field-row toggle-row">
-            <label for="timerEnabled"><svg class="icon" aria-hidden="true"><use href="./icons/lucide.svg#timer"></use></svg>Practice timer</label>
+            <label for="timerEnabled"><svg class="icon" aria-hidden="true"><use href="#timer"></use></svg><span data-i18n="practiceTimer">Practice timer</span></label>
             <input type="checkbox" id="timerEnabled" />
           </div>
           <div class="field-row" id="timerFields">
-            <label for="timerMinutes">Duration (minutes)</label>
+            <label for="timerMinutes" data-i18n="durationMinutes">Duration (minutes)</label>
             <input type="number" id="timerMinutes" min="1" max="180" step="1" value="5" inputmode="numeric" />
           </div>
           <div class="field-row toggle-row">
-            <label for="countdownEnabled">Count-in</label>
+            <label for="countdownEnabled" data-i18n="countIn">Count-in</label>
             <input type="checkbox" id="countdownEnabled" />
           </div>
           <div class="field-row" id="countdownFields">
-            <label for="countdownBeats">Count-in beats</label>
+            <label for="countdownBeats" data-i18n="countInBeats">Count-in beats</label>
             <select id="countdownBeats">
               <option value="4" selected>4</option>
               <option value="8">8</option>
@@ -198,42 +250,42 @@
           </div>
         </section>
 
-        <section class="setting-group" aria-label="Sound and display">
-          <h3><svg class="icon" aria-hidden="true"><use href="./icons/lucide.svg#volume-2"></use></svg>Sound &amp; display</h3>
+        <section class="setting-group" aria-label="Sound and display" data-i18n-aria-label="soundDisplay">
+          <h3><svg class="icon" aria-hidden="true"><use href="#volume-2"></use></svg><span data-i18n="soundDisplay">Sound &amp; display</span></h3>
           <div class="field-row">
-            <label for="clickTone">Click sound</label>
+            <label for="clickTone" data-i18n="clickSound">Click sound</label>
             <select id="clickTone">
-              <option value="soft">Soft</option>
-              <option value="classic" selected>Classic</option>
-              <option value="bright">Bright</option>
+              <option value="soft" data-i18n="toneSoft">Soft</option>
+              <option value="classic" selected data-i18n="toneClassic">Classic</option>
+              <option value="bright" data-i18n="toneBright">Bright</option>
             </select>
           </div>
           <div class="field-row">
-            <label for="subdivisions">Subdivision</label>
+            <label for="subdivisions" data-i18n="subdivision">Subdivision</label>
             <select id="subdivisions">
-              <option value="1">Quarter notes</option>
-              <option value="2">Eighth notes</option>
-              <option value="4">Sixteenth notes</option>
+              <option value="1" data-i18n="quarterNotes">Quarter notes</option>
+              <option value="2" data-i18n="eighthNotes">Eighth notes</option>
+              <option value="4" data-i18n="sixteenthNotes">Sixteenth notes</option>
             </select>
           </div>
           <div class="field-row">
-            <label for="accentPattern">Accent pattern</label>
+            <label for="accentPattern" data-i18n="accentPattern">Accent pattern</label>
             <select id="accentPattern">
-              <option value="downbeat">Downbeat</option>
-              <option value="backbeat">Backbeat (2 &amp; 4)</option>
-              <option value="every">Every beat</option>
-              <option value="none">No accents</option>
+              <option value="downbeat" data-i18n="downbeat">Downbeat</option>
+              <option value="backbeat" data-i18n="backbeat">Backbeat (2 &amp; 4)</option>
+              <option value="every" data-i18n="everyBeat">Every beat</option>
+              <option value="none" data-i18n="noAccents">No accents</option>
             </select>
           </div>
           <div class="field-row">
-            <label for="volume">Volume</label>
+            <label for="volume" data-i18n="volume">Volume</label>
             <div class="range-control">
-              <input type="range" id="volume" min="0" max="1" step="0.01" value="0.65" aria-label="Metronome volume" />
+              <input type="range" id="volume" min="0" max="1" step="0.01" value="0.65" aria-label="Metronome volume" data-i18n-aria-label="metronomeVolume" />
               <output id="volumeValue" for="volume">65%</output>
             </div>
           </div>
           <div class="field-row toggle-row">
-            <label for="wakeLockEnabled">Keep screen awake</label>
+            <label for="wakeLockEnabled" data-i18n="keepScreenAwake">Keep screen awake</label>
             <input type="checkbox" id="wakeLockEnabled" />
           </div>
           <p class="wake-lock-status" id="wakeLockStatus" aria-live="polite"></p>
@@ -241,13 +293,13 @@
       </div>
 
       <details class="history-panel">
-        <summary><svg class="icon" aria-hidden="true"><use href="./icons/lucide.svg#history"></use></svg>Recent practice</summary>
+        <summary><svg class="icon" aria-hidden="true"><use href="#history"></use></svg><span data-i18n="recentPractice">Recent practice</span></summary>
         <div class="history-content">
-          <p class="history-empty" id="historyEmpty">Completed sessions will appear here on this device.</p>
+          <p class="history-empty" id="historyEmpty" data-i18n="historyEmpty">Completed sessions will appear here on this device.</p>
           <ol class="history-list" id="historyList"></ol>
           <button class="history-clear" id="historyClear" type="button" hidden>
-            <svg class="icon" aria-hidden="true"><use href="./icons/lucide.svg#trash-2"></use></svg>
-            Clear history
+            <svg class="icon" aria-hidden="true"><use href="#trash-2"></use></svg>
+            <span data-i18n="clearHistory">Clear history</span>
           </button>
         </div>
       </details>
