@@ -4,7 +4,7 @@
 
 > **Use it online, save it for later, or install it.** Open the live app link above, then bookmark/favorite the page in your browser. To install it as an app, use your browser’s **Install app** option (desktop/Android) or **Add to Home Screen** option (iPhone/iPad). Installation options vary by browser. After the first successful online visit, the app can also work offline.
 
-A lightweight, responsive, multilingual metronome for focused practice. Features include a standard metronome, configurable Speed Loop, tap tempo, count-in, practice timer, note subdivisions, accent patterns, click sounds, volume control, recent-session history, wake lock, and system/light/dark themes. The interface is available in English (US), Brazilian Portuguese, Spanish, Italian, French, German, Japanese, Simplified Chinese, and Korean. English (US) is the default; the selected language and other preferences are saved locally on the device. Playback pauses safely when the app is hidden and can be restarted with a tap. All app assets are bundled locally, and the app works offline after its first successful load.
+A lightweight, responsive, multilingual metronome for focused practice. Features include a standard metronome, configurable Speed Loop, tap tempo, count-in, practice timer, note subdivisions, accent patterns, click sounds, volume control, recent-session history, wake lock, and system/light/dark themes. Distinct icons help identify the practice settings, with layouts tuned for translated labels and small screens. The interface is available in English (US), Brazilian Portuguese, Spanish, Italian, French, German, Japanese, Simplified Chinese, and Korean. English (US) is the default; the selected language and other preferences are saved locally on the device. Playback pauses safely when the app is hidden and can be restarted with a tap. All app assets are bundled locally, and the app works offline after its first successful load.
 
 Developed by **Fernando Ticon using IA**.
 
@@ -45,7 +45,7 @@ The build combines:
 - JavaScript modules: `storage.js`, `audio.js`, `timing.js`, `i18n.js`, `app.js`, and `pwa.js`
 - `locales/` — one translation catalog per supported language
 
-into the static `index.html`, `style.css`, and `bundle.js` files. The build embeds the Lucide sprite from `icons/lucide.svg` into the HTML. There are no runtime package or network dependencies. When changing source files, rebuild and commit both the source and generated files so the published site stays current.
+into the static `index.html`, `style.css`, and `bundle.js` files. The build embeds the curated Lucide sprite from `icons/lucide.svg` into the HTML; only icons used by the interface are included. There are no runtime package or network dependencies. When changing source files, rebuild and commit both the source and generated files so the published site stays current.
 
 To add or edit a translation, update the matching file in `locales/` and keep its message keys and `{placeholders}` consistent with `locales/en-US.js`. Run the build and tests before publishing.
 

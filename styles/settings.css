@@ -44,7 +44,7 @@
 .setting-group h3 {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   margin-bottom: 12px;
   color: var(--text-dim);
   font-size: 0.78rem;
@@ -52,6 +52,11 @@
   letter-spacing: 0.07em;
   line-height: 1.45;
   text-transform: uppercase;
+}
+
+.setting-group h3 .icon {
+  width: 16px;
+  height: 16px;
 }
 
 .field-row {
@@ -78,11 +83,15 @@
   overflow-wrap: anywhere;
 }
 
-.field-row label .icon {
+.field-row .icon-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.field-row .icon-label .icon {
   width: 15px;
   height: 15px;
-  margin-right: 5px;
-  vertical-align: -0.18em;
 }
 
 .field-row select,

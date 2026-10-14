@@ -770,12 +770,13 @@ h3 {
 }
 
 .btn-tap {
-  display: flex;
+  display: grid;
   width: 100%;
   min-height: 54px;
   align-items: center;
-  justify-content: center;
-  gap: 9px;
+  grid-template-columns: 19px minmax(0, 1fr) 19px;
+  gap: 8px;
+  padding-inline: 10px;
   border: 1px solid var(--border);
   border-radius: 16px;
   background: var(--surface);
@@ -790,6 +791,17 @@ h3 {
   width: 19px;
   height: 19px;
   color: var(--accent-strong);
+}
+
+.btn-tap span {
+  min-width: 0;
+  text-align: center;
+}
+
+.btn-tap::after {
+  width: 19px;
+  height: 1px;
+  content: "";
 }
 
 .btn-tap:active,
@@ -894,7 +906,7 @@ h3 {
 .setting-group h3 {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   margin-bottom: 12px;
   color: var(--text-dim);
   font-size: 0.78rem;
@@ -902,6 +914,11 @@ h3 {
   letter-spacing: 0.07em;
   line-height: 1.45;
   text-transform: uppercase;
+}
+
+.setting-group h3 .icon {
+  width: 16px;
+  height: 16px;
 }
 
 .field-row {
@@ -928,11 +945,15 @@ h3 {
   overflow-wrap: anywhere;
 }
 
-.field-row label .icon {
+.field-row .icon-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.field-row .icon-label .icon {
   width: 15px;
   height: 15px;
-  margin-right: 5px;
-  vertical-align: -0.18em;
 }
 
 .field-row select,

@@ -11,7 +11,7 @@
         <section class="setting-group" aria-label="Meter and session" data-i18n-aria-label="meterSession">
           <h3><svg class="icon" aria-hidden="true"><use href="./icons/lucide.svg#music-2"></use></svg><span data-i18n="meterSession">Meter &amp; session</span></h3>
           <div class="field-row">
-            <label for="beatsPerBar" data-i18n="beatsPerBar">Beats per bar</label>
+            <label class="icon-label" for="beatsPerBar"><svg class="icon" aria-hidden="true"><use href="./icons/lucide.svg#list-music"></use></svg><span data-i18n="beatsPerBar">Beats per bar</span></label>
             <select id="beatsPerBar">
               <option value="2">2</option>
               <option value="3">3</option>
@@ -23,19 +23,19 @@
             </select>
           </div>
           <div class="field-row toggle-row">
-            <label for="timerEnabled"><svg class="icon" aria-hidden="true"><use href="./icons/lucide.svg#timer"></use></svg><span data-i18n="practiceTimer">Practice timer</span></label>
+            <label class="icon-label" for="timerEnabled"><svg class="icon" aria-hidden="true"><use href="./icons/lucide.svg#timer"></use></svg><span data-i18n="practiceTimer">Practice timer</span></label>
             <input type="checkbox" id="timerEnabled" />
           </div>
           <div class="field-row" id="timerFields">
-            <label for="timerMinutes" data-i18n="durationMinutes">Duration (minutes)</label>
+            <label class="icon-label" for="timerMinutes"><svg class="icon" aria-hidden="true"><use href="./icons/lucide.svg#hourglass"></use></svg><span data-i18n="durationMinutes">Duration (minutes)</span></label>
             <input type="number" id="timerMinutes" min="1" max="180" step="1" value="5" inputmode="numeric" />
           </div>
           <div class="field-row toggle-row">
-            <label for="countdownEnabled" data-i18n="countIn">Count-in</label>
+            <label class="icon-label" for="countdownEnabled"><svg class="icon" aria-hidden="true"><use href="./icons/lucide.svg#play"></use></svg><span data-i18n="countIn">Count-in</span></label>
             <input type="checkbox" id="countdownEnabled" />
           </div>
           <div class="field-row" id="countdownFields">
-            <label for="countdownBeats" data-i18n="countInBeats">Count-in beats</label>
+            <label class="icon-label" for="countdownBeats"><svg class="icon" aria-hidden="true"><use href="./icons/lucide.svg#list-ordered"></use></svg><span data-i18n="countInBeats">Count-in beats</span></label>
             <select id="countdownBeats">
               <option value="4" selected>4</option>
               <option value="8">8</option>
@@ -46,7 +46,7 @@
         <section class="setting-group" aria-label="Sound and display" data-i18n-aria-label="soundDisplay">
           <h3><svg class="icon" aria-hidden="true"><use href="./icons/lucide.svg#volume-2"></use></svg><span data-i18n="soundDisplay">Sound &amp; display</span></h3>
           <div class="field-row">
-            <label for="clickTone" data-i18n="clickSound">Click sound</label>
+            <label class="icon-label" for="clickTone"><svg class="icon" aria-hidden="true"><use href="./icons/lucide.svg#audio-waveform"></use></svg><span data-i18n="clickSound">Click sound</span></label>
             <select id="clickTone">
               <option value="soft" data-i18n="toneSoft">Soft</option>
               <option value="classic" selected data-i18n="toneClassic">Classic</option>
@@ -54,7 +54,7 @@
             </select>
           </div>
           <div class="field-row">
-            <label for="subdivisions" data-i18n="subdivision">Subdivision</label>
+            <label class="icon-label" for="subdivisions"><svg class="icon" aria-hidden="true"><use href="./icons/lucide.svg#audio-lines"></use></svg><span data-i18n="subdivision">Subdivision</span></label>
             <select id="subdivisions">
               <option value="1" data-i18n="quarterNotes">Quarter notes</option>
               <option value="2" data-i18n="eighthNotes">Eighth notes</option>
@@ -62,7 +62,7 @@
             </select>
           </div>
           <div class="field-row">
-            <label for="accentPattern" data-i18n="accentPattern">Accent pattern</label>
+            <label class="icon-label" for="accentPattern"><svg class="icon" aria-hidden="true"><use href="./icons/lucide.svg#list-checks"></use></svg><span data-i18n="accentPattern">Accent pattern</span></label>
             <select id="accentPattern">
               <option value="downbeat" data-i18n="downbeat">Downbeat</option>
               <option value="backbeat" data-i18n="backbeat">Backbeat (2 &amp; 4)</option>
@@ -71,14 +71,14 @@
             </select>
           </div>
           <div class="field-row">
-            <label for="volume" data-i18n="volume">Volume</label>
+            <label class="icon-label" for="volume"><svg class="icon" aria-hidden="true"><use href="./icons/lucide.svg#volume"></use></svg><span data-i18n="volume">Volume</span></label>
             <div class="range-control">
               <input type="range" id="volume" min="0" max="1" step="0.01" value="0.65" aria-label="Metronome volume" data-i18n-aria-label="metronomeVolume" />
               <output id="volumeValue" for="volume">65%</output>
             </div>
           </div>
           <div class="field-row toggle-row">
-            <label for="wakeLockEnabled" data-i18n="keepScreenAwake">Keep screen awake</label>
+            <label class="icon-label" for="wakeLockEnabled"><svg class="icon" aria-hidden="true"><use href="./icons/lucide.svg#monitor"></use></svg><span data-i18n="keepScreenAwake">Keep screen awake</span></label>
             <input type="checkbox" id="wakeLockEnabled" />
           </div>
           <p class="wake-lock-status" id="wakeLockStatus" aria-live="polite"></p>

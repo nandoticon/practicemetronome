@@ -201,12 +201,13 @@
 }
 
 .btn-tap {
-  display: flex;
+  display: grid;
   width: 100%;
   min-height: 54px;
   align-items: center;
-  justify-content: center;
-  gap: 9px;
+  grid-template-columns: 19px minmax(0, 1fr) 19px;
+  gap: 8px;
+  padding-inline: 10px;
   border: 1px solid var(--border);
   border-radius: 16px;
   background: var(--surface);
@@ -221,6 +222,17 @@
   width: 19px;
   height: 19px;
   color: var(--accent-strong);
+}
+
+.btn-tap span {
+  min-width: 0;
+  text-align: center;
+}
+
+.btn-tap::after {
+  width: 19px;
+  height: 1px;
+  content: "";
 }
 
 .btn-tap:active,
