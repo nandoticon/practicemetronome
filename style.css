@@ -73,6 +73,7 @@ body {
   color: var(--text);
   font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   -webkit-font-smoothing: antialiased;
+  -webkit-text-size-adjust: 100%;
   overscroll-behavior: none;
 }
 
@@ -205,14 +206,18 @@ a:focus-visible,
 }
 
 .theme-control select {
-  min-height: 42px;
-  max-width: 110px;
-  padding: 0 9px;
+  min-height: 48px;
+  max-width: 120px;
+  padding: 0 26px 0 9px;
   border: 1px solid var(--border);
   border-radius: 12px;
   background: var(--surface);
   color: var(--text);
-  font-size: 0.82rem;
+  font-size: 16px;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23a0a5b0' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-position: right 8px center;
+  background-repeat: no-repeat;
 }
 
 .theme-control .icon {
@@ -257,8 +262,8 @@ a:focus-visible,
   }
 
   .theme-control select {
-    max-width: 82px;
-    padding: 0 6px;
+    max-width: 88px;
+    padding: 0 23px 0 6px;
   }
 }
 
@@ -528,17 +533,31 @@ a:focus-visible,
 .slider {
   appearance: none;
   width: 100%;
-  height: 10px;
-  margin: 8px 0 2px;
+  height: 44px;
+  margin: 0;
+  border-radius: 999px;
+  background: transparent;
+  outline: none;
+  touch-action: pan-x;
+}
+
+.slider::-webkit-slider-runnable-track {
+  height: 8px;
   border-radius: 999px;
   background: linear-gradient(to right, var(--accent) var(--fill, 30%), var(--border) var(--fill, 30%));
-  outline: none;
+}
+
+.slider::-moz-range-track {
+  height: 8px;
+  border-radius: 999px;
+  background: linear-gradient(to right, var(--accent) var(--fill, 30%), var(--border) var(--fill, 30%));
 }
 
 .slider::-webkit-slider-thumb {
   appearance: none;
   width: 30px;
   height: 30px;
+  margin-top: -11px;
   border: 4px solid var(--accent);
   border-radius: 50%;
   background: var(--surface);
@@ -574,6 +593,12 @@ a:focus-visible,
   font-size: 0.72rem;
   line-height: 1.45;
   text-align: center;
+}
+
+@media (hover: none) and (pointer: coarse) {
+  .keyboard-hint {
+    display: none;
+  }
 }
 
 .transport {
@@ -807,19 +832,29 @@ a:focus-visible,
   width: min(48%, 160px);
   min-width: 90px;
   flex: 0 1 160px;
-  min-height: 42px;
+  min-height: 48px;
   padding: 7px 10px;
   border: 1px solid var(--border);
   border-radius: 10px;
   background: var(--surface);
   text-align: center;
+  font-size: 16px;
   font-variant-numeric: tabular-nums;
   appearance: none;
 }
 
+.field-row select {
+  padding-right: 28px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23a0a5b0' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-position: right 9px center;
+  background-repeat: no-repeat;
+}
+
 .field-row input[type="range"] {
   width: min(100%, 200px);
+  min-height: 44px;
   accent-color: var(--accent);
+  touch-action: pan-x;
 }
 
 .range-control {
@@ -851,8 +886,8 @@ a:focus-visible,
 
 .field-row input[type="checkbox"] {
   position: relative;
-  width: 48px;
-  height: 28px;
+  width: 52px;
+  height: 32px;
   flex: 0 0 auto;
   border: 0;
   border-radius: 999px;
@@ -866,8 +901,8 @@ a:focus-visible,
   position: absolute;
   top: 3px;
   left: 3px;
-  width: 22px;
-  height: 22px;
+  width: 26px;
+  height: 26px;
   border-radius: 50%;
   background: var(--surface);
   content: "";
@@ -905,6 +940,7 @@ a:focus-visible,
 
 .history-panel summary {
   display: flex;
+  min-height: 48px;
   align-items: center;
   gap: 8px;
   cursor: pointer;
