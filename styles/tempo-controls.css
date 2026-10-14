@@ -13,15 +13,18 @@
 
 .bpm-display {
   display: flex;
+  width: 100%;
+  min-width: 0;
   min-height: clamp(104px, 22vw, 168px);
   align-items: baseline;
   justify-content: center;
-  gap: 10px;
+  gap: clamp(4px, 1.5vw, 10px);
   padding: 8px 0 2px;
 }
 
 .bpm-value {
-  font-size: clamp(5rem, 18vw, 8.5rem);
+  min-width: 0;
+  font-size: clamp(3.25rem, 13vw, 8rem);
   font-weight: 800;
   line-height: 0.95;
   font-variant-numeric: tabular-nums;
@@ -29,6 +32,7 @@
 }
 
 .bpm-unit {
+  flex: 0 0 auto;
   color: var(--text-dim);
   font-size: 0.9rem;
   font-weight: 700;
@@ -39,6 +43,12 @@
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 8px;
+}
+
+.tempo,
+.bpm-display,
+.stepper-row {
+  min-width: 0;
 }
 
 .btn-step {
@@ -210,7 +220,11 @@
 }
 
 .tab {
+  display: flex;
   min-height: 46px;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
   border: 0;
   border-radius: 12px;
   background: transparent;

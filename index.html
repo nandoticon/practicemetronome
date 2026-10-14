@@ -15,26 +15,22 @@
     <header class="app-header">
       <a class="brand" href="./" aria-label="Practice Metronome home">
         <span class="brand-mark" aria-hidden="true">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="12" r="9"></circle>
-            <path d="M12 7v5l3 2"></path>
-          </svg>
+          <svg class="icon" aria-hidden="true"><use href="./icons/lucide.svg#metronome"></use></svg>
         </span>
         <span class="brand-copy">
           <strong>Practice Metronome</strong>
           <span>Find your rhythm. Build your pace.</span>
         </span>
       </a>
-      <button class="theme-toggle" id="themeToggle" type="button" aria-label="Switch to light theme" title="Switch theme">
-        <svg class="theme-icon theme-icon-light" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <circle cx="12" cy="12" r="4"></circle>
-          <path d="M12 2v2m0 16v2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M2 12h2m16 0h2M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42"></path>
-        </svg>
-        <svg class="theme-icon theme-icon-dark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <path d="M20.9 13A9 9 0 0 1 11 3.1 9 9 0 1 0 20.9 13Z"></path>
-        </svg>
-        <span id="themeLabel">Light mode</span>
-      </button>
+      <label class="theme-control" for="themeSelect">
+        <svg class="icon" aria-hidden="true"><use href="./icons/lucide.svg#monitor"></use></svg>
+        <span>Theme</span>
+        <select id="themeSelect" aria-label="Color theme">
+          <option value="system">System</option>
+          <option value="dark">Dark</option>
+          <option value="light">Light</option>
+        </select>
+      </label>
     </header>
     <!-- Beat indicator -->
     <section class="beats card" aria-label="Beat indicator">
@@ -87,12 +83,8 @@
     <!-- Play / Stop -->
     <section class="transport">
       <button class="btn btn-play" id="playBtn" aria-pressed="false">
-        <svg class="play-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <path d="m7 4 13 8-13 8V4Z"></path>
-        </svg>
-        <svg class="pause-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true">
-          <path d="M8 5v14M16 5v14"></path>
-        </svg>
+        <svg class="play-icon" aria-hidden="true"><use href="./icons/lucide.svg#play"></use></svg>
+        <svg class="pause-icon" aria-hidden="true"><use href="./icons/lucide.svg#pause"></use></svg>
         <span id="playLabel">Start</span>
       </button>
       <div class="status-line" id="statusLine" role="status" aria-live="polite"></div>
@@ -100,19 +92,68 @@
     <!-- Tap tempo -->
     <section class="tap-section">
       <button class="btn btn-tap" id="tapBtn">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <path d="M8 12V6a2 2 0 0 1 4 0v5-6a2 2 0 0 1 4 0v7-4a2 2 0 0 1 4 0v7a7 7 0 0 1-7 7h-1a7 7 0 0 1-6.3-4L3 13a2 2 0 0 1 3-2l2 2"></path>
-        </svg>
+        <svg class="icon" aria-hidden="true"><use href="./icons/lucide.svg#hand"></use></svg>
         <span>Tap Tempo</span>
       </button>
     </section>
     <!-- Mode selector -->
     <nav class="mode-tabs" role="tablist" aria-label="Mode">
-      <button class="tab active" id="metronomeTab" role="tab" aria-controls="settingsPanel" data-mode="metronome" aria-selected="true">Metronome</button>
-      <button class="tab" id="speedloopTab" role="tab" aria-controls="settingsPanel" data-mode="speedloop" aria-selected="false">Speed Loop</button>
+      <button class="tab active" id="metronomeTab" role="tab" aria-controls="metronomePanel" data-mode="metronome" aria-selected="true">
+        <svg class="icon" aria-hidden="true"><use href="./icons/lucide.svg#metronome"></use></svg>
+        <span>Metronome</span>
+      </button>
+      <button class="tab" id="speedloopTab" role="tab" aria-controls="speedloopFields" data-mode="speedloop" aria-selected="false">
+        <svg class="icon" aria-hidden="true"><use href="./icons/lucide.svg#repeat"></use></svg>
+        <span>Speed Loop</span>
+      </button>
     </nav>
-
-    <section class="panel card" id="settingsPanel" role="tabpanel" aria-labelledby="metronomeTab" tabindex="0">
+    <section class="mode-panel card" id="metronomePanel" role="tabpanel" aria-labelledby="metronomeTab">
+      <p class="eyebrow">FIXED TEMPO</p>
+      <h2>Metronome practice</h2>
+      <p>Set your tempo above and start a steady beat. Shared meter, sound, count-in, and timer options are below.</p>
+    </section>
+    <section class="mode-panel card speedloop-only" id="speedloopFields" role="tabpanel" aria-labelledby="speedloopTab" hidden>
+      <div>
+        <p class="eyebrow">PROGRESSIVE TEMPO</p>
+        <h2>Speed Loop setup</h2>
+        <p class="mode-description">Build speed in structured phrases. Tempo changes only at the start of each selected bar group.</p>
+      </div>
+      <div class="setting-group speedloop-settings-group">
+        <h3><svg class="icon" aria-hidden="true"><use href="./icons/lucide.svg#activity"></use></svg>Ramp settings</h3>
+        <div class="speedloop-inputs">
+          <div class="field-row">
+            <label for="loopStart">Start BPM</label>
+            <input type="number" id="loopStart" min="30" max="300" step="1" value="60" inputmode="numeric" />
+          </div>
+          <div class="field-row">
+            <label for="loopTarget">Target BPM</label>
+            <input type="number" id="loopTarget" min="30" max="300" step="1" value="120" inputmode="numeric" />
+          </div>
+          <div class="field-row">
+            <label for="loopMinutes">Ramp duration (min)</label>
+            <input type="number" id="loopMinutes" min="1" max="120" step="1" value="10" inputmode="numeric" />
+          </div>
+          <div class="field-row">
+            <label for="loopBars">Bars per tempo change</label>
+            <input type="number" id="loopBars" min="1" max="32" step="1" value="4" inputmode="numeric" />
+          </div>
+        </div>
+      </div>
+      <p class="loop-hint" id="loopHint">Ramp duration is approximate; tempo updates every 4 bars.</p>
+      <div class="loop-progress" id="loopProgress" hidden>
+        <div
+          class="progress-track"
+          id="progressTrack"
+          role="progressbar"
+          aria-label="Speed Loop ramp progress"
+          aria-valuemin="0"
+          aria-valuemax="100"
+          aria-valuenow="0"
+        ><div class="progress-fill" id="progressFill"></div></div>
+        <div class="progress-text" id="progressText">0%</div>
+      </div>
+    </section>
+    <section class="panel card" id="settingsPanel" aria-label="Shared practice settings" tabindex="0">
       <div class="section-heading settings-heading">
         <div>
           <p class="eyebrow">MAKE IT YOURS</p>
@@ -123,7 +164,7 @@
 
       <div class="setting-grid">
         <section class="setting-group" aria-label="Meter and session">
-          <h3>Meter &amp; session</h3>
+          <h3><svg class="icon" aria-hidden="true"><use href="./icons/lucide.svg#music-2"></use></svg>Meter &amp; session</h3>
           <div class="field-row">
             <label for="beatsPerBar">Beats per bar</label>
             <select id="beatsPerBar">
@@ -137,7 +178,7 @@
             </select>
           </div>
           <div class="field-row toggle-row">
-            <label for="timerEnabled">Practice timer</label>
+            <label for="timerEnabled"><svg class="icon" aria-hidden="true"><use href="./icons/lucide.svg#timer"></use></svg>Practice timer</label>
             <input type="checkbox" id="timerEnabled" />
           </div>
           <div class="field-row" id="timerFields">
@@ -158,13 +199,30 @@
         </section>
 
         <section class="setting-group" aria-label="Sound and display">
-          <h3>Sound &amp; display</h3>
+          <h3><svg class="icon" aria-hidden="true"><use href="./icons/lucide.svg#volume-2"></use></svg>Sound &amp; display</h3>
           <div class="field-row">
             <label for="clickTone">Click sound</label>
             <select id="clickTone">
               <option value="soft">Soft</option>
               <option value="classic" selected>Classic</option>
               <option value="bright">Bright</option>
+            </select>
+          </div>
+          <div class="field-row">
+            <label for="subdivisions">Subdivision</label>
+            <select id="subdivisions">
+              <option value="1">Quarter notes</option>
+              <option value="2">Eighth notes</option>
+              <option value="4">Sixteenth notes</option>
+            </select>
+          </div>
+          <div class="field-row">
+            <label for="accentPattern">Accent pattern</label>
+            <select id="accentPattern">
+              <option value="downbeat">Downbeat</option>
+              <option value="backbeat">Backbeat (2 &amp; 4)</option>
+              <option value="every">Every beat</option>
+              <option value="none">No accents</option>
             </select>
           </div>
           <div class="field-row">
@@ -182,40 +240,18 @@
         </section>
       </div>
 
-      <div class="speedloop-only setting-group speedloop-settings" id="speedloopFields" hidden>
-        <h3>Speed Loop</h3>
-        <div class="speedloop-inputs">
-          <div class="field-row">
-            <label for="loopStart">Start BPM</label>
-            <input type="number" id="loopStart" min="30" max="300" step="1" value="60" inputmode="numeric" />
-          </div>
-          <div class="field-row">
-            <label for="loopTarget">Target BPM</label>
-            <input type="number" id="loopTarget" min="30" max="300" step="1" value="120" inputmode="numeric" />
-          </div>
-          <div class="field-row">
-            <label for="loopMinutes">Ramp duration (min)</label>
-            <input type="number" id="loopMinutes" min="1" max="120" step="1" value="10" inputmode="numeric" />
-          </div>
-          <div class="field-row">
-            <label for="loopBars">Bars per tempo change</label>
-            <input type="number" id="loopBars" min="1" max="32" step="1" value="4" inputmode="numeric" />
-          </div>
+      <details class="history-panel">
+        <summary><svg class="icon" aria-hidden="true"><use href="./icons/lucide.svg#history"></use></svg>Recent practice</summary>
+        <div class="history-content">
+          <p class="history-empty" id="historyEmpty">Completed sessions will appear here on this device.</p>
+          <ol class="history-list" id="historyList"></ol>
+          <button class="history-clear" id="historyClear" type="button" hidden>
+            <svg class="icon" aria-hidden="true"><use href="./icons/lucide.svg#trash-2"></use></svg>
+            Clear history
+          </button>
         </div>
-        <p class="loop-hint" id="loopHint">Ramp duration is approximate; tempo updates every 4 bars.</p>
-        <div class="loop-progress" id="loopProgress" hidden>
-          <div
-            class="progress-track"
-            id="progressTrack"
-            role="progressbar"
-            aria-label="Speed Loop ramp progress"
-            aria-valuemin="0"
-            aria-valuemax="100"
-            aria-valuenow="0"
-          ><div class="progress-fill" id="progressFill"></div></div>
-          <div class="progress-text" id="progressText">0%</div>
-        </div>
-      </div>
+      </details>
+
     </section>
     <!-- Timer / countdown readout -->
     <div class="readout" id="readout" aria-live="polite"></div>

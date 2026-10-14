@@ -2,6 +2,7 @@
   "use strict";
 
   const KEY = "metronome.settings.v1";
+  const HISTORY_KEY = "metronome.sessions.v1";
   const WAIT_MS = 250;
   const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
   const defaults = Object.freeze({
@@ -20,8 +21,11 @@
     clickTone: "classic",
     wakeLockEnabled: false,
     theme: "dark",
+    subdivisions: 1,
+    accentPattern: "downbeat",
   });
   const validTones = new Set(["soft", "classic", "bright"]);
+  const validAccents = new Set(["downbeat", "backbeat", "every", "none"]);
   let saveTimer = 0;
 
   const load = () => {
@@ -50,7 +54,9 @@
         volume: number("volume", 0, 1),
         clickTone: validTones.has(parsed.clickTone) ? parsed.clickTone : defaults.clickTone,
         wakeLockEnabled: typeof parsed.wakeLockEnabled === "boolean" ? parsed.wakeLockEnabled : defaults.wakeLockEnabled,
-        theme: ["dark", "light"].includes(parsed.theme) ? parsed.theme : defaults.theme,
+        theme: ["system", "dark", "light"].includes(parsed.theme) ? parsed.theme : defaults.theme,
+        subdivisions: [1, 2, 4].includes(Number(parsed.subdivisions)) ? Number(parsed.subdivisions) : defaults.subdivisions,
+        accentPattern: validAccents.has(parsed.accentPattern) ? parsed.accentPattern : defaults.accentPattern,
       };
     } catch {
       return { ...defaults };
@@ -68,14 +74,52 @@
     }, WAIT_MS);
   };
 
-  window.MetronomeStorage = Object.freeze({ load, save });
+  const loadSessions = () => {
+    try {
+      const sessions = JSON.parse(localStorage.getItem(HISTORY_KEY) || "[]");
+      if (!Array.isArray(sessions)) return [];
+      return sessions.filter((session) =>
+        session &&
+        Number.isFinite(session.startedAt) &&
+        Number.isFinite(session.durationSec) &&
+        Number.isFinite(session.startBpm) &&
+        Number.isFinite(session.endBpm) &&
+        typeof session.mode === "string"
+      ).slice(0, 10);
+    } catch {
+      return [];
+    }
+  };
+
+  const saveSession = (session) => {
+    try {
+      const sessions = [session, ...loadSessions()].slice(0, 10);
+      localStorage.setItem(HISTORY_KEY, JSON.stringify(sessions));
+      return sessions;
+    } catch {
+      return loadSessions();
+    }
+  };
+
+  const clearSessions = () => {
+    try {
+      localStorage.removeItem(HISTORY_KEY);
+    } catch {
+      return false;
+    }
+    return true;
+  };
+
+  const api = { load, save, loadSessions, saveSession, clearSessions };
+  if (typeof module !== "undefined" && module.exports) module.exports = api;
+  if (typeof window !== "undefined") window.MetronomeStorage = Object.freeze(api);
 })();
 
 ;
 (() => {
   "use strict";
 
-  window.createMetronomeAudio = ({ CONFIG, clamp }) => {
+  const createMetronomeAudio = ({ CONFIG, clamp }) => {
     const tones = Object.freeze({
       soft: { type: "sine", down: 950, up: 650 },
       classic: { type: "sine", down: CONFIG.CLICK_FREQ_DOWN, up: CONFIG.CLICK_FREQ_UP },
@@ -121,14 +165,14 @@
         return this.ctx ? this.ctx.currentTime : 0;
       }
 
-      scheduleClick(time, accent) {
+      scheduleClick(time, accent, isSubdivision = false) {
         const ctx = this.ctx;
         const osc = ctx.createOscillator();
         const gain = ctx.createGain();
         osc.type = this.clickTone.type;
         osc.frequency.setValueAtTime(accent ? this.clickTone.down : this.clickTone.up, time);
 
-        const peak = accent ? CONFIG.CLICK_PEAK : CONFIG.CLICK_PEAK_UP;
+        const peak = isSubdivision ? CONFIG.CLICK_PEAK_SUB : accent ? CONFIG.CLICK_PEAK : CONFIG.CLICK_PEAK_UP;
         gain.gain.setValueAtTime(0.0001, time);
         gain.gain.exponentialRampToValueAtTime(peak, time + 0.002);
         gain.gain.exponentialRampToValueAtTime(0.0001, time + CONFIG.CLICK_DURATION);
@@ -172,6 +216,8 @@
         this.beatIndex = 0;
         this.timerId = null;
         this.running = false;
+        this.subdivisions = 1;
+        this.accentPattern = "downbeat";
       }
 
       get secondsPerBeat() {
@@ -185,6 +231,21 @@
       setBeatsPerBar(n) {
         this.beatsPerBar = n;
         if (this.beatIndex >= n) this.beatIndex = 0;
+      }
+
+      setSubdivisions(count) {
+        this.subdivisions = count;
+      }
+
+      setAccentPattern(pattern) {
+        this.accentPattern = pattern;
+      }
+
+      isAccented(beatIndex) {
+        if (this.accentPattern === "every") return true;
+        if (this.accentPattern === "backbeat") return beatIndex % 2 === 1;
+        if (this.accentPattern === "none") return false;
+        return beatIndex === 0;
       }
 
       start(startTime) {
@@ -208,8 +269,11 @@
         if (!this.running) return;
         const horizon = this.engine.now + CONFIG.SCHEDULE_AHEAD;
         while (this.nextNoteTime < horizon) {
-          const accent = this.beatIndex === 0;
-          this.engine.scheduleClick(this.nextNoteTime, accent);
+          const accent = this.isAccented(this.beatIndex);
+          for (let subdivision = 0; subdivision < this.subdivisions; subdivision++) {
+            const time = this.nextNoteTime + subdivision * this.secondsPerBeat / this.subdivisions;
+            this.engine.scheduleClick(time, subdivision === 0 && accent, subdivision > 0);
+          }
           this.onBeat(this.beatIndex, this.nextNoteTime, this.beatsPerBar);
           this.nextNoteTime += this.secondsPerBeat;
           this.beatIndex = (this.beatIndex + 1) % this.beatsPerBar;
@@ -219,6 +283,76 @@
 
     return { AudioEngine, Scheduler };
   };
+  if (typeof window !== "undefined") window.createMetronomeAudio = createMetronomeAudio;
+  if (typeof module !== "undefined" && module.exports) module.exports = createMetronomeAudio;
+})();
+
+;
+(() => {
+  "use strict";
+
+  const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
+
+  class SpeedRamp {
+    constructor() {
+      this.start = 120;
+      this.target = 120;
+      this.durationSec = 600;
+      this.startedAt = 0;
+    }
+
+    configure({ start, target, minutes }) {
+      this.start = clamp(start, 30, 300);
+      this.target = clamp(target, 30, 300);
+      this.durationSec = Math.max(1, minutes) * 60;
+    }
+
+    begin(atTime) {
+      this.startedAt = atTime;
+    }
+
+    sample(atTime) {
+      const elapsed = Math.max(0, atTime - this.startedAt);
+      const progress = clamp(elapsed / this.durationSec, 0, 1);
+      const bpm = this.start + (this.target - this.start) * progress;
+      return { bpm: Math.round(bpm), progress, rampDone: progress >= 1 };
+    }
+  }
+
+  class SpeedLoopCadence {
+    constructor(bars = 4) {
+      this.bars = bars;
+      this.beatCount = 0;
+      this.beatsPerBar = 4;
+    }
+
+    reset(bars = this.bars) {
+      this.bars = bars;
+      this.beatCount = 0;
+    }
+
+    advance(beatsPerBar) {
+      this.beatsPerBar = beatsPerBar;
+      this.beatCount += 1;
+      const phraseBeats = beatsPerBar * this.bars;
+      return this.beatCount > 1 && (this.beatCount - 1) % phraseBeats === 0;
+    }
+
+    get bar() {
+      if (this.beatCount === 0) return 1;
+      return Math.floor((this.beatCount - 1) / this.beatsPerBar) % this.bars + 1;
+    }
+  }
+
+  const initialBpm = (mode, bpm, loopStart) =>
+    mode === "speedloop" ? clamp(loopStart, 30, 300) : bpm;
+
+  const practiceTimerEnd = (atTime, enabled, minutes) =>
+    enabled ? atTime + Math.max(1, minutes) * 60 : null;
+
+  const api = { SpeedRamp, SpeedLoopCadence, initialBpm, practiceTimerEnd };
+  if (typeof module !== "undefined" && module.exports) module.exports = api;
+  if (typeof window !== "undefined") window.MetronomeTiming = api;
 })();
 
 ;
@@ -252,6 +386,7 @@
     CLICK_FREQ_UP: 1000,       // Hz, other beats
     CLICK_PEAK: 0.9,
     CLICK_PEAK_UP: 0.55,
+    CLICK_PEAK_SUB: 0.28,
     TAP_WINDOW_MS: 2000,       // taps older than this reset the sequence
     TAP_MAX_SAMPLES: 6,
     TAP_MIN_SAMPLES: 2,
@@ -274,6 +409,7 @@
     const r = s % 60;
     return `${String(m).padStart(2, "0")}:${String(r).padStart(2, "0")}`;
   };
+  const { SpeedRamp, SpeedLoopCadence, initialBpm, practiceTimerEnd } = window.MetronomeTiming;
   const { AudioEngine, Scheduler } = window.createMetronomeAudio({ CONFIG, clamp });
 
   /* ============================================================
@@ -378,41 +514,6 @@
   }
 
   /* ============================================================
-   * Speed loop (ramp) controller
-   * ============================================================ */
-  /**
-   * Computes the tempo as a function of elapsed time. Linear ramp from start
-   * to target over the configured duration; after the ramp it holds the
-   * target indefinitely (never stops on its own).
-   */
-  class SpeedRamp {
-    constructor() {
-      this.start = CONFIG.DEFAULT_BPM;
-      this.target = CONFIG.DEFAULT_BPM;
-      this.durationSec = 600;
-      this.startedAt = 0;
-    }
-
-    configure({ start, target, minutes }) {
-      this.start = clamp(start, CONFIG.MIN_BPM, CONFIG.MAX_BPM);
-      this.target = clamp(target, CONFIG.MIN_BPM, CONFIG.MAX_BPM);
-      this.durationSec = Math.max(1, minutes) * 60;
-    }
-
-    begin(atTime) {
-      this.startedAt = atTime;
-    }
-
-    /** Returns { bpm, progress 0..1, rampDone } for an audio-clock time. */
-    sample(atTime) {
-      const elapsed = Math.max(0, atTime - this.startedAt);
-      const progress = clamp(elapsed / this.durationSec, 0, 1);
-      const bpm = this.start + (this.target - this.start) * progress;
-      return { bpm: Math.round(bpm), progress, rampDone: progress >= 1 };
-    }
-  }
-
-  /* ============================================================
    * Application controller
    * ============================================================ */
   class MetronomeApp {
@@ -440,6 +541,8 @@
         timerFields: document.getElementById("timerFields"),
         timerMinutes: document.getElementById("timerMinutes"),
         clickTone: document.getElementById("clickTone"),
+        subdivisions: document.getElementById("subdivisions"),
+        accentPattern: document.getElementById("accentPattern"),
         volume: document.getElementById("volume"),
         volumeValue: document.getElementById("volumeValue"),
         countdownEnabled: document.getElementById("countdownEnabled"),
@@ -456,12 +559,14 @@
         progressTrack: document.getElementById("progressTrack"),
         progressText: document.getElementById("progressText"),
         phraseLabel: document.getElementById("phraseLabel"),
-        settingsPanel: document.getElementById("settingsPanel"),
+        metronomePanel: document.getElementById("metronomePanel"),
         wakeLockEnabled: document.getElementById("wakeLockEnabled"),
         wakeLockStatus: document.getElementById("wakeLockStatus"),
         settingsHint: document.getElementById("settingsHint"),
-        themeToggle: document.getElementById("themeToggle"),
-        themeLabel: document.getElementById("themeLabel"),
+        themeSelect: document.getElementById("themeSelect"),
+        historyList: document.getElementById("historyList"),
+        historyEmpty: document.getElementById("historyEmpty"),
+        historyClear: document.getElementById("historyClear"),
         tabs: Array.from(document.querySelectorAll(".tab")),
       };
 
@@ -477,11 +582,11 @@
 
       this.tap = new TapTempo((bpm) => this.setBpm(bpm, { fromTap: true }));
       this.ramp = new SpeedRamp();
+      this.speedLoopCadence = new SpeedLoopCadence(this.state.loopBars);
 
       this.running = false;
       this.phase = "idle";          // idle | countin | playing
       this.sessionStartTime = 0;    // audio-clock time main session started
-      this.speedLoopBeatCount = 0;
       this.speedLoopBar = 0;
       this.pendingSpeedLoopBeats = [];
       this.timerEndTime = null;     // audio-clock time when timer expires
@@ -490,12 +595,14 @@
       this.wakeLockPending = false;
       this.rafId = null;
       this.alertShown = false;
-
+      this.sessionLogged = false;
       this.bindEvents();
       this.applyStateToUI();
       this.applyTheme(this.state.theme);
+      this.bindColorScheme();
       this.visualizer.rebuild(this.state.beatsPerBar);
       this.updateBeatCounter();
+      this.renderHistory();
     }
 
     /* -------------------- State & persistence -------------------- */
@@ -509,10 +616,14 @@
 
       e.playBtn.addEventListener("click", () => this.toggle());
       e.tapBtn.addEventListener("click", () => this.handleTap());
-      e.themeToggle.addEventListener("click", () => {
-        this.state.theme = this.state.theme === "dark" ? "light" : "dark";
+      e.themeSelect.addEventListener("change", () => {
+        this.state.theme = e.themeSelect.value;
         this.applyTheme(this.state.theme);
         this.persist();
+      });
+      e.historyClear.addEventListener("click", () => {
+        window.MetronomeStorage.clearSessions();
+        this.renderHistory();
       });
 
       e.minus5.addEventListener("click", () => this.nudge(-5));
@@ -548,6 +659,18 @@
       e.clickTone.addEventListener("change", () => {
         this.state.clickTone = e.clickTone.value;
         this.engine.setClickTone(this.state.clickTone);
+        this.persist();
+      });
+
+      e.subdivisions.addEventListener("change", () => {
+        this.state.subdivisions = Number(e.subdivisions.value);
+        this.scheduler.setSubdivisions(this.state.subdivisions);
+        this.persist();
+      });
+
+      e.accentPattern.addEventListener("change", () => {
+        this.state.accentPattern = e.accentPattern.value;
+        this.scheduler.setAccentPattern(this.state.accentPattern);
         this.persist();
       });
 
@@ -628,14 +751,9 @@
 
       // Resume audio context if the page was backgrounded/suspended by the OS.
       document.addEventListener("visibilitychange", () => {
-        if (!document.hidden && this.running && this.engine.ctx?.state === "suspended") {
-          this.engine.resume().catch((error) => {
-            console.warn("Audio could not resume after returning to the app.", error);
-            this.setStatus("Audio paused. Tap Start to resume playback.");
-          });
-        }
-        if (!document.hidden && this.running && this.state.wakeLockEnabled) this.acquireWakeLock();
+        if (document.hidden) this.handlePlaybackInterruption();
       });
+      window.addEventListener("pagehide", () => this.handlePlaybackInterruption());
     }
 
     /* -------------------- UI application -------------------- */
@@ -646,6 +764,8 @@
       this.el.timerFields.hidden = !s.timerEnabled;
       this.el.timerMinutes.value = s.timerMinutes;
       this.el.clickTone.value = s.clickTone;
+      this.el.subdivisions.value = String(s.subdivisions);
+      this.el.accentPattern.value = s.accentPattern;
       this.el.volume.value = String(s.volume);
       this.el.volumeValue.value = `${Math.round(s.volume * 100)}%`;
       this.engine.setClickTone(s.clickTone);
@@ -664,20 +784,32 @@
 
       this.scheduler.setBpm(s.bpm);
       this.scheduler.setBeatsPerBar(s.beatsPerBar);
+      this.scheduler.setSubdivisions(s.subdivisions);
+      this.scheduler.setAccentPattern(s.accentPattern);
       this.renderBpm();
       this.setMode(s.mode, { persistChange: false });
     }
 
     applyTheme(theme) {
-      const value = theme === "light" ? "light" : "dark";
-      document.documentElement.dataset.theme = value;
-      const label = value === "dark" ? "Light mode" : "Dark mode";
-      this.el.themeLabel.textContent = label;
-      this.el.themeToggle.setAttribute("aria-label", `Switch to ${label.toLowerCase()}`);
+      const value = ["system", "light", "dark"].includes(theme) ? theme : "system";
+      this.el.themeSelect.value = value;
+      if (value === "system") delete document.documentElement.dataset.theme;
+      else document.documentElement.dataset.theme = value;
+      const systemLight = window.matchMedia?.("(prefers-color-scheme: light)").matches ?? false;
       document.querySelector('meta[name="theme-color"]')?.setAttribute(
         "content",
-        value === "dark" ? "#101114" : "#f3f5f8"
+        (value === "light" || (value === "system" && systemLight)) ? "#f3f5f8" : "#101114"
       );
+    }
+
+    bindColorScheme() {
+      const query = window.matchMedia?.("(prefers-color-scheme: light)");
+      if (!query) return;
+      const update = () => {
+        if (this.state.theme === "system") this.applyTheme("system");
+      };
+      if (query.addEventListener) query.addEventListener("change", update);
+      else query.addListener(update);
     }
 
     renderBpm() {
@@ -696,7 +828,8 @@
       [
         this.el.beatsPerBar, this.el.timerEnabled, this.el.timerMinutes,
         this.el.clickTone, this.el.volume, this.el.countdownEnabled,
-        this.el.countdownBeats, this.el.wakeLockEnabled, this.el.loopStart,
+        this.el.countdownBeats, this.el.wakeLockEnabled, this.el.subdivisions,
+        this.el.accentPattern, this.el.loopStart,
         this.el.loopTarget, this.el.loopMinutes, this.el.loopBars,
       ].forEach((control) => { control.disabled = this.running; });
       this.el.wakeLockEnabled.disabled = this.running || !("wakeLock" in navigator);
@@ -721,7 +854,7 @@
         t.tabIndex = active ? 0 : -1;
       });
       this.el.speedloopFields.hidden = mode !== MODES.SPEEDLOOP;
-      this.el.settingsPanel?.setAttribute("aria-labelledby", mode === MODES.SPEEDLOOP ? "speedloopTab" : "metronomeTab");
+      this.el.metronomePanel.hidden = mode !== MODES.METRONOME;
       this.updateTempoControlAvailability();
       if (persistChange) this.persist();
     }
@@ -795,7 +928,9 @@
       const useCountIn = this.state.countdownEnabled;
 
       this.scheduler.setBeatsPerBar(this.state.beatsPerBar);
-      this.state.bpm = this.currentBpm();
+      this.scheduler.setSubdivisions(this.state.subdivisions);
+      this.scheduler.setAccentPattern(this.state.accentPattern);
+      this.state.bpm = initialBpm(this.state.mode, this.state.bpm, this.state.loopStart);
       this.scheduler.setBpm(this.state.bpm);
       this.renderBpm();
 
@@ -834,12 +969,14 @@
     beginMainSession(atTime) {
       this.phase = "playing";
       this.sessionStartTime = atTime;
+      this.sessionStartedBpm = this.state.bpm;
+      this.sessionLogged = false;
       this.setStatus("");
       this.el.playLabel.textContent = "Stop";
 
       const mode = this.state.mode;
       if (mode === MODES.SPEEDLOOP) {
-        this.speedLoopBeatCount = 0;
+        this.speedLoopCadence.reset(this.state.loopBars);
         this.speedLoopBar = 0;
         this.el.phraseLabel.hidden = false;
         this.el.phraseLabel.textContent = `Bar 1 of ${this.state.loopBars}`;
@@ -863,11 +1000,7 @@
         this.el.loopProgress.hidden = true;
       }
 
-      if (this.state.timerEnabled) {
-        this.timerEndTime = atTime + this.state.timerMinutes * 60;
-      } else {
-        this.timerEndTime = null;
-      }
+      this.timerEndTime = practiceTimerEnd(atTime, this.state.timerEnabled, this.state.timerMinutes);
 
       if (!this.scheduler.running) {
         this.scheduler.start(atTime);
@@ -875,10 +1008,7 @@
     }
 
     currentBpm() {
-      if (this.state.mode === MODES.SPEEDLOOP) {
-        return clamp(this.state.loopStart, CONFIG.MIN_BPM, CONFIG.MAX_BPM);
-      }
-      return this.state.bpm;
+      return initialBpm(this.state.mode, this.state.bpm, this.state.loopStart);
     }
 
     handleScheduledBeat(time, beatsPerBar) {
@@ -894,9 +1024,7 @@
     }
 
     advanceSpeedLoop(time, beatsPerBar) {
-      this.speedLoopBeatCount += 1;
-      const beatsPerPhrase = beatsPerBar * this.state.loopBars;
-      if (this.speedLoopBeatCount <= 1 || (this.speedLoopBeatCount - 1) % beatsPerPhrase !== 0) return;
+      if (!this.speedLoopCadence.advance(beatsPerBar)) return;
 
       const { bpm } = this.ramp.sample(time);
       if (bpm !== this.state.bpm) {
@@ -913,20 +1041,21 @@
         time < this.sessionStartTime ||
         beatIndex !== 0
       ) return;
-      this.speedLoopBar = (this.speedLoopBar % this.state.loopBars) + 1;
+      this.speedLoopBar = this.speedLoopCadence.bar;
       this.el.phraseLabel.textContent = `Bar ${this.speedLoopBar} of ${this.state.loopBars}`;
     }
 
     nextSpeedLoopBpm(now) {
-      if (this.speedLoopBeatCount < 1) return this.ramp.sample(now).bpm;
+      if (this.speedLoopCadence.beatCount < 1) return this.ramp.sample(now).bpm;
       const phraseBeats = this.state.beatsPerBar * this.state.loopBars;
-      const beatsUntilBoundary = phraseBeats - ((this.speedLoopBeatCount - 1) % phraseBeats);
+      const beatsUntilBoundary = phraseBeats - ((this.speedLoopCadence.beatCount - 1) % phraseBeats);
       const boundaryTime = this.scheduler.nextNoteTime +
         (beatsUntilBoundary - 1) * (60 / Math.max(CONFIG.MIN_BPM, this.state.bpm));
       return this.ramp.sample(Math.max(now, boundaryTime)).bpm;
     }
 
     stop({ preserveReadout = false } = {}) {
+      this.recordSession(false);
       this.running = false;
       this.updateTempoControlAvailability();
       this.releaseWakeLock();
@@ -952,6 +1081,66 @@
       this.timerEndTime = null;
       this.countInEndTime = null;
       this.persist();
+    }
+
+    handlePlaybackInterruption() {
+      if (!this.running) return;
+      this.recordSession(true);
+      this.running = false;
+      this.phase = "idle";
+      this.scheduler.stop();
+      this.visualizer.clear();
+      this.pendingSpeedLoopBeats = [];
+      this.releaseWakeLock();
+      if (this.rafId) cancelAnimationFrame(this.rafId);
+      this.rafId = null;
+      this.el.playBtn.classList.remove("running");
+      this.el.playBtn.setAttribute("aria-pressed", "false");
+      this.el.playLabel.textContent = "Start";
+      this.el.phraseLabel.hidden = true;
+      this.el.loopProgress.hidden = true;
+      this.countInEndTime = null;
+      this.timerEndTime = null;
+      this.updateTempoControlAvailability();
+      this.setStatus("Session paused when the app left the screen. Tap Start to begin again.");
+      this.persist();
+      if (this.engine.ctx?.state === "running") {
+        this.engine.ctx.suspend().catch((error) => {
+          console.warn("Audio could not suspend after the app was hidden.", error);
+        });
+      }
+    }
+
+    recordSession(interrupted) {
+      if (this.phase !== "playing" || this.sessionLogged) return;
+      const endedAt = this.engine.now;
+      const sessions = window.MetronomeStorage.saveSession({
+        startedAt: Date.now() - Math.max(0, endedAt - this.sessionStartTime) * 1000,
+        durationSec: Math.max(0, endedAt - this.sessionStartTime),
+        mode: this.state.mode,
+        startBpm: this.sessionStartedBpm,
+        endBpm: this.state.bpm,
+        interrupted,
+      });
+      this.sessionLogged = true;
+      this.renderHistory(sessions);
+    }
+
+    renderHistory(sessions = window.MetronomeStorage.loadSessions()) {
+      this.el.historyList.textContent = "";
+      this.el.historyEmpty.hidden = sessions.length > 0;
+      this.el.historyClear.hidden = sessions.length === 0;
+      sessions.forEach((session) => {
+        const item = document.createElement("li");
+        const title = document.createElement("strong");
+        const details = document.createElement("span");
+        const date = new Date(session.startedAt);
+        const duration = formatTime(session.durationSec);
+        title.textContent = `${session.mode === MODES.SPEEDLOOP ? "Speed Loop" : "Metronome"} · ${session.startBpm} → ${session.endBpm} BPM`;
+        details.textContent = `${date.toLocaleString()} · ${duration}${session.interrupted ? " · interrupted" : ""}`;
+        item.append(title, details);
+        this.el.historyList.appendChild(item);
+      });
     }
 
     /* -------------------- Frame loop (UI sync only) -------------------- */

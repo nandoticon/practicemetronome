@@ -1,4 +1,4 @@
-    <section class="panel card" id="settingsPanel" role="tabpanel" aria-labelledby="metronomeTab" tabindex="0">
+    <section class="panel card" id="settingsPanel" aria-label="Shared practice settings" tabindex="0">
       <div class="section-heading settings-heading">
         <div>
           <p class="eyebrow">MAKE IT YOURS</p>
@@ -9,7 +9,7 @@
 
       <div class="setting-grid">
         <section class="setting-group" aria-label="Meter and session">
-          <h3>Meter &amp; session</h3>
+          <h3><svg class="icon" aria-hidden="true"><use href="./icons/lucide.svg#music-2"></use></svg>Meter &amp; session</h3>
           <div class="field-row">
             <label for="beatsPerBar">Beats per bar</label>
             <select id="beatsPerBar">
@@ -23,7 +23,7 @@
             </select>
           </div>
           <div class="field-row toggle-row">
-            <label for="timerEnabled">Practice timer</label>
+            <label for="timerEnabled"><svg class="icon" aria-hidden="true"><use href="./icons/lucide.svg#timer"></use></svg>Practice timer</label>
             <input type="checkbox" id="timerEnabled" />
           </div>
           <div class="field-row" id="timerFields">
@@ -44,13 +44,30 @@
         </section>
 
         <section class="setting-group" aria-label="Sound and display">
-          <h3>Sound &amp; display</h3>
+          <h3><svg class="icon" aria-hidden="true"><use href="./icons/lucide.svg#volume-2"></use></svg>Sound &amp; display</h3>
           <div class="field-row">
             <label for="clickTone">Click sound</label>
             <select id="clickTone">
               <option value="soft">Soft</option>
               <option value="classic" selected>Classic</option>
               <option value="bright">Bright</option>
+            </select>
+          </div>
+          <div class="field-row">
+            <label for="subdivisions">Subdivision</label>
+            <select id="subdivisions">
+              <option value="1">Quarter notes</option>
+              <option value="2">Eighth notes</option>
+              <option value="4">Sixteenth notes</option>
+            </select>
+          </div>
+          <div class="field-row">
+            <label for="accentPattern">Accent pattern</label>
+            <select id="accentPattern">
+              <option value="downbeat">Downbeat</option>
+              <option value="backbeat">Backbeat (2 &amp; 4)</option>
+              <option value="every">Every beat</option>
+              <option value="none">No accents</option>
             </select>
           </div>
           <div class="field-row">
@@ -68,38 +85,16 @@
         </section>
       </div>
 
-      <div class="speedloop-only setting-group speedloop-settings" id="speedloopFields" hidden>
-        <h3>Speed Loop</h3>
-        <div class="speedloop-inputs">
-          <div class="field-row">
-            <label for="loopStart">Start BPM</label>
-            <input type="number" id="loopStart" min="30" max="300" step="1" value="60" inputmode="numeric" />
-          </div>
-          <div class="field-row">
-            <label for="loopTarget">Target BPM</label>
-            <input type="number" id="loopTarget" min="30" max="300" step="1" value="120" inputmode="numeric" />
-          </div>
-          <div class="field-row">
-            <label for="loopMinutes">Ramp duration (min)</label>
-            <input type="number" id="loopMinutes" min="1" max="120" step="1" value="10" inputmode="numeric" />
-          </div>
-          <div class="field-row">
-            <label for="loopBars">Bars per tempo change</label>
-            <input type="number" id="loopBars" min="1" max="32" step="1" value="4" inputmode="numeric" />
-          </div>
+      <details class="history-panel">
+        <summary><svg class="icon" aria-hidden="true"><use href="./icons/lucide.svg#history"></use></svg>Recent practice</summary>
+        <div class="history-content">
+          <p class="history-empty" id="historyEmpty">Completed sessions will appear here on this device.</p>
+          <ol class="history-list" id="historyList"></ol>
+          <button class="history-clear" id="historyClear" type="button" hidden>
+            <svg class="icon" aria-hidden="true"><use href="./icons/lucide.svg#trash-2"></use></svg>
+            Clear history
+          </button>
         </div>
-        <p class="loop-hint" id="loopHint">Ramp duration is approximate; tempo updates every 4 bars.</p>
-        <div class="loop-progress" id="loopProgress" hidden>
-          <div
-            class="progress-track"
-            id="progressTrack"
-            role="progressbar"
-            aria-label="Speed Loop ramp progress"
-            aria-valuemin="0"
-            aria-valuemax="100"
-            aria-valuenow="0"
-          ><div class="progress-fill" id="progressFill"></div></div>
-          <div class="progress-text" id="progressText">0%</div>
-        </div>
-      </div>
+      </details>
+
     </section>

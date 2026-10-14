@@ -1,12 +1,8 @@
     <!-- Play / Stop -->
     <section class="transport">
       <button class="btn btn-play" id="playBtn" aria-pressed="false">
-        <svg class="play-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <path d="m7 4 13 8-13 8V4Z"></path>
-        </svg>
-        <svg class="pause-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true">
-          <path d="M8 5v14M16 5v14"></path>
-        </svg>
+        <svg class="play-icon" aria-hidden="true"><use href="./icons/lucide.svg#play"></use></svg>
+        <svg class="pause-icon" aria-hidden="true"><use href="./icons/lucide.svg#pause"></use></svg>
         <span id="playLabel">Start</span>
       </button>
       <div class="status-line" id="statusLine" role="status" aria-live="polite"></div>

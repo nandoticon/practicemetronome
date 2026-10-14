@@ -1,7 +1,7 @@
 (() => {
   "use strict";
 
-  window.createMetronomeAudio = ({ CONFIG, clamp }) => {
+  const createMetronomeAudio = ({ CONFIG, clamp }) => {
     const tones = Object.freeze({
       soft: { type: "sine", down: 950, up: 650 },
       classic: { type: "sine", down: CONFIG.CLICK_FREQ_DOWN, up: CONFIG.CLICK_FREQ_UP },
@@ -47,14 +47,14 @@
         return this.ctx ? this.ctx.currentTime : 0;
       }
 
-      scheduleClick(time, accent) {
+      scheduleClick(time, accent, isSubdivision = false) {
         const ctx = this.ctx;
         const osc = ctx.createOscillator();
         const gain = ctx.createGain();
         osc.type = this.clickTone.type;
         osc.frequency.setValueAtTime(accent ? this.clickTone.down : this.clickTone.up, time);
 
-        const peak = accent ? CONFIG.CLICK_PEAK : CONFIG.CLICK_PEAK_UP;
+        const peak = isSubdivision ? CONFIG.CLICK_PEAK_SUB : accent ? CONFIG.CLICK_PEAK : CONFIG.CLICK_PEAK_UP;
         gain.gain.setValueAtTime(0.0001, time);
         gain.gain.exponentialRampToValueAtTime(peak, time + 0.002);
         gain.gain.exponentialRampToValueAtTime(0.0001, time + CONFIG.CLICK_DURATION);
@@ -98,6 +98,8 @@
         this.beatIndex = 0;
         this.timerId = null;
         this.running = false;
+        this.subdivisions = 1;
+        this.accentPattern = "downbeat";
       }
 
       get secondsPerBeat() {
@@ -111,6 +113,21 @@
       setBeatsPerBar(n) {
         this.beatsPerBar = n;
         if (this.beatIndex >= n) this.beatIndex = 0;
+      }
+
+      setSubdivisions(count) {
+        this.subdivisions = count;
+      }
+
+      setAccentPattern(pattern) {
+        this.accentPattern = pattern;
+      }
+
+      isAccented(beatIndex) {
+        if (this.accentPattern === "every") return true;
+        if (this.accentPattern === "backbeat") return beatIndex % 2 === 1;
+        if (this.accentPattern === "none") return false;
+        return beatIndex === 0;
       }
 
       start(startTime) {
@@ -134,8 +151,11 @@
         if (!this.running) return;
         const horizon = this.engine.now + CONFIG.SCHEDULE_AHEAD;
         while (this.nextNoteTime < horizon) {
-          const accent = this.beatIndex === 0;
-          this.engine.scheduleClick(this.nextNoteTime, accent);
+          const accent = this.isAccented(this.beatIndex);
+          for (let subdivision = 0; subdivision < this.subdivisions; subdivision++) {
+            const time = this.nextNoteTime + subdivision * this.secondsPerBeat / this.subdivisions;
+            this.engine.scheduleClick(time, subdivision === 0 && accent, subdivision > 0);
+          }
           this.onBeat(this.beatIndex, this.nextNoteTime, this.beatsPerBar);
           this.nextNoteTime += this.secondsPerBeat;
           this.beatIndex = (this.beatIndex + 1) % this.beatsPerBar;
@@ -145,4 +165,6 @@
 
     return { AudioEngine, Scheduler };
   };
+  if (typeof window !== "undefined") window.createMetronomeAudio = createMetronomeAudio;
+  if (typeof module !== "undefined" && module.exports) module.exports = createMetronomeAudio;
 })();

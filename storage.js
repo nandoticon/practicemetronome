@@ -2,6 +2,7 @@
   "use strict";
 
   const KEY = "metronome.settings.v1";
+  const HISTORY_KEY = "metronome.sessions.v1";
   const WAIT_MS = 250;
   const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
   const defaults = Object.freeze({
@@ -20,8 +21,11 @@
     clickTone: "classic",
     wakeLockEnabled: false,
     theme: "dark",
+    subdivisions: 1,
+    accentPattern: "downbeat",
   });
   const validTones = new Set(["soft", "classic", "bright"]);
+  const validAccents = new Set(["downbeat", "backbeat", "every", "none"]);
   let saveTimer = 0;
 
   const load = () => {
@@ -50,7 +54,9 @@
         volume: number("volume", 0, 1),
         clickTone: validTones.has(parsed.clickTone) ? parsed.clickTone : defaults.clickTone,
         wakeLockEnabled: typeof parsed.wakeLockEnabled === "boolean" ? parsed.wakeLockEnabled : defaults.wakeLockEnabled,
-        theme: ["dark", "light"].includes(parsed.theme) ? parsed.theme : defaults.theme,
+        theme: ["system", "dark", "light"].includes(parsed.theme) ? parsed.theme : defaults.theme,
+        subdivisions: [1, 2, 4].includes(Number(parsed.subdivisions)) ? Number(parsed.subdivisions) : defaults.subdivisions,
+        accentPattern: validAccents.has(parsed.accentPattern) ? parsed.accentPattern : defaults.accentPattern,
       };
     } catch {
       return { ...defaults };
@@ -68,5 +74,43 @@
     }, WAIT_MS);
   };
 
-  window.MetronomeStorage = Object.freeze({ load, save });
+  const loadSessions = () => {
+    try {
+      const sessions = JSON.parse(localStorage.getItem(HISTORY_KEY) || "[]");
+      if (!Array.isArray(sessions)) return [];
+      return sessions.filter((session) =>
+        session &&
+        Number.isFinite(session.startedAt) &&
+        Number.isFinite(session.durationSec) &&
+        Number.isFinite(session.startBpm) &&
+        Number.isFinite(session.endBpm) &&
+        typeof session.mode === "string"
+      ).slice(0, 10);
+    } catch {
+      return [];
+    }
+  };
+
+  const saveSession = (session) => {
+    try {
+      const sessions = [session, ...loadSessions()].slice(0, 10);
+      localStorage.setItem(HISTORY_KEY, JSON.stringify(sessions));
+      return sessions;
+    } catch {
+      return loadSessions();
+    }
+  };
+
+  const clearSessions = () => {
+    try {
+      localStorage.removeItem(HISTORY_KEY);
+    } catch {
+      return false;
+    }
+    return true;
+  };
+
+  const api = { load, save, loadSessions, saveSession, clearSessions };
+  if (typeof module !== "undefined" && module.exports) module.exports = api;
+  if (typeof window !== "undefined") window.MetronomeStorage = Object.freeze(api);
 })();

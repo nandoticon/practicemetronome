@@ -7,10 +7,12 @@
     "transport"
     "tap"
     "tabs"
+    "modepanel"
     "panel"
     "readout";
   gap: 16px;
   width: min(100%, 680px);
+  min-width: 0;
   margin: 0 auto;
   padding: 20px 16px 36px;
   min-height: 100dvh;
@@ -22,8 +24,14 @@
 .transport { grid-area: transport; }
 .tap-section { grid-area: tap; }
 .mode-tabs { grid-area: tabs; }
+.mode-panel { grid-area: modepanel; }
 .panel { grid-area: panel; }
 .readout { grid-area: readout; }
+
+.app > * {
+  min-width: 0;
+  max-width: 100%;
+}
 
 .beats {
   display: flex;
@@ -92,6 +100,29 @@
   text-align: center;
 }
 
+.mode-panel {
+  display: grid;
+  min-width: 0;
+  gap: 8px;
+  padding: 18px 20px;
+  overflow-wrap: anywhere;
+}
+
+.mode-panel > * {
+  min-width: 0;
+}
+
+.mode-panel h2 {
+  font-size: 1rem;
+}
+
+.mode-panel > p:last-child,
+.mode-description {
+  color: var(--text-dim);
+  font-size: 0.84rem;
+  line-height: 1.5;
+}
+
 @media (min-width: 760px) {
   .app {
     width: min(100%, 1040px);
@@ -101,6 +132,7 @@
       "beats tempo"
       "transport tempo"
       "tap tabs"
+      "modepanel modepanel"
       "panel panel"
       "readout readout";
     gap: 20px;
@@ -127,6 +159,7 @@
       "beats tempo transport"
       "beats tempo tap"
       "tabs tabs tabs"
+      "modepanel modepanel modepanel"
       "panel panel panel"
       "readout readout readout";
     align-content: start;

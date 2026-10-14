@@ -1,24 +1,20 @@
     <header class="app-header">
       <a class="brand" href="./" aria-label="Practice Metronome home">
         <span class="brand-mark" aria-hidden="true">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="12" r="9"></circle>
-            <path d="M12 7v5l3 2"></path>
-          </svg>
+          <svg class="icon" aria-hidden="true"><use href="./icons/lucide.svg#metronome"></use></svg>
         </span>
         <span class="brand-copy">
           <strong>Practice Metronome</strong>
           <span>Find your rhythm. Build your pace.</span>
         </span>
       </a>
-      <button class="theme-toggle" id="themeToggle" type="button" aria-label="Switch to light theme" title="Switch theme">
-        <svg class="theme-icon theme-icon-light" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <circle cx="12" cy="12" r="4"></circle>
-          <path d="M12 2v2m0 16v2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M2 12h2m16 0h2M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42"></path>
-        </svg>
-        <svg class="theme-icon theme-icon-dark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <path d="M20.9 13A9 9 0 0 1 11 3.1 9 9 0 1 0 20.9 13Z"></path>
-        </svg>
-        <span id="themeLabel">Light mode</span>
-      </button>
+      <label class="theme-control" for="themeSelect">
+        <svg class="icon" aria-hidden="true"><use href="./icons/lucide.svg#monitor"></use></svg>
+        <span>Theme</span>
+        <select id="themeSelect" aria-label="Color theme">
+          <option value="system">System</option>
+          <option value="dark">Dark</option>
+          <option value="light">Light</option>
+        </select>
+      </label>
     </header>

@@ -1,8 +1,8 @@
 # Practice Metronome
 
-A lightweight, responsive metronome for focused practice. It includes a standard metronome, a configurable Speed Loop, tap tempo, count-in, practice timer, custom click sounds, volume control, and light/dark themes. All runtime assets are local, and the app works offline after its first successful load.
+A lightweight, responsive metronome for focused practice. It includes a standard metronome, a configurable Speed Loop, tap tempo, count-in, practice timer, click subdivisions and accents, custom click sounds, volume control, and system/light/dark themes. Playback pauses safely when the app is hidden; start again to begin a fresh session. App assets, including the Lucide icon sprite, are bundled locally and cached for offline use after the first successful load.
 
-Developed by **Fernando Ticon using AI**.
+Developed by **Fernando Ticon using IA**.
 
 ## Version history
 
@@ -32,9 +32,15 @@ The build combines:
 
 - HTML components from `src/html/`
 - CSS modules from `styles/`
-- `storage.js`, `audio.js`, `app.js`, and `pwa.js`
+- `storage.js`, `audio.js`, `timing.js`, `app.js`, and `pwa.js`
 
-into `index.html`, `style.css`, and `bundle.js`. Commit both the source files and generated files so the published site can be served as static content.
+into `index.html`, `style.css`, and `bundle.js`. The locally bundled Lucide sprite is in `icons/lucide.svg`. Commit both the source files and generated files so the published site can be served as static content.
+
+Run the dependency-free automated tests with:
+
+```sh
+node --test
+```
 
 ## Upload to GitHub
 
@@ -62,4 +68,8 @@ The service worker caches the static app shell on the first successful visit. Su
 
 ## Speed Loop
 
-Set the start and target tempos, choose the ramp duration, then set **Bars per tempo change** from 1 to 32. The tempo only changes at the beginning of each selected phrase; its displayed ramp duration is approximate because changes wait for the next phrase boundary.
+Set the start and target tempos, choose the ramp duration, then set **Bars per tempo change** from 1 to 32. The tempo only changes at the beginning of each selected phrase; its displayed ramp duration is approximate because changes wait for the next phrase boundary. Optional quarter-, eighth-, and sixteenth-note subdivisions and downbeat/backbeat/every-beat/no-accent patterns are also available.
+
+Recent session history stays in this browser on this device. It is not uploaded.
+
+The bundled Lucide icons are distributed under the ISC and MIT licenses; see `THIRD_PARTY_NOTICES.txt`.
