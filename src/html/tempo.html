@@ -1,0 +1,36 @@
+    <!-- BPM display + slider -->
+    <section class="tempo card" aria-label="Tempo">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">SET YOUR PACE</p>
+          <h2>Tempo</h2>
+        </div>
+        <span class="tempo-range">30–300 BPM</span>
+      </div>
+      <div class="bpm-display">
+        <span class="bpm-value" id="bpmValue" aria-live="polite">120</span>
+        <span class="bpm-unit">BPM</span>
+      </div>
+
+      <div class="stepper-row" aria-label="Adjust tempo">
+        <button class="btn btn-step" id="minus5" aria-label="Decrease 5 BPM">−5</button>
+        <button class="btn btn-step" id="minus1" aria-label="Decrease 1 BPM">−1</button>
+        <button class="btn btn-step" id="plus1" aria-label="Increase 1 BPM">+1</button>
+        <button class="btn btn-step" id="plus5" aria-label="Increase 5 BPM">+5</button>
+      </div>
+
+      <input
+        type="range"
+        id="tempoSlider"
+        class="slider"
+        min="30"
+        max="300"
+        step="1"
+        value="120"
+        aria-label="Tempo slider"
+      />
+      <div class="slider-scale" aria-hidden="true">
+        <span>30</span><span>300</span>
+      </div>
+      <p class="keyboard-hint">↑/↓ adjust · Shift + arrows: ±5 · Space: start/stop · T: tap</p>
+    </section>

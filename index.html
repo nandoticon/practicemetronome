@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="color-scheme" content="light dark" />
+  <meta name="theme-color" content="#101114" />
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="icon" href="icon.svg" type="image/svg+xml" />
+  <title>Practice Metronome — Find your rhythm</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="app" id="app">
+    <header class="app-header">
+      <a class="brand" href="./" aria-label="Practice Metronome home">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="9"></circle>
+            <path d="M12 7v5l3 2"></path>
+          </svg>
+        </span>
+        <span class="brand-copy">
+          <strong>Practice Metronome</strong>
+          <span>Find your rhythm. Build your pace.</span>
+        </span>
+      </a>
+      <button class="theme-toggle" id="themeToggle" type="button" aria-label="Switch to light theme" title="Switch theme">
+        <svg class="theme-icon theme-icon-light" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="4"></circle>
+          <path d="M12 2v2m0 16v2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M2 12h2m16 0h2M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42"></path>
+        </svg>
+        <svg class="theme-icon theme-icon-dark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M20.9 13A9 9 0 0 1 11 3.1 9 9 0 1 0 20.9 13Z"></path>
+        </svg>
+        <span id="themeLabel">Light mode</span>
+      </button>
+    </header>
+    <!-- Beat indicator -->
+    <section class="beats card" aria-label="Beat indicator">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">YOUR PULSE</p>
+          <h2>Beat indicator</h2>
+        </div>
+        <div class="meter-badge" id="meterLabel">4/4</div>
+      </div>
+      <div class="beat-row" id="beatRow" role="img" aria-label="Beat indicator"></div>
+      <div class="phrase-label" id="phraseLabel" hidden>Bar 1 of 4</div>
+    </section>
+    <!-- BPM display + slider -->
+    <section class="tempo card" aria-label="Tempo">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">SET YOUR PACE</p>
+          <h2>Tempo</h2>
+        </div>
+        <span class="tempo-range">30–300 BPM</span>
+      </div>
+      <div class="bpm-display">
+        <span class="bpm-value" id="bpmValue" aria-live="polite">120</span>
+        <span class="bpm-unit">BPM</span>
+      </div>
+
+      <div class="stepper-row" aria-label="Adjust tempo">
+        <button class="btn btn-step" id="minus5" aria-label="Decrease 5 BPM">−5</button>
+        <button class="btn btn-step" id="minus1" aria-label="Decrease 1 BPM">−1</button>
+        <button class="btn btn-step" id="plus1" aria-label="Increase 1 BPM">+1</button>
+        <button class="btn btn-step" id="plus5" aria-label="Increase 5 BPM">+5</button>
+      </div>
+
+      <input
+        type="range"
+        id="tempoSlider"
+        class="slider"
+        min="30"
+        max="300"
+        step="1"
+        value="120"
+        aria-label="Tempo slider"
+      />
+      <div class="slider-scale" aria-hidden="true">
+        <span>30</span><span>300</span>
+      </div>
+      <p class="keyboard-hint">↑/↓ adjust · Shift + arrows: ±5 · Space: start/stop · T: tap</p>
+    </section>
+    <!-- Play / Stop -->
+    <section class="transport">
+      <button class="btn btn-play" id="playBtn" aria-pressed="false">
+        <svg class="play-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="m7 4 13 8-13 8V4Z"></path>
+        </svg>
+        <svg class="pause-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true">
+          <path d="M8 5v14M16 5v14"></path>
+        </svg>
+        <span id="playLabel">Start</span>
+      </button>
+      <div class="status-line" id="statusLine" role="status" aria-live="polite"></div>
+    </section>
+    <!-- Tap tempo -->
+    <section class="tap-section">
+      <button class="btn btn-tap" id="tapBtn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M8 12V6a2 2 0 0 1 4 0v5-6a2 2 0 0 1 4 0v7-4a2 2 0 0 1 4 0v7a7 7 0 0 1-7 7h-1a7 7 0 0 1-6.3-4L3 13a2 2 0 0 1 3-2l2 2"></path>
+        </svg>
+        <span>Tap Tempo</span>
+      </button>
+    </section>
+    <!-- Mode selector -->
+    <nav class="mode-tabs" role="tablist" aria-label="Mode">
+      <button class="tab active" id="metronomeTab" role="tab" aria-controls="settingsPanel" data-mode="metronome" aria-selected="true">Metronome</button>
+      <button class="tab" id="speedloopTab" role="tab" aria-controls="settingsPanel" data-mode="speedloop" aria-selected="false">Speed Loop</button>
+    </nav>
+
+    <section class="panel card" id="settingsPanel" role="tabpanel" aria-labelledby="metronomeTab" tabindex="0">
+      <div class="section-heading settings-heading">
+        <div>
+          <p class="eyebrow">MAKE IT YOURS</p>
+          <h2>Practice settings</h2>
+        </div>
+        <p class="settings-hint" id="settingsHint" hidden>Stop playback to change settings.</p>
+      </div>
+
+      <div class="setting-grid">
+        <section class="setting-group" aria-label="Meter and session">
+          <h3>Meter &amp; session</h3>
+          <div class="field-row">
+            <label for="beatsPerBar">Beats per bar</label>
+            <select id="beatsPerBar">
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4" selected>4</option>
+              <option value="5">5</option>
+              <option value="6">6</option>
+              <option value="7">7</option>
+              <option value="8">8</option>
+            </select>
+          </div>
+          <div class="field-row toggle-row">
+            <label for="timerEnabled">Practice timer</label>
+            <input type="checkbox" id="timerEnabled" />
+          </div>
+          <div class="field-row" id="timerFields">
+            <label for="timerMinutes">Duration (minutes)</label>
+            <input type="number" id="timerMinutes" min="1" max="180" step="1" value="5" inputmode="numeric" />
+          </div>
+          <div class="field-row toggle-row">
+            <label for="countdownEnabled">Count-in</label>
+            <input type="checkbox" id="countdownEnabled" />
+          </div>
+          <div class="field-row" id="countdownFields">
+            <label for="countdownBeats">Count-in beats</label>
+            <select id="countdownBeats">
+              <option value="4" selected>4</option>
+              <option value="8">8</option>
+            </select>
+          </div>
+        </section>
+
+        <section class="setting-group" aria-label="Sound and display">
+          <h3>Sound &amp; display</h3>
+          <div class="field-row">
+            <label for="clickTone">Click sound</label>
+            <select id="clickTone">
+              <option value="soft">Soft</option>
+              <option value="classic" selected>Classic</option>
+              <option value="bright">Bright</option>
+            </select>
+          </div>
+          <div class="field-row">
+            <label for="volume">Volume</label>
+            <div class="range-control">
+              <input type="range" id="volume" min="0" max="1" step="0.01" value="0.65" aria-label="Metronome volume" />
+              <output id="volumeValue" for="volume">65%</output>
+            </div>
+          </div>
+          <div class="field-row toggle-row">
+            <label for="wakeLockEnabled">Keep screen awake</label>
+            <input type="checkbox" id="wakeLockEnabled" />
+          </div>
+          <p class="wake-lock-status" id="wakeLockStatus" aria-live="polite"></p>
+        </section>
+      </div>
+
+      <div class="speedloop-only setting-group speedloop-settings" id="speedloopFields" hidden>
+        <h3>Speed Loop</h3>
+        <div class="speedloop-inputs">
+          <div class="field-row">
+            <label for="loopStart">Start BPM</label>
+            <input type="number" id="loopStart" min="30" max="300" step="1" value="60" inputmode="numeric" />
+          </div>
+          <div class="field-row">
+            <label for="loopTarget">Target BPM</label>
+            <input type="number" id="loopTarget" min="30" max="300" step="1" value="120" inputmode="numeric" />
+          </div>
+          <div class="field-row">
+            <label for="loopMinutes">Ramp duration (min)</label>
+            <input type="number" id="loopMinutes" min="1" max="120" step="1" value="10" inputmode="numeric" />
+          </div>
+          <div class="field-row">
+            <label for="loopBars">Bars per tempo change</label>
+            <input type="number" id="loopBars" min="1" max="32" step="1" value="4" inputmode="numeric" />
+          </div>
+        </div>
+        <p class="loop-hint" id="loopHint">Ramp duration is approximate; tempo updates every 4 bars.</p>
+        <div class="loop-progress" id="loopProgress" hidden>
+          <div
+            class="progress-track"
+            id="progressTrack"
+            role="progressbar"
+            aria-label="Speed Loop ramp progress"
+            aria-valuemin="0"
+            aria-valuemax="100"
+            aria-valuenow="0"
+          ><div class="progress-fill" id="progressFill"></div></div>
+          <div class="progress-text" id="progressText">0%</div>
+        </div>
+      </div>
+    </section>
+    <!-- Timer / countdown readout -->
+    <div class="readout" id="readout" aria-live="polite"></div>
+
+  </main>  <script src="bundle.js"></script>
+</body>
+</html>

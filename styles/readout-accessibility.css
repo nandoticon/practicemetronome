@@ -1,0 +1,27 @@
+.readout {
+  min-height: 1.5em;
+  color: var(--text-dim);
+  font-size: 0.95rem;
+  font-weight: 650;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+
+.readout.alert {
+  color: var(--danger);
+  animation: blink 0.5s steps(2, start) infinite;
+}
+
+@keyframes blink {
+  to { visibility: hidden; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
