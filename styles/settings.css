@@ -2,8 +2,8 @@
   display: flex;
   min-width: 0;
   flex-direction: column;
-  gap: 18px;
-  padding: 20px;
+  gap: 22px;
+  padding: 22px;
 }
 
 .settings-heading {
@@ -17,8 +17,8 @@
 .settings-hint,
 .wake-lock-status {
   color: var(--text-dim);
-  font-size: 0.78rem;
-  line-height: 1.4;
+  font-size: 0.82rem;
+  line-height: 1.5;
 }
 
 .settings-hint {
@@ -30,12 +30,12 @@
 
 .setting-grid {
   display: grid;
-  gap: 20px;
+  gap: 22px;
 }
 
 .setting-group {
   min-width: 0;
-  padding: 14px;
+  padding: 16px;
   border: 1px solid var(--border);
   border-radius: 16px;
   background: var(--surface-raised);
@@ -44,12 +44,13 @@
 .setting-group h3 {
   display: flex;
   align-items: center;
-  gap: 8px;
-  margin-bottom: 5px;
+  gap: 10px;
+  margin-bottom: 12px;
   color: var(--text-dim);
-  font-size: 0.75rem;
+  font-size: 0.78rem;
   font-weight: 750;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.07em;
+  line-height: 1.45;
   text-transform: uppercase;
 }
 
@@ -58,9 +59,9 @@
   min-height: var(--touch);
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
+  gap: 14px;
   min-width: 0;
-  padding: 6px 0;
+  padding: 8px 0;
   border-bottom: 1px solid var(--border);
 }
 
@@ -72,7 +73,8 @@
   min-width: 0;
   flex: 1 1 auto;
   color: var(--text);
-  font-size: 0.88rem;
+  font-size: 0.9rem;
+  line-height: 1.4;
   overflow-wrap: anywhere;
 }
 
@@ -125,8 +127,9 @@
 .range-control output {
   min-width: 3.2em;
   color: var(--text-dim);
-  font-size: 0.78rem;
+  font-size: 0.82rem;
   font-variant-numeric: tabular-nums;
+  line-height: 1.4;
   text-align: right;
 }
 
@@ -227,35 +230,36 @@
 
 .history-content {
   display: grid;
-  gap: 10px;
-  padding-top: 12px;
+  gap: 12px;
+  padding-top: 14px;
 }
 
 .history-empty,
 .history-list li span {
   color: var(--text-dim);
-  font-size: 0.78rem;
-  line-height: 1.5;
+  font-size: 0.82rem;
+  line-height: 1.6;
 }
 
 .history-list {
   display: grid;
-  gap: 8px;
+  gap: 10px;
   list-style: none;
 }
 
 .history-list li {
   display: grid;
   min-width: 0;
-  gap: 2px;
-  padding: 10px 12px;
+  gap: 5px;
+  padding: 12px;
   border: 1px solid var(--border);
   border-radius: 12px;
   background: var(--surface-raised);
 }
 
 .history-list li strong {
-  font-size: 0.8rem;
+  font-size: 0.84rem;
+  line-height: 1.4;
   overflow-wrap: anywhere;
 }
 
@@ -270,21 +274,22 @@
   border-radius: 10px;
   background: var(--surface);
   color: var(--text);
-  font-size: 0.78rem;
+  font-size: 0.82rem;
+  line-height: 1.4;
 }
 
 .loop-hint {
-  padding-top: 12px;
+  padding-top: 4px;
   color: var(--text-dim);
-  font-size: 0.78rem;
-  line-height: 1.45;
+  font-size: 0.82rem;
+  line-height: 1.6;
 }
 
 .loop-progress {
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  padding-top: 14px;
+  gap: 10px;
+  padding-top: 4px;
 }
 
 .progress-track {
@@ -305,8 +310,8 @@
 
 .progress-text {
   color: var(--text-dim);
-  font-size: 0.82rem;
-  line-height: 1.5;
+  font-size: 0.86rem;
+  line-height: 1.6;
   text-align: center;
   font-variant-numeric: tabular-nums;
 }
@@ -318,7 +323,7 @@ select:disabled {
   opacity: 0.48;
 }
 
-@media (min-width: 620px) {
+@media (min-width: 800px) {
   .panel {
     padding: 24px;
   }
@@ -326,7 +331,9 @@ select:disabled {
   .setting-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
+}
 
+@media (min-width: 620px) {
   .speedloop-inputs {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }

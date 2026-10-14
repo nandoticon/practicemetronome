@@ -74,6 +74,7 @@ body {
   font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   -webkit-font-smoothing: antialiased;
   -webkit-text-size-adjust: 100%;
+  line-height: 1.5;
   overscroll-behavior: none;
 }
 
@@ -138,13 +139,33 @@ summary:focus-visible {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
+  gap: 16px;
 }
 
 .section-heading h2 {
-  margin-top: 3px;
+  margin-top: 5px;
   font-size: 1.1rem;
+  line-height: 1.3;
   letter-spacing: -0.025em;
+}
+
+.eyebrow + h2 {
+  margin-top: 6px;
+}
+
+h1,
+h2,
+h3,
+p,
+label,
+button {
+  overflow-wrap: anywhere;
+}
+
+h1,
+h2,
+h3 {
+  line-height: 1.3;
 }
 
 .eyebrow {
@@ -152,6 +173,7 @@ summary:focus-visible {
   font-size: 0.68rem;
   font-weight: 750;
   letter-spacing: 0.14em;
+  line-height: 1.45;
 }
 
 .app-header {
@@ -190,11 +212,12 @@ summary:focus-visible {
 .brand-copy {
   display: grid;
   min-width: 0;
-  gap: 3px;
+  gap: 5px;
 }
 
 .brand-copy strong {
   font-size: 1.02rem;
+  line-height: 1.25;
   letter-spacing: -0.025em;
   overflow-wrap: anywhere;
 }
@@ -202,6 +225,7 @@ summary:focus-visible {
 .brand-copy span {
   color: var(--text-dim);
   font-size: 0.78rem;
+  line-height: 1.4;
 }
 
 .language-control,
@@ -212,6 +236,7 @@ summary:focus-visible {
   color: var(--text-dim);
   font-size: 0.78rem;
   font-weight: 650;
+  line-height: 1.35;
 }
 
 .language-control select,
@@ -453,7 +478,7 @@ summary:focus-visible {
 .mode-panel {
   display: grid;
   min-width: 0;
-  gap: 8px;
+  gap: 12px;
   padding: 18px 20px;
   overflow-wrap: anywhere;
 }
@@ -464,13 +489,18 @@ summary:focus-visible {
 
 .mode-panel h2 {
   font-size: 1rem;
+  line-height: 1.35;
+}
+
+.mode-panel h2 + p {
+  margin-top: 3px;
 }
 
 .mode-panel > p:last-child,
 .mode-description {
   color: var(--text-dim);
-  font-size: 0.84rem;
-  line-height: 1.5;
+  font-size: 0.88rem;
+  line-height: 1.65;
 }
 
 @media (min-width: 760px) {
@@ -540,14 +570,15 @@ summary:focus-visible {
 .tempo {
   display: flex;
   flex-direction: column;
-  gap: 18px;
-  padding: 20px;
+  gap: 20px;
+  padding: 22px;
 }
 
 .tempo-range {
   color: var(--text-dim);
-  font-size: 0.75rem;
+  font-size: 0.8rem;
   font-variant-numeric: tabular-nums;
+  line-height: 1.4;
 }
 
 .bpm-display {
@@ -558,8 +589,8 @@ summary:focus-visible {
   min-height: clamp(116px, 24vw, 176px);
   align-items: center;
   justify-content: center;
-  gap: 5px;
-  padding: 10px 0;
+  gap: 7px;
+  padding: 12px 0;
 }
 
 .bpm-value {
@@ -568,7 +599,7 @@ summary:focus-visible {
   min-width: 0;
   font-size: clamp(3.25rem, 13vw, 8rem);
   font-weight: 800;
-  line-height: 0.95;
+  line-height: 1;
   font-variant-numeric: tabular-nums;
   letter-spacing: -0.065em;
   text-align: center;
@@ -578,7 +609,7 @@ summary:focus-visible {
   display: block;
   flex: 0 0 auto;
   color: var(--text-dim);
-  font-size: 0.78rem;
+  font-size: 0.82rem;
   font-weight: 700;
   letter-spacing: 0.16em;
   line-height: 1.2;
@@ -587,7 +618,7 @@ summary:focus-visible {
 .stepper-row {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 8px;
+  gap: 10px;
 }
 
 .tempo,
@@ -603,6 +634,7 @@ summary:focus-visible {
   background: var(--surface-raised);
   font-size: 1.02rem;
   font-weight: 750;
+  line-height: 1.2;
   transition: transform 80ms ease, background-color 80ms ease;
 }
 
@@ -665,14 +697,15 @@ summary:focus-visible {
   display: flex;
   justify-content: space-between;
   color: var(--text-dim);
-  font-size: 0.72rem;
+  font-size: 0.78rem;
   font-variant-numeric: tabular-nums;
+  line-height: 1.4;
 }
 
 .keyboard-hint {
   color: var(--text-dim);
-  font-size: 0.72rem;
-  line-height: 1.45;
+  font-size: 0.78rem;
+  line-height: 1.6;
   text-align: center;
 }
 
@@ -728,9 +761,10 @@ summary:focus-visible {
 }
 
 .status-line {
-  min-height: 1.2em;
+  min-height: 1.4em;
   color: var(--text-dim);
-  font-size: 0.84rem;
+  font-size: 0.86rem;
+  line-height: 1.5;
   text-align: center;
   font-variant-numeric: tabular-nums;
 }
@@ -746,8 +780,9 @@ summary:focus-visible {
   border-radius: 16px;
   background: var(--surface);
   color: var(--text);
-  font-size: 0.96rem;
+  font-size: 0.94rem;
   font-weight: 700;
+  line-height: 1.3;
   transition: background-color 80ms ease, transform 80ms ease;
 }
 
@@ -778,13 +813,14 @@ summary:focus-visible {
   min-height: 46px;
   align-items: center;
   justify-content: center;
-  gap: 8px;
+  gap: 10px;
   border: 0;
   border-radius: 12px;
   background: transparent;
   color: var(--text-dim);
-  font-size: 0.9rem;
+  font-size: 0.94rem;
   font-weight: 700;
+  line-height: 1.3;
   transition: background-color 120ms ease, color 120ms ease;
 }
 
@@ -798,7 +834,7 @@ summary:focus-visible {
   .tempo {
     min-height: 100%;
     justify-content: center;
-    padding: 26px;
+    padding: 28px;
   }
 
   .bpm-display {
@@ -816,8 +852,8 @@ summary:focus-visible {
   display: flex;
   min-width: 0;
   flex-direction: column;
-  gap: 18px;
-  padding: 20px;
+  gap: 22px;
+  padding: 22px;
 }
 
 .settings-heading {
@@ -831,8 +867,8 @@ summary:focus-visible {
 .settings-hint,
 .wake-lock-status {
   color: var(--text-dim);
-  font-size: 0.78rem;
-  line-height: 1.4;
+  font-size: 0.82rem;
+  line-height: 1.5;
 }
 
 .settings-hint {
@@ -844,12 +880,12 @@ summary:focus-visible {
 
 .setting-grid {
   display: grid;
-  gap: 20px;
+  gap: 22px;
 }
 
 .setting-group {
   min-width: 0;
-  padding: 14px;
+  padding: 16px;
   border: 1px solid var(--border);
   border-radius: 16px;
   background: var(--surface-raised);
@@ -858,12 +894,13 @@ summary:focus-visible {
 .setting-group h3 {
   display: flex;
   align-items: center;
-  gap: 8px;
-  margin-bottom: 5px;
+  gap: 10px;
+  margin-bottom: 12px;
   color: var(--text-dim);
-  font-size: 0.75rem;
+  font-size: 0.78rem;
   font-weight: 750;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.07em;
+  line-height: 1.45;
   text-transform: uppercase;
 }
 
@@ -872,9 +909,9 @@ summary:focus-visible {
   min-height: var(--touch);
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
+  gap: 14px;
   min-width: 0;
-  padding: 6px 0;
+  padding: 8px 0;
   border-bottom: 1px solid var(--border);
 }
 
@@ -886,7 +923,8 @@ summary:focus-visible {
   min-width: 0;
   flex: 1 1 auto;
   color: var(--text);
-  font-size: 0.88rem;
+  font-size: 0.9rem;
+  line-height: 1.4;
   overflow-wrap: anywhere;
 }
 
@@ -939,8 +977,9 @@ summary:focus-visible {
 .range-control output {
   min-width: 3.2em;
   color: var(--text-dim);
-  font-size: 0.78rem;
+  font-size: 0.82rem;
   font-variant-numeric: tabular-nums;
+  line-height: 1.4;
   text-align: right;
 }
 
@@ -1041,35 +1080,36 @@ summary:focus-visible {
 
 .history-content {
   display: grid;
-  gap: 10px;
-  padding-top: 12px;
+  gap: 12px;
+  padding-top: 14px;
 }
 
 .history-empty,
 .history-list li span {
   color: var(--text-dim);
-  font-size: 0.78rem;
-  line-height: 1.5;
+  font-size: 0.82rem;
+  line-height: 1.6;
 }
 
 .history-list {
   display: grid;
-  gap: 8px;
+  gap: 10px;
   list-style: none;
 }
 
 .history-list li {
   display: grid;
   min-width: 0;
-  gap: 2px;
-  padding: 10px 12px;
+  gap: 5px;
+  padding: 12px;
   border: 1px solid var(--border);
   border-radius: 12px;
   background: var(--surface-raised);
 }
 
 .history-list li strong {
-  font-size: 0.8rem;
+  font-size: 0.84rem;
+  line-height: 1.4;
   overflow-wrap: anywhere;
 }
 
@@ -1084,21 +1124,22 @@ summary:focus-visible {
   border-radius: 10px;
   background: var(--surface);
   color: var(--text);
-  font-size: 0.78rem;
+  font-size: 0.82rem;
+  line-height: 1.4;
 }
 
 .loop-hint {
-  padding-top: 12px;
+  padding-top: 4px;
   color: var(--text-dim);
-  font-size: 0.78rem;
-  line-height: 1.45;
+  font-size: 0.82rem;
+  line-height: 1.6;
 }
 
 .loop-progress {
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  padding-top: 14px;
+  gap: 10px;
+  padding-top: 4px;
 }
 
 .progress-track {
@@ -1119,8 +1160,8 @@ summary:focus-visible {
 
 .progress-text {
   color: var(--text-dim);
-  font-size: 0.82rem;
-  line-height: 1.5;
+  font-size: 0.86rem;
+  line-height: 1.6;
   text-align: center;
   font-variant-numeric: tabular-nums;
 }
@@ -1132,7 +1173,7 @@ select:disabled {
   opacity: 0.48;
 }
 
-@media (min-width: 620px) {
+@media (min-width: 800px) {
   .panel {
     padding: 24px;
   }
@@ -1140,7 +1181,9 @@ select:disabled {
   .setting-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
+}
 
+@media (min-width: 620px) {
   .speedloop-inputs {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -1162,6 +1205,7 @@ select:disabled {
   color: var(--text-dim);
   font-size: 0.95rem;
   font-weight: 650;
+  line-height: 1.6;
   text-align: center;
   font-variant-numeric: tabular-nums;
 }

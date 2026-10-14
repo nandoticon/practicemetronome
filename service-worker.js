@@ -1,4 +1,4 @@
-const CACHE_NAME = "practice-metronome-v10";
+const CACHE_NAME = "practice-metronome-v11";
 const APP_FILES = [
   "./",
   "./index.html",
@@ -6,6 +6,7 @@ const APP_FILES = [
   "./bundle.js",
   "./manifest.webmanifest",
   "./icon.svg",
+  "./apple-touch-icon.png",
 ];
 
 self.addEventListener("install", (event) => {
