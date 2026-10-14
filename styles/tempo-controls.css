@@ -201,13 +201,13 @@
 }
 
 .btn-tap {
-  display: grid;
+  display: flex;
   width: 100%;
   min-height: 54px;
   align-items: center;
-  grid-template-columns: 19px minmax(0, 1fr) 19px;
-  gap: 8px;
-  padding-inline: 10px;
+  justify-content: center;
+  gap: 9px;
+  padding: 8px 12px;
   border: 1px solid var(--border);
   border-radius: 16px;
   background: var(--surface);
@@ -221,18 +221,14 @@
 .btn-tap svg {
   width: 19px;
   height: 19px;
+  flex: 0 0 19px;
   color: var(--accent-strong);
 }
 
 .btn-tap span {
   min-width: 0;
+  max-width: 100%;
   text-align: center;
-}
-
-.btn-tap::after {
-  width: 19px;
-  height: 1px;
-  content: "";
 }
 
 .btn-tap:active,
