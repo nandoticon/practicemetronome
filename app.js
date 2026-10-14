@@ -78,6 +78,7 @@
 
     rebuild(count) {
       this.container.textContent = "";
+      this.container.style.setProperty("--beat-count", String(count));
       this.dots = [];
       for (let i = 0; i < count; i++) {
         const dot = document.createElement("div");

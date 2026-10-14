@@ -91,8 +91,22 @@
         </div>
         <div class="meter-badge" id="meterLabel">4/4</div>
       </div>
-      <div class="beat-row" id="beatRow" role="img" aria-label="Beat indicator" data-i18n-aria-label="beatIndicator"></div>
-      <div class="phrase-label" id="phraseLabel" hidden></div>
+      <div class="beat-display">
+        <div class="beat-row" id="beatRow" role="img" aria-label="Beat indicator" data-i18n-aria-label="beatIndicator"></div>
+        <div class="phrase-label" id="phraseLabel" hidden></div>
+      </div>
+      <div class="console-actions">
+        <button class="btn btn-play" id="playBtn" aria-pressed="false">
+          <svg class="play-icon" aria-hidden="true"><use href="#play"></use></svg>
+          <svg class="pause-icon" aria-hidden="true"><use href="#pause"></use></svg>
+          <span id="playLabel" data-i18n="start">Start</span>
+        </button>
+        <button class="btn btn-tap" id="tapBtn" aria-label="Tap tempo" data-i18n-aria-label="tapTempo">
+          <svg class="icon" aria-hidden="true"><use href="#hand"></use></svg>
+          <span data-i18n="tapTempo">Tap Tempo</span>
+        </button>
+        <div class="status-line" id="statusLine" role="status" aria-live="polite"></div>
+      </div>
     </section>
     <!-- BPM display + slider -->
     <section class="tempo card" aria-label="Tempo" data-i18n-aria-label="tempo">
@@ -130,22 +144,6 @@
         <span>30</span><span>300</span>
       </div>
       <p class="keyboard-hint" data-i18n="keyboardHint">↑/↓ adjust · Shift + arrows: ±5 · Space: start/stop · T: tap</p>
-    </section>
-    <!-- Play / Stop -->
-    <section class="transport">
-      <button class="btn btn-play" id="playBtn" aria-pressed="false">
-        <svg class="play-icon" aria-hidden="true"><use href="#play"></use></svg>
-        <svg class="pause-icon" aria-hidden="true"><use href="#pause"></use></svg>
-        <span id="playLabel" data-i18n="start">Start</span>
-      </button>
-      <div class="status-line" id="statusLine" role="status" aria-live="polite"></div>
-    </section>
-    <!-- Tap tempo -->
-    <section class="tap-section">
-      <button class="btn btn-tap" id="tapBtn" aria-label="Tap tempo" data-i18n-aria-label="tapTempo">
-        <svg class="icon" aria-hidden="true"><use href="#hand"></use></svg>
-        <span data-i18n="tapTempo">Tap Tempo</span>
-      </button>
     </section>
     <!-- Mode selector -->
     <nav class="mode-tabs" role="tablist" aria-label="Mode" data-i18n-aria-label="mode">

@@ -7,6 +7,20 @@
         </div>
         <div class="meter-badge" id="meterLabel">4/4</div>
       </div>
-      <div class="beat-row" id="beatRow" role="img" aria-label="Beat indicator" data-i18n-aria-label="beatIndicator"></div>
-      <div class="phrase-label" id="phraseLabel" hidden></div>
+      <div class="beat-display">
+        <div class="beat-row" id="beatRow" role="img" aria-label="Beat indicator" data-i18n-aria-label="beatIndicator"></div>
+        <div class="phrase-label" id="phraseLabel" hidden></div>
+      </div>
+      <div class="console-actions">
+        <button class="btn btn-play" id="playBtn" aria-pressed="false">
+          <svg class="play-icon" aria-hidden="true"><use href="./icons/lucide.svg#play"></use></svg>
+          <svg class="pause-icon" aria-hidden="true"><use href="./icons/lucide.svg#pause"></use></svg>
+          <span id="playLabel" data-i18n="start">Start</span>
+        </button>
+        <button class="btn btn-tap" id="tapBtn" aria-label="Tap tempo" data-i18n-aria-label="tapTempo">
+          <svg class="icon" aria-hidden="true"><use href="./icons/lucide.svg#hand"></use></svg>
+          <span data-i18n="tapTempo">Tap Tempo</span>
+        </button>
+        <div class="status-line" id="statusLine" role="status" aria-live="polite"></div>
+      </div>
     </section>

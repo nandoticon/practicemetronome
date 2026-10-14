@@ -8,8 +8,6 @@ const parts = [
   "header.html",
   "beat-indicator.html",
   "tempo.html",
-  "transport.html",
-  "tap-tempo.html",
   "mode-tabs.html",
   "metronome-mode.html",
   "speedloop-mode.html",
