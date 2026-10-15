@@ -35,7 +35,7 @@
     COUNTIN_LABEL_MS: 0,
   });
 
-  const MODES = Object.freeze({ METRONOME: "metronome", SPEEDLOOP: "speedloop" });
+  const MODES = Object.freeze({ METRONOME: "metronome", SPEEDLOOP: "speedloop", ENDURANCE: "endurance" });
 
   /* ============================================================
    * Utilities
@@ -56,7 +56,7 @@
     return `${format.format(m)}:${format.format(r)}`;
   };
   const t = (key, params) => window.MetronomeI18n.translate(key, params);
-  const { SpeedRamp, SpeedLoopCadence, initialBpm, practiceTimerEnd } = window.MetronomeTiming;
+  const { SpeedRamp, SpeedLoopCadence, EnduranceWorkout, initialBpm, practiceTimerEnd } = window.MetronomeTiming;
   const { AudioEngine, Scheduler } = window.createMetronomeAudio({ CONFIG, clamp });
 
   /* ============================================================
@@ -210,6 +210,18 @@
         loopBars: document.getElementById("loopBars"),
         loopHint: document.getElementById("loopHint"),
         loopProgress: document.getElementById("loopProgress"),
+        enduranceFields: document.getElementById("enduranceFields"),
+        endurancePracticeSeconds: document.getElementById("endurancePracticeSeconds"),
+        enduranceRestSeconds: document.getElementById("enduranceRestSeconds"),
+        enduranceSessions: document.getElementById("enduranceSessions"),
+        enduranceProgress: document.getElementById("enduranceProgress"),
+        enduranceCommand: document.getElementById("enduranceCommand"),
+        enduranceStage: document.getElementById("enduranceStage"),
+        enduranceCountdown: document.getElementById("enduranceCountdown"),
+        progressElapsed: document.getElementById("progressElapsed"),
+        enduranceProgressFill: document.getElementById("enduranceProgressFill"),
+        enduranceProgressTrack: document.getElementById("enduranceProgressTrack"),
+        timerOption: document.querySelector(".timer-option"),
         progressFill: document.getElementById("progressFill"),
         progressTrack: document.getElementById("progressTrack"),
         progressText: document.getElementById("progressText"),
@@ -239,6 +251,7 @@
       this.tap = new TapTempo((bpm) => this.setBpm(bpm, { fromTap: true }));
       this.ramp = new SpeedRamp();
       this.speedLoopCadence = new SpeedLoopCadence(this.state.loopBars);
+      this.enduranceWorkout = null;
 
       this.running = false;
       this.phase = "idle";          // idle | countin | playing
@@ -383,6 +396,19 @@
         });
       });
 
+      const enduranceInputs = [
+        [e.endurancePracticeSeconds, "endurancePracticeSeconds", 1, 3600],
+        [e.enduranceRestSeconds, "enduranceRestSeconds", 0, 3600],
+        [e.enduranceSessions, "enduranceSessions", 1, 99],
+      ];
+      enduranceInputs.forEach(([input, key, min, max]) => {
+        input.addEventListener("change", () => {
+          this.state[key] = clamp(toInt(input.value, this.state[key]), min, max);
+          input.value = this.state[key];
+          this.persist();
+        });
+      });
+
       e.tabs.forEach((tab) => {
         tab.addEventListener("click", () => this.setMode(tab.dataset.mode));
       });
@@ -449,6 +475,9 @@
       this.el.loopTarget.value = s.loopTarget;
       this.el.loopMinutes.value = s.loopMinutes;
       this.el.loopBars.value = s.loopBars;
+      this.el.endurancePracticeSeconds.value = s.endurancePracticeSeconds;
+      this.el.enduranceRestSeconds.value = s.enduranceRestSeconds;
+      this.el.enduranceSessions.value = s.enduranceSessions;
       this.updateLoopPhraseText();
 
       this.scheduler.setBpm(s.bpm);
@@ -484,7 +513,13 @@
       this.renderBpm();
       this.renderHistory();
       if (this.el.readout.classList.contains("alert")) {
-        this.el.readout.textContent = t("practiceComplete");
+        this.el.readout.textContent = t(this.state.mode === MODES.ENDURANCE
+          ? "enduranceComplete"
+          : "practiceComplete");
+        if (this.state.mode === MODES.ENDURANCE) {
+          this.el.enduranceCommand.textContent = "";
+          this.el.enduranceStage.textContent = t("enduranceComplete");
+        }
       }
     }
 
@@ -517,6 +552,7 @@
         this.el.countdownBeats, this.el.wakeLockEnabled, this.el.subdivisions,
         this.el.accentPattern, this.el.loopStart,
         this.el.loopTarget, this.el.loopMinutes, this.el.loopBars,
+        this.el.endurancePracticeSeconds, this.el.enduranceRestSeconds, this.el.enduranceSessions,
       ].forEach((control) => { control.disabled = this.running; });
       this.el.wakeLockEnabled.disabled = this.running || !("wakeLock" in navigator);
       this.el.tabs.forEach((tab) => {
@@ -570,6 +606,11 @@
       });
       this.el.speedloopFields.hidden = mode !== MODES.SPEEDLOOP;
       this.el.metronomePanel.hidden = mode !== MODES.METRONOME;
+      this.el.enduranceFields.hidden = mode !== MODES.ENDURANCE;
+      this.el.loopProgress.hidden = mode !== MODES.SPEEDLOOP || this.phase !== "playing";
+      this.el.enduranceProgress.hidden = mode !== MODES.ENDURANCE || !this.enduranceWorkout;
+      this.el.timerOption.hidden = mode === MODES.ENDURANCE;
+      this.el.timerFields.hidden = mode === MODES.ENDURANCE || !this.state.timerEnabled;
       this.updateLoopTempoContext();
       this.updateTempoControlAvailability();
       if (persistChange) this.persist();
@@ -635,6 +676,13 @@
       this.updateTempoControlAvailability();
       if (this.state.wakeLockEnabled) this.acquireWakeLock();
       this.alertShown = false;
+      this.el.readout.classList.remove("alert");
+      this.el.readout.textContent = "";
+      if (this.state.mode === MODES.ENDURANCE) {
+        this.el.enduranceProgress.hidden = true;
+        this.el.enduranceProgressFill.style.width = "0%";
+        this.el.enduranceProgressTrack.setAttribute("aria-valuenow", "0");
+      }
       this.el.playBtn.setAttribute("aria-pressed", "true");
       this.el.playBtn.classList.add("running");
       this.tap.reset();
@@ -710,17 +758,78 @@
         const pendingBeats = this.pendingSpeedLoopBeats;
         this.pendingSpeedLoopBeats = [];
         pendingBeats.forEach(({ time, beatsPerBar }) => this.advanceSpeedLoop(time, beatsPerBar));
+      } else if (mode === MODES.ENDURANCE) {
+        this.el.phraseLabel.hidden = true;
+        this.el.loopProgress.hidden = true;
+        this.enduranceWorkout = new EnduranceWorkout({
+          practiceSeconds: this.state.endurancePracticeSeconds,
+          restSeconds: this.state.enduranceRestSeconds,
+          sessions: this.state.enduranceSessions,
+        });
+        this.el.enduranceProgress.hidden = false;
+        this.enduranceWorkout.start(atTime);
+        this.startEndurancePractice(atTime);
+        this.playEnduranceCue("practice", atTime);
       } else {
         this.pendingSpeedLoopBeats = [];
         this.el.phraseLabel.hidden = true;
         this.el.loopProgress.hidden = true;
       }
 
-      this.timerEndTime = practiceTimerEnd(atTime, this.state.timerEnabled, this.state.timerMinutes);
+      this.timerEndTime = mode === MODES.ENDURANCE
+        ? null
+        : practiceTimerEnd(atTime, this.state.timerEnabled, this.state.timerMinutes);
 
-      if (!this.scheduler.running) {
+      if (mode !== MODES.ENDURANCE && !this.scheduler.running) {
         this.scheduler.start(atTime);
       }
+    }
+
+    startEndurancePractice(atTime) {
+      const continueCountIn = this.scheduler.running && this.phase === "playing";
+      this.phase = "playing";
+      this.scheduler.setBpm(this.state.bpm);
+      if (continueCountIn) {
+        this.scheduler.setStopAt(this.enduranceWorkout.phaseEndsAt);
+      } else {
+        this.scheduler.stop();
+        this.visualizer.clear();
+        this.scheduler.start(atTime, this.enduranceWorkout.phaseEndsAt);
+      }
+      this.updateEnduranceDisplay(atTime);
+    }
+
+    playEnduranceCue(phase, atTime) {
+      this.engine.scheduleCue(atTime, phase === "rest" ? 440 : 880);
+    }
+
+    updateEnduranceDisplay(now) {
+      if (!this.enduranceWorkout) return;
+      const workout = this.enduranceWorkout;
+      const remaining = Math.max(0, workout.phaseEndsAt - now);
+      const phaseSeconds = workout.phase === "rest"
+        ? workout.restSeconds
+        : workout.practiceSeconds;
+      const phaseElapsed = Math.min(phaseSeconds, Math.max(0, phaseSeconds - remaining));
+      const completedSeconds = (workout.currentSession - 1) *
+        (workout.practiceSeconds + workout.restSeconds) +
+        (workout.phase === "rest" ? workout.practiceSeconds + phaseElapsed : phaseElapsed);
+      const totalSeconds = workout.sessions * workout.practiceSeconds +
+        (workout.sessions - 1) * workout.restSeconds;
+      const percent = Math.round(Math.min(1, completedSeconds / totalSeconds) * 100);
+      this.el.enduranceCommand.textContent = t(workout.phase === "rest"
+        ? "enduranceRestNow"
+        : "endurancePracticeNow");
+      this.el.enduranceStage.textContent = t(workout.phase === "rest"
+        ? "enduranceRestStatus"
+        : "endurancePracticeStatus", {
+        current: workout.currentSession,
+        total: workout.sessions,
+      });
+      this.el.enduranceCountdown.textContent = t("timeLeft", { time: formatTime(remaining) });
+      this.el.enduranceProgress.dataset.phase = workout.phase;
+      this.el.enduranceProgressFill.style.width = `${percent}%`;
+      this.el.enduranceProgressTrack.setAttribute("aria-valuenow", String(percent));
     }
 
     currentBpm() {
@@ -776,6 +885,7 @@
       this.updateTempoControlAvailability();
       this.releaseWakeLock();
       this.phase = "idle";
+      this.enduranceWorkout = null;
       this.pendingSpeedLoopBeats = [];
       this.el.phraseLabel.hidden = true;
       this.scheduler.stop();
@@ -787,6 +897,19 @@
       this.el.progressFill.style.width = "0%";
       this.el.progressTrack.setAttribute("aria-valuenow", "0");
       this.el.progressText.textContent = "0%";
+      if (this.state.mode === MODES.ENDURANCE) {
+        if (preserveReadout) {
+          this.el.enduranceCommand.textContent = "";
+          this.el.enduranceStage.textContent = t("enduranceComplete");
+          this.el.enduranceCountdown.textContent = "";
+          this.el.enduranceProgressFill.style.width = "100%";
+          this.el.enduranceProgressTrack.setAttribute("aria-valuenow", "100");
+        } else {
+          this.el.enduranceProgress.hidden = true;
+          this.el.enduranceProgressFill.style.width = "0%";
+          this.el.enduranceProgressTrack.setAttribute("aria-valuenow", "0");
+        }
+      }
       if (!preserveReadout) {
         this.el.readout.classList.remove("alert");
         this.el.readout.textContent = "";
@@ -804,6 +927,7 @@
       this.recordSession(true);
       this.running = false;
       this.phase = "idle";
+      this.enduranceWorkout = null;
       this.scheduler.stop();
       this.visualizer.clear();
       this.pendingSpeedLoopBeats = [];
@@ -815,6 +939,7 @@
       this.el.playLabel.textContent = t("start");
       this.el.phraseLabel.hidden = true;
       this.el.loopProgress.hidden = true;
+      this.el.enduranceProgress.hidden = true;
       this.countInEndTime = null;
       this.timerEndTime = null;
       this.updateTempoControlAvailability();
@@ -828,7 +953,7 @@
     }
 
     recordSession(interrupted) {
-      if (this.phase !== "playing" || this.sessionLogged) return;
+      if ((this.phase !== "playing" && this.phase !== "resting") || this.sessionLogged) return;
       const endedAt = this.engine.now;
       const sessions = window.MetronomeStorage.saveSession({
         startedAt: Date.now() - Math.max(0, endedAt - this.sessionStartTime) * 1000,
@@ -852,7 +977,9 @@
         const details = document.createElement("span");
         const date = new Date(session.startedAt);
         const duration = formatTime(session.durationSec);
-        const mode = t(session.mode === MODES.SPEEDLOOP ? "speedLoop" : "metronome");
+        const mode = t(session.mode === MODES.SPEEDLOOP
+          ? "speedLoop"
+          : session.mode === MODES.ENDURANCE ? "enduranceTraining" : "metronome");
         title.textContent = t("historyEntry", { mode, start: session.startBpm, end: session.endBpm });
         details.textContent = `${date.toLocaleString(this.state.language)} · ${duration}${session.interrupted ? ` · ${t("interrupted")}` : ""}`;
         item.append(title, details);
@@ -893,7 +1020,37 @@
             percent: pct,
             time: formatTime(this.ramp.durationSec - (now - this.ramp.startedAt)),
           });
+        this.el.progressElapsed.textContent = t("elapsed", {
+          time: formatTime(now - this.sessionStartTime),
+        });
         // Ramp finishes and holds at target indefinitely; no stop.
+      }
+
+      if (
+        this.state.mode === MODES.ENDURANCE &&
+        (this.phase === "playing" || this.phase === "resting") &&
+        this.enduranceWorkout
+      ) {
+        const transition = this.enduranceWorkout.advance(now);
+        if (transition === "rest") {
+          this.phase = "resting";
+          this.scheduler.stop();
+          this.visualizer.clear();
+          this.playEnduranceCue("rest", now);
+        } else if (transition === "practice") {
+          const nextStart = now + 0.05;
+          this.enduranceWorkout.phaseEndsAt += 0.05;
+          this.startEndurancePractice(nextStart);
+          this.playEnduranceCue("practice", nextStart);
+        } else if (transition === "complete") {
+          this.recordSession(false);
+          this.alertShown = true;
+          this.fireTimerAlert(now, "enduranceComplete");
+          this.stop({ preserveReadout: true });
+          return;
+        }
+        this.updateEnduranceDisplay(now);
+        return;
       }
 
       // Practice timer.
@@ -905,21 +1062,17 @@
           this.fireTimerAlert(now);
           this.stop({ preserveReadout: true });
         }
-      } else if (this.phase === "playing" && this.state.mode === MODES.SPEEDLOOP) {
-        // Show elapsed time in speed loop mode.
-        const elapsed = now - this.sessionStartTime;
-        this.el.readout.textContent = t("elapsed", { time: formatTime(elapsed) });
       } else {
         this.el.readout.textContent = "";
       }
     }
 
-    fireTimerAlert(now) {
+    fireTimerAlert(now, messageKey = "practiceComplete") {
       // Audio alert: three tones scheduled on the audio clock.
       this.engine.scheduleAlert(now + 0.0, 880, 0.3);
       this.engine.scheduleAlert(now + 0.4, 880, 0.3);
       this.engine.scheduleAlert(now + 0.8, 1100, 0.5);
-      this.el.readout.textContent = t("practiceComplete");
+      this.el.readout.textContent = t(messageKey);
       this.el.readout.classList.add("alert");
       this.setStatus("");
       if (navigator.vibrate) navigator.vibrate([200, 100, 200]);

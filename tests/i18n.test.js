@@ -34,6 +34,21 @@ test("every marked-up interface string has a translation key", () => {
   assert.deepEqual(missing, []);
 });
 
+test("Speed Loop and endurance indicators are grouped with the beat display", () => {
+  const html = fs.readFileSync("index.html", "utf8");
+  const beatDisplayStart = html.indexOf('<div class="beat-display">');
+  const beatDisplayEnd = html.indexOf("</div>\n      <div class=\"console-actions\">", beatDisplayStart);
+  assert.ok(beatDisplayStart >= 0);
+  assert.ok(beatDisplayEnd > beatDisplayStart);
+  const beatDisplay = html.slice(beatDisplayStart, beatDisplayEnd);
+  assert.match(beatDisplay, /id="loopProgress"/);
+  assert.match(beatDisplay, /id="progressElapsed"/);
+  assert.match(beatDisplay, /id="enduranceProgress"/);
+  assert.match(beatDisplay, /id="enduranceCountdown"/);
+  assert.match(beatDisplay, /id="enduranceCommand"/);
+  assert.match(beatDisplay, /id="progressElapsed"/);
+});
+
 test("all dynamic application messages resolve to translated catalog entries", () => {
   const app = fs.readFileSync("app.js", "utf8");
   const used = [

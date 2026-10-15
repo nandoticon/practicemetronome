@@ -11,6 +11,7 @@ const parts = [
   "mode-tabs.html",
   "metronome-mode.html",
   "speedloop-mode.html",
+  "endurance-mode.html",
   "settings.html",
   "readout.html",
   "tail.html",

@@ -30,6 +30,7 @@
       mode: "Mode",
       metronome: "Metronome",
       speedLoop: "Speed Loop",
+      enduranceTraining: "Endurance",
       fixedTempo: "FIXED TEMPO",
       metronomePractice: "Metronome practice",
       metronomeDescription: "Set your tempo above and start a steady beat. Shared meter, sound, count-in, and timer options are below.",
@@ -44,6 +45,19 @@
       barsPerChange: "Bars per tempo change",
       rampProgress: "Speed Loop ramp progress",
       rampHint: "Each phrase is {count} {unit} long. Tempo changes at its start.",
+      endurancePractice: "ENDURANCE PRACTICE",
+      enduranceTitle: "Endurance training",
+      enduranceDescription: "Set a tempo above, then alternate focused practice intervals with timed rests.",
+      workoutSettings: "Workout settings",
+      practiceDurationSeconds: "Practice duration (sec)",
+      restDurationSeconds: "Rest duration (sec)",
+      numberOfSessions: "Number of sessions",
+      workoutProgress: "Workout progress",
+      endurancePracticeStatus: "Session {current} of {total} · Practice",
+      enduranceRestStatus: "Session {current} of {total} · Rest",
+      endurancePracticeNow: "PRACTICE!",
+      enduranceRestNow: "REST",
+      enduranceComplete: "Endurance workout complete",
       barUnit: "bar",
       barsUnit: "bars",
       makeItYours: "MAKE IT YOURS",
@@ -139,6 +153,7 @@
       mode: "Modo",
       metronome: "Metrônomo",
       speedLoop: "Aumento gradual do andamento",
+      enduranceTraining: "Resistência",
       fixedTempo: "ANDAMENTO FIXO",
       metronomePractice: "Prática com metrônomo",
       metronomeDescription: "Defina o andamento acima e inicie uma batida constante. As opções de compasso, som, contagem e cronômetro ficam abaixo.",
@@ -153,6 +168,19 @@
       barsPerChange: "Compassos por mudança",
       rampProgress: "Progresso do aumento gradual",
       rampHint: "Cada frase dura {count} {unit}. O andamento muda no início da frase.",
+      endurancePractice: "TREINO DE RESISTÊNCIA",
+      enduranceTitle: "Treino de resistência",
+      enduranceDescription: "Defina o andamento acima e alterne intervalos de prática focada com pausas cronometradas.",
+      workoutSettings: "Configurações do treino",
+      practiceDurationSeconds: "Duração da prática (s)",
+      restDurationSeconds: "Duração do descanso (s)",
+      numberOfSessions: "Número de sessões",
+      workoutProgress: "Progresso do treino",
+      endurancePracticeStatus: "Sessão {current} de {total} · Prática",
+      enduranceRestStatus: "Sessão {current} de {total} · Descanso",
+      endurancePracticeNow: "PRATIQUE!",
+      enduranceRestNow: "DESCANSE",
+      enduranceComplete: "Treino de resistência concluído",
       barUnit: "compasso",
       barsUnit: "compassos",
       makeItYours: "PERSONALIZE",
@@ -248,6 +276,7 @@
       mode: "Modo",
       metronome: "Metrónomo",
       speedLoop: "Subida gradual del tempo",
+      enduranceTraining: "Resistencia",
       fixedTempo: "TEMPO FIJO",
       metronomePractice: "Práctica con metrónomo",
       metronomeDescription: "Ajusta el tempo arriba e inicia un pulso constante. Abajo están las opciones de compás, sonido, cuenta inicial y temporizador.",
@@ -262,6 +291,19 @@
       barsPerChange: "Compases por cambio",
       rampProgress: "Progreso de aceleración gradual",
       rampHint: "Cada frase dura {count} {unit}. El tempo cambia al comienzo de la frase.",
+      endurancePractice: "PRÁCTICA DE RESISTENCIA",
+      enduranceTitle: "Entrenamiento de resistencia",
+      enduranceDescription: "Define el tempo arriba y alterna intervalos de práctica concentrada con descansos cronometrados.",
+      workoutSettings: "Ajustes del entrenamiento",
+      practiceDurationSeconds: "Duración de práctica (s)",
+      restDurationSeconds: "Duración del descanso (s)",
+      numberOfSessions: "Número de sesiones",
+      workoutProgress: "Progreso del entrenamiento",
+      endurancePracticeStatus: "Sesión {current} de {total} · Práctica",
+      enduranceRestStatus: "Sesión {current} de {total} · Descanso",
+      endurancePracticeNow: "¡PRACTICA!",
+      enduranceRestNow: "DESCANSA",
+      enduranceComplete: "Entrenamiento de resistencia completado",
       barUnit: "compás",
       barsUnit: "compases",
       makeItYours: "PERSONALÍZALO",
@@ -357,6 +399,7 @@
       mode: "Modalità",
       metronome: "Metronomo",
       speedLoop: "Aumento graduale del tempo",
+      enduranceTraining: "Resistenza",
       fixedTempo: "TEMPO FISSO",
       metronomePractice: "Esercizio con metronomo",
       metronomeDescription: "Imposta il tempo sopra e avvia un battito regolare. Sotto trovi le opzioni di misura, suono, conteggio iniziale e timer.",
@@ -371,6 +414,19 @@
       barsPerChange: "Battute prima di cambiare tempo",
       rampProgress: "Avanzamento accelerazione graduale",
       rampHint: "Ogni frase dura {count} {unit}. Il tempo cambia all'inizio della frase.",
+      endurancePractice: "ALLENAMENTO DI RESISTENZA",
+      enduranceTitle: "Allenamento di resistenza",
+      enduranceDescription: "Imposta il tempo sopra e alterna intervalli di pratica concentrata a pause cronometrate.",
+      workoutSettings: "Impostazioni allenamento",
+      practiceDurationSeconds: "Durata pratica (s)",
+      restDurationSeconds: "Durata pausa (s)",
+      numberOfSessions: "Numero di sessioni",
+      workoutProgress: "Avanzamento allenamento",
+      endurancePracticeStatus: "Sessione {current} di {total} · Pratica",
+      enduranceRestStatus: "Sessione {current} di {total} · Pausa",
+      endurancePracticeNow: "ALLENATI!",
+      enduranceRestNow: "RIPOSA",
+      enduranceComplete: "Allenamento di resistenza completato",
       barUnit: "battuta",
       barsUnit: "battute",
       makeItYours: "PERSONALIZZA",
@@ -466,6 +522,7 @@
       mode: "Mode",
       metronome: "Métronome",
       speedLoop: "Augmentation progressive du tempo",
+      enduranceTraining: "Endurance",
       fixedTempo: "TEMPO FIXE",
       metronomePractice: "Exercice au métronome",
       metronomeDescription: "Réglez le tempo ci-dessus et lancez un battement régulier. Les options de mesure, de son, de décompte et de minuterie sont ci-dessous.",
@@ -480,6 +537,19 @@
       barsPerChange: "Mesures avant le changement de tempo",
       rampProgress: "Progression de l’accélération",
       rampHint: "Chaque phrase dure {count} {unit}. Le tempo change au début de la phrase.",
+      endurancePractice: "ENTRAÎNEMENT D’ENDURANCE",
+      enduranceTitle: "Entraînement d’endurance",
+      enduranceDescription: "Réglez le tempo ci-dessus, puis alternez des périodes de pratique concentrée et des pauses chronométrées.",
+      workoutSettings: "Réglages de l’entraînement",
+      practiceDurationSeconds: "Durée de pratique (s)",
+      restDurationSeconds: "Durée de repos (s)",
+      numberOfSessions: "Nombre de séances",
+      workoutProgress: "Progression de l’entraînement",
+      endurancePracticeStatus: "Séance {current} sur {total} · Pratique",
+      enduranceRestStatus: "Séance {current} sur {total} · Repos",
+      endurancePracticeNow: "PRATIQUEZ !",
+      enduranceRestNow: "REPOS",
+      enduranceComplete: "Entraînement d’endurance terminé",
       barUnit: "mesure",
       barsUnit: "mesures",
       makeItYours: "PERSONNALISEZ",
@@ -575,6 +645,7 @@
       mode: "Modus",
       metronome: "Metronom",
       speedLoop: "Tempo schrittweise steigern",
+      enduranceTraining: "Ausdauer",
       fixedTempo: "FESTES TEMPO",
       metronomePractice: "Metronom-Übung",
       metronomeDescription: "Stelle oben das Tempo ein und starte einen gleichmäßigen Takt. Taktart, Klang, Einzählen und Timer findest du unten.",
@@ -589,6 +660,19 @@
       barsPerChange: "Takte pro Tempowechsel",
       rampProgress: "Fortschritt des Tempoaufbaus",
       rampHint: "Jede Phrase dauert {count} {unit}. Das Tempo ändert sich am Anfang der Phrase.",
+      endurancePractice: "AUSDAUERTRAINING",
+      enduranceTitle: "Ausdauertraining",
+      enduranceDescription: "Lege oben das Tempo fest und wechsle zwischen konzentrierten Übungsintervallen und Pausen.",
+      workoutSettings: "Trainingseinstellungen",
+      practiceDurationSeconds: "Übungsdauer (Sek.)",
+      restDurationSeconds: "Pausendauer (Sek.)",
+      numberOfSessions: "Anzahl der Einheiten",
+      workoutProgress: "Trainingsfortschritt",
+      endurancePracticeStatus: "Einheit {current} von {total} · Üben",
+      enduranceRestStatus: "Einheit {current} von {total} · Pause",
+      endurancePracticeNow: "ÜBEN!",
+      enduranceRestNow: "PAUSE",
+      enduranceComplete: "Ausdauertraining abgeschlossen",
       barUnit: "Takt",
       barsUnit: "Takte",
       makeItYours: "ANPASSEN",
@@ -684,6 +768,7 @@
       mode: "モード",
       metronome: "メトロノーム",
       speedLoop: "段階的なテンポアップ",
+      enduranceTraining: "持久力",
       fixedTempo: "一定のテンポ",
       metronomePractice: "メトロノーム練習",
       metronomeDescription: "上でテンポを設定して、一定の拍を開始します。拍子、音、カウントイン、タイマーは下で設定できます。",
@@ -698,6 +783,19 @@
       barsPerChange: "何小節ごとにテンポを変更するか",
       rampProgress: "加速の進行状況",
       rampHint: "1フレーズは{count}{unit}です。テンポは各フレーズの最初に変わります。",
+      endurancePractice: "持久力トレーニング",
+      enduranceTitle: "持久力トレーニング",
+      enduranceDescription: "上でテンポを設定し、集中練習と時間指定の休憩を交互に行います。",
+      workoutSettings: "トレーニング設定",
+      practiceDurationSeconds: "練習時間（秒）",
+      restDurationSeconds: "休憩時間（秒）",
+      numberOfSessions: "セッション数",
+      workoutProgress: "トレーニングの進行状況",
+      endurancePracticeStatus: "{total} セッション中 {current} · 練習",
+      enduranceRestStatus: "{total} セッション中 {current} · 休憩",
+      endurancePracticeNow: "練習！",
+      enduranceRestNow: "休憩",
+      enduranceComplete: "持久力トレーニング完了",
       barUnit: "小節",
       barsUnit: "小節",
       makeItYours: "カスタマイズ",
@@ -793,6 +891,7 @@
       mode: "模式",
       metronome: "节拍器",
       speedLoop: "逐步加快速度",
+      enduranceTraining: "耐力训练",
       fixedTempo: "固定速度",
       metronomePractice: "节拍器练习",
       metronomeDescription: "在上方设置速度并开始稳定的节拍。拍号、声音、预备拍和计时器选项在下方。",
@@ -807,6 +906,19 @@
       barsPerChange: "每隔多少小节改变速度",
       rampProgress: "渐进提速进度",
       rampHint: "每个乐句为 {count} {unit}。速度在每个乐句开始时改变。",
+      endurancePractice: "耐力训练",
+      enduranceTitle: "耐力训练",
+      enduranceDescription: "先设置上方速度，然后交替进行专注练习和定时休息。",
+      workoutSettings: "训练设置",
+      practiceDurationSeconds: "练习时长（秒）",
+      restDurationSeconds: "休息时长（秒）",
+      numberOfSessions: "训练组数",
+      workoutProgress: "训练进度",
+      endurancePracticeStatus: "第 {current}/{total} 组 · 练习",
+      enduranceRestStatus: "第 {current}/{total} 组 · 休息",
+      endurancePracticeNow: "开始练习！",
+      enduranceRestNow: "休息",
+      enduranceComplete: "耐力训练完成",
       barUnit: "小节",
       barsUnit: "小节",
       makeItYours: "自定义",
@@ -902,6 +1014,7 @@
       mode: "모드",
       metronome: "메트로놈",
       speedLoop: "템포 단계적으로 높이기",
+      enduranceTraining: "지구력",
       fixedTempo: "고정 템포",
       metronomePractice: "메트로놈 연습",
       metronomeDescription: "위에서 템포를 설정하고 일정한 박자를 시작하세요. 박자표, 소리, 카운트인, 타이머는 아래에서 설정할 수 있습니다.",
@@ -916,6 +1029,19 @@
       barsPerChange: "몇 마디마다 템포를 변경할지",
       rampProgress: "점진적 템포 진행률",
       rampHint: "프레이즈는 {count}{unit}로 구성됩니다. 각 프레이즈가 시작될 때 템포가 바뀝니다.",
+      endurancePractice: "지구력 연습",
+      enduranceTitle: "지구력 훈련",
+      enduranceDescription: "위에서 템포를 설정하고 집중 연습과 정해진 휴식 시간을 번갈아 진행하세요.",
+      workoutSettings: "훈련 설정",
+      practiceDurationSeconds: "연습 시간(초)",
+      restDurationSeconds: "휴식 시간(초)",
+      numberOfSessions: "세션 수",
+      workoutProgress: "훈련 진행 상황",
+      endurancePracticeStatus: "{total}회 중 {current}회 · 연습",
+      enduranceRestStatus: "{total}회 중 {current}회 · 휴식",
+      endurancePracticeNow: "연습!",
+      enduranceRestNow: "휴식",
+      enduranceComplete: "지구력 훈련 완료",
       barUnit: "마디",
       barsUnit: "마디",
       makeItYours: "맞춤 설정",
@@ -990,6 +1116,9 @@
     bpm: 120,
     beatsPerBar: 4,
     mode: "metronome",
+    endurancePracticeSeconds: 30,
+    enduranceRestSeconds: 30,
+    enduranceSessions: 4,
     timerEnabled: false,
     timerMinutes: 5,
     countdownEnabled: false,
@@ -1025,7 +1154,10 @@
       return {
         bpm: Math.round(number("bpm", 30, 300)),
         beatsPerBar: [2, 3, 4, 5, 6, 7, 8].includes(Number(parsed.beatsPerBar)) ? Number(parsed.beatsPerBar) : defaults.beatsPerBar,
-        mode: ["metronome", "speedloop"].includes(parsed.mode) ? parsed.mode : defaults.mode,
+        mode: ["metronome", "speedloop", "endurance"].includes(parsed.mode) ? parsed.mode : defaults.mode,
+        endurancePracticeSeconds: Math.round(number("endurancePracticeSeconds", 1, 3600)),
+        enduranceRestSeconds: Math.round(number("enduranceRestSeconds", 0, 3600)),
+        enduranceSessions: Math.round(number("enduranceSessions", 1, 99)),
         timerEnabled: typeof parsed.timerEnabled === "boolean" ? parsed.timerEnabled : defaults.timerEnabled,
         timerMinutes: Math.round(number("timerMinutes", 1, 180)),
         countdownEnabled: typeof parsed.countdownEnabled === "boolean" ? parsed.countdownEnabled : defaults.countdownEnabled,
@@ -1188,6 +1320,25 @@
           gain.disconnect();
         };
       }
+
+      scheduleCue(time, freq = 880, duration = 0.16) {
+        const ctx = this.ctx;
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = "sine";
+        osc.frequency.setValueAtTime(freq, time);
+        gain.gain.setValueAtTime(0.0001, time);
+        gain.gain.exponentialRampToValueAtTime(0.28, time + 0.008);
+        gain.gain.exponentialRampToValueAtTime(0.0001, time + duration);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start(time);
+        osc.stop(time + duration + 0.02);
+        osc.onended = () => {
+          osc.disconnect();
+          gain.disconnect();
+        };
+      }
     }
 
     class Scheduler {
@@ -1202,6 +1353,7 @@
         this.running = false;
         this.subdivisions = 1;
         this.accentPattern = "downbeat";
+        this.stopAt = null;
       }
 
       get secondsPerBeat() {
@@ -1225,6 +1377,10 @@
         this.accentPattern = pattern;
       }
 
+      setStopAt(time) {
+        this.stopAt = time;
+      }
+
       isAccented(beatIndex) {
         if (this.accentPattern === "every") return true;
         if (this.accentPattern === "backbeat") return beatIndex % 2 === 1;
@@ -1232,11 +1388,12 @@
         return beatIndex === 0;
       }
 
-      start(startTime) {
+      start(startTime, stopAt = null) {
         if (this.running) return;
         this.running = true;
         this.beatIndex = 0;
         this.nextNoteTime = startTime ?? this.engine.now + 0.05;
+        this.stopAt = stopAt;
         this.tick();
         this.timerId = setInterval(() => this.tick(), CONFIG.SCHEDULER_INTERVAL);
       }
@@ -1247,15 +1404,20 @@
           clearInterval(this.timerId);
           this.timerId = null;
         }
+        this.stopAt = null;
       }
 
       tick() {
         if (!this.running) return;
         const horizon = this.engine.now + CONFIG.SCHEDULE_AHEAD;
-        while (this.nextNoteTime < horizon) {
+        while (
+          this.nextNoteTime < horizon &&
+          (this.stopAt === null || this.nextNoteTime < this.stopAt)
+        ) {
           const accent = this.isAccented(this.beatIndex);
           for (let subdivision = 0; subdivision < this.subdivisions; subdivision++) {
             const time = this.nextNoteTime + subdivision * this.secondsPerBeat / this.subdivisions;
+            if (this.stopAt !== null && time >= this.stopAt) continue;
             this.engine.scheduleClick(time, subdivision === 0 && accent, subdivision > 0);
           }
           this.onBeat(this.beatIndex, this.nextNoteTime, this.beatsPerBar);
@@ -1328,13 +1490,46 @@
     }
   }
 
+  class EnduranceWorkout {
+    constructor({ practiceSeconds, restSeconds, sessions }) {
+      this.practiceSeconds = Math.max(1, practiceSeconds);
+      this.restSeconds = Math.max(0, restSeconds);
+      this.sessions = Math.max(1, sessions);
+      this.currentSession = 0;
+      this.phase = "idle";
+      this.phaseEndsAt = 0;
+    }
+
+    start(atTime) {
+      this.currentSession = 1;
+      this.phase = "practice";
+      this.phaseEndsAt = atTime + this.practiceSeconds;
+    }
+
+    advance(atTime) {
+      if (this.phase === "idle" || atTime < this.phaseEndsAt) return null;
+      if (this.phase === "practice") {
+        if (this.currentSession >= this.sessions) return "complete";
+        if (this.restSeconds > 0) {
+          this.phase = "rest";
+          this.phaseEndsAt += this.restSeconds;
+          return "rest";
+        }
+      }
+      this.currentSession += 1;
+      this.phase = "practice";
+      this.phaseEndsAt = atTime + this.practiceSeconds;
+      return "practice";
+    }
+  }
+
   const initialBpm = (mode, bpm, loopStart) =>
     mode === "speedloop" ? clamp(loopStart, 30, 300) : bpm;
 
   const practiceTimerEnd = (atTime, enabled, minutes) =>
     enabled ? atTime + Math.max(1, minutes) * 60 : null;
 
-  const api = { SpeedRamp, SpeedLoopCadence, initialBpm, practiceTimerEnd };
+  const api = { SpeedRamp, SpeedLoopCadence, EnduranceWorkout, initialBpm, practiceTimerEnd };
   if (typeof module !== "undefined" && module.exports) module.exports = api;
   if (typeof window !== "undefined") window.MetronomeTiming = api;
 })();
@@ -1414,7 +1609,7 @@
     COUNTIN_LABEL_MS: 0,
   });
 
-  const MODES = Object.freeze({ METRONOME: "metronome", SPEEDLOOP: "speedloop" });
+  const MODES = Object.freeze({ METRONOME: "metronome", SPEEDLOOP: "speedloop", ENDURANCE: "endurance" });
 
   /* ============================================================
    * Utilities
@@ -1435,7 +1630,7 @@
     return `${format.format(m)}:${format.format(r)}`;
   };
   const t = (key, params) => window.MetronomeI18n.translate(key, params);
-  const { SpeedRamp, SpeedLoopCadence, initialBpm, practiceTimerEnd } = window.MetronomeTiming;
+  const { SpeedRamp, SpeedLoopCadence, EnduranceWorkout, initialBpm, practiceTimerEnd } = window.MetronomeTiming;
   const { AudioEngine, Scheduler } = window.createMetronomeAudio({ CONFIG, clamp });
 
   /* ============================================================
@@ -1589,6 +1784,18 @@
         loopBars: document.getElementById("loopBars"),
         loopHint: document.getElementById("loopHint"),
         loopProgress: document.getElementById("loopProgress"),
+        enduranceFields: document.getElementById("enduranceFields"),
+        endurancePracticeSeconds: document.getElementById("endurancePracticeSeconds"),
+        enduranceRestSeconds: document.getElementById("enduranceRestSeconds"),
+        enduranceSessions: document.getElementById("enduranceSessions"),
+        enduranceProgress: document.getElementById("enduranceProgress"),
+        enduranceCommand: document.getElementById("enduranceCommand"),
+        enduranceStage: document.getElementById("enduranceStage"),
+        enduranceCountdown: document.getElementById("enduranceCountdown"),
+        progressElapsed: document.getElementById("progressElapsed"),
+        enduranceProgressFill: document.getElementById("enduranceProgressFill"),
+        enduranceProgressTrack: document.getElementById("enduranceProgressTrack"),
+        timerOption: document.querySelector(".timer-option"),
         progressFill: document.getElementById("progressFill"),
         progressTrack: document.getElementById("progressTrack"),
         progressText: document.getElementById("progressText"),
@@ -1618,6 +1825,7 @@
       this.tap = new TapTempo((bpm) => this.setBpm(bpm, { fromTap: true }));
       this.ramp = new SpeedRamp();
       this.speedLoopCadence = new SpeedLoopCadence(this.state.loopBars);
+      this.enduranceWorkout = null;
 
       this.running = false;
       this.phase = "idle";          // idle | countin | playing
@@ -1762,6 +1970,19 @@
         });
       });
 
+      const enduranceInputs = [
+        [e.endurancePracticeSeconds, "endurancePracticeSeconds", 1, 3600],
+        [e.enduranceRestSeconds, "enduranceRestSeconds", 0, 3600],
+        [e.enduranceSessions, "enduranceSessions", 1, 99],
+      ];
+      enduranceInputs.forEach(([input, key, min, max]) => {
+        input.addEventListener("change", () => {
+          this.state[key] = clamp(toInt(input.value, this.state[key]), min, max);
+          input.value = this.state[key];
+          this.persist();
+        });
+      });
+
       e.tabs.forEach((tab) => {
         tab.addEventListener("click", () => this.setMode(tab.dataset.mode));
       });
@@ -1828,6 +2049,9 @@
       this.el.loopTarget.value = s.loopTarget;
       this.el.loopMinutes.value = s.loopMinutes;
       this.el.loopBars.value = s.loopBars;
+      this.el.endurancePracticeSeconds.value = s.endurancePracticeSeconds;
+      this.el.enduranceRestSeconds.value = s.enduranceRestSeconds;
+      this.el.enduranceSessions.value = s.enduranceSessions;
       this.updateLoopPhraseText();
 
       this.scheduler.setBpm(s.bpm);
@@ -1863,7 +2087,13 @@
       this.renderBpm();
       this.renderHistory();
       if (this.el.readout.classList.contains("alert")) {
-        this.el.readout.textContent = t("practiceComplete");
+        this.el.readout.textContent = t(this.state.mode === MODES.ENDURANCE
+          ? "enduranceComplete"
+          : "practiceComplete");
+        if (this.state.mode === MODES.ENDURANCE) {
+          this.el.enduranceCommand.textContent = "";
+          this.el.enduranceStage.textContent = t("enduranceComplete");
+        }
       }
     }
 
@@ -1896,6 +2126,7 @@
         this.el.countdownBeats, this.el.wakeLockEnabled, this.el.subdivisions,
         this.el.accentPattern, this.el.loopStart,
         this.el.loopTarget, this.el.loopMinutes, this.el.loopBars,
+        this.el.endurancePracticeSeconds, this.el.enduranceRestSeconds, this.el.enduranceSessions,
       ].forEach((control) => { control.disabled = this.running; });
       this.el.wakeLockEnabled.disabled = this.running || !("wakeLock" in navigator);
       this.el.tabs.forEach((tab) => {
@@ -1949,6 +2180,11 @@
       });
       this.el.speedloopFields.hidden = mode !== MODES.SPEEDLOOP;
       this.el.metronomePanel.hidden = mode !== MODES.METRONOME;
+      this.el.enduranceFields.hidden = mode !== MODES.ENDURANCE;
+      this.el.loopProgress.hidden = mode !== MODES.SPEEDLOOP || this.phase !== "playing";
+      this.el.enduranceProgress.hidden = mode !== MODES.ENDURANCE || !this.enduranceWorkout;
+      this.el.timerOption.hidden = mode === MODES.ENDURANCE;
+      this.el.timerFields.hidden = mode === MODES.ENDURANCE || !this.state.timerEnabled;
       this.updateLoopTempoContext();
       this.updateTempoControlAvailability();
       if (persistChange) this.persist();
@@ -2014,6 +2250,13 @@
       this.updateTempoControlAvailability();
       if (this.state.wakeLockEnabled) this.acquireWakeLock();
       this.alertShown = false;
+      this.el.readout.classList.remove("alert");
+      this.el.readout.textContent = "";
+      if (this.state.mode === MODES.ENDURANCE) {
+        this.el.enduranceProgress.hidden = true;
+        this.el.enduranceProgressFill.style.width = "0%";
+        this.el.enduranceProgressTrack.setAttribute("aria-valuenow", "0");
+      }
       this.el.playBtn.setAttribute("aria-pressed", "true");
       this.el.playBtn.classList.add("running");
       this.tap.reset();
@@ -2089,17 +2332,78 @@
         const pendingBeats = this.pendingSpeedLoopBeats;
         this.pendingSpeedLoopBeats = [];
         pendingBeats.forEach(({ time, beatsPerBar }) => this.advanceSpeedLoop(time, beatsPerBar));
+      } else if (mode === MODES.ENDURANCE) {
+        this.el.phraseLabel.hidden = true;
+        this.el.loopProgress.hidden = true;
+        this.enduranceWorkout = new EnduranceWorkout({
+          practiceSeconds: this.state.endurancePracticeSeconds,
+          restSeconds: this.state.enduranceRestSeconds,
+          sessions: this.state.enduranceSessions,
+        });
+        this.el.enduranceProgress.hidden = false;
+        this.enduranceWorkout.start(atTime);
+        this.startEndurancePractice(atTime);
+        this.playEnduranceCue("practice", atTime);
       } else {
         this.pendingSpeedLoopBeats = [];
         this.el.phraseLabel.hidden = true;
         this.el.loopProgress.hidden = true;
       }
 
-      this.timerEndTime = practiceTimerEnd(atTime, this.state.timerEnabled, this.state.timerMinutes);
+      this.timerEndTime = mode === MODES.ENDURANCE
+        ? null
+        : practiceTimerEnd(atTime, this.state.timerEnabled, this.state.timerMinutes);
 
-      if (!this.scheduler.running) {
+      if (mode !== MODES.ENDURANCE && !this.scheduler.running) {
         this.scheduler.start(atTime);
       }
+    }
+
+    startEndurancePractice(atTime) {
+      const continueCountIn = this.scheduler.running && this.phase === "playing";
+      this.phase = "playing";
+      this.scheduler.setBpm(this.state.bpm);
+      if (continueCountIn) {
+        this.scheduler.setStopAt(this.enduranceWorkout.phaseEndsAt);
+      } else {
+        this.scheduler.stop();
+        this.visualizer.clear();
+        this.scheduler.start(atTime, this.enduranceWorkout.phaseEndsAt);
+      }
+      this.updateEnduranceDisplay(atTime);
+    }
+
+    playEnduranceCue(phase, atTime) {
+      this.engine.scheduleCue(atTime, phase === "rest" ? 440 : 880);
+    }
+
+    updateEnduranceDisplay(now) {
+      if (!this.enduranceWorkout) return;
+      const workout = this.enduranceWorkout;
+      const remaining = Math.max(0, workout.phaseEndsAt - now);
+      const phaseSeconds = workout.phase === "rest"
+        ? workout.restSeconds
+        : workout.practiceSeconds;
+      const phaseElapsed = Math.min(phaseSeconds, Math.max(0, phaseSeconds - remaining));
+      const completedSeconds = (workout.currentSession - 1) *
+        (workout.practiceSeconds + workout.restSeconds) +
+        (workout.phase === "rest" ? workout.practiceSeconds + phaseElapsed : phaseElapsed);
+      const totalSeconds = workout.sessions * workout.practiceSeconds +
+        (workout.sessions - 1) * workout.restSeconds;
+      const percent = Math.round(Math.min(1, completedSeconds / totalSeconds) * 100);
+      this.el.enduranceCommand.textContent = t(workout.phase === "rest"
+        ? "enduranceRestNow"
+        : "endurancePracticeNow");
+      this.el.enduranceStage.textContent = t(workout.phase === "rest"
+        ? "enduranceRestStatus"
+        : "endurancePracticeStatus", {
+        current: workout.currentSession,
+        total: workout.sessions,
+      });
+      this.el.enduranceCountdown.textContent = t("timeLeft", { time: formatTime(remaining) });
+      this.el.enduranceProgress.dataset.phase = workout.phase;
+      this.el.enduranceProgressFill.style.width = `${percent}%`;
+      this.el.enduranceProgressTrack.setAttribute("aria-valuenow", String(percent));
     }
 
     currentBpm() {
@@ -2155,6 +2459,7 @@
       this.updateTempoControlAvailability();
       this.releaseWakeLock();
       this.phase = "idle";
+      this.enduranceWorkout = null;
       this.pendingSpeedLoopBeats = [];
       this.el.phraseLabel.hidden = true;
       this.scheduler.stop();
@@ -2166,6 +2471,19 @@
       this.el.progressFill.style.width = "0%";
       this.el.progressTrack.setAttribute("aria-valuenow", "0");
       this.el.progressText.textContent = "0%";
+      if (this.state.mode === MODES.ENDURANCE) {
+        if (preserveReadout) {
+          this.el.enduranceCommand.textContent = "";
+          this.el.enduranceStage.textContent = t("enduranceComplete");
+          this.el.enduranceCountdown.textContent = "";
+          this.el.enduranceProgressFill.style.width = "100%";
+          this.el.enduranceProgressTrack.setAttribute("aria-valuenow", "100");
+        } else {
+          this.el.enduranceProgress.hidden = true;
+          this.el.enduranceProgressFill.style.width = "0%";
+          this.el.enduranceProgressTrack.setAttribute("aria-valuenow", "0");
+        }
+      }
       if (!preserveReadout) {
         this.el.readout.classList.remove("alert");
         this.el.readout.textContent = "";
@@ -2183,6 +2501,7 @@
       this.recordSession(true);
       this.running = false;
       this.phase = "idle";
+      this.enduranceWorkout = null;
       this.scheduler.stop();
       this.visualizer.clear();
       this.pendingSpeedLoopBeats = [];
@@ -2194,6 +2513,7 @@
       this.el.playLabel.textContent = t("start");
       this.el.phraseLabel.hidden = true;
       this.el.loopProgress.hidden = true;
+      this.el.enduranceProgress.hidden = true;
       this.countInEndTime = null;
       this.timerEndTime = null;
       this.updateTempoControlAvailability();
@@ -2207,7 +2527,7 @@
     }
 
     recordSession(interrupted) {
-      if (this.phase !== "playing" || this.sessionLogged) return;
+      if ((this.phase !== "playing" && this.phase !== "resting") || this.sessionLogged) return;
       const endedAt = this.engine.now;
       const sessions = window.MetronomeStorage.saveSession({
         startedAt: Date.now() - Math.max(0, endedAt - this.sessionStartTime) * 1000,
@@ -2231,7 +2551,9 @@
         const details = document.createElement("span");
         const date = new Date(session.startedAt);
         const duration = formatTime(session.durationSec);
-        const mode = t(session.mode === MODES.SPEEDLOOP ? "speedLoop" : "metronome");
+        const mode = t(session.mode === MODES.SPEEDLOOP
+          ? "speedLoop"
+          : session.mode === MODES.ENDURANCE ? "enduranceTraining" : "metronome");
         title.textContent = t("historyEntry", { mode, start: session.startBpm, end: session.endBpm });
         details.textContent = `${date.toLocaleString(this.state.language)} · ${duration}${session.interrupted ? ` · ${t("interrupted")}` : ""}`;
         item.append(title, details);
@@ -2272,7 +2594,37 @@
             percent: pct,
             time: formatTime(this.ramp.durationSec - (now - this.ramp.startedAt)),
           });
+        this.el.progressElapsed.textContent = t("elapsed", {
+          time: formatTime(now - this.sessionStartTime),
+        });
         // Ramp finishes and holds at target indefinitely; no stop.
+      }
+
+      if (
+        this.state.mode === MODES.ENDURANCE &&
+        (this.phase === "playing" || this.phase === "resting") &&
+        this.enduranceWorkout
+      ) {
+        const transition = this.enduranceWorkout.advance(now);
+        if (transition === "rest") {
+          this.phase = "resting";
+          this.scheduler.stop();
+          this.visualizer.clear();
+          this.playEnduranceCue("rest", now);
+        } else if (transition === "practice") {
+          const nextStart = now + 0.05;
+          this.enduranceWorkout.phaseEndsAt += 0.05;
+          this.startEndurancePractice(nextStart);
+          this.playEnduranceCue("practice", nextStart);
+        } else if (transition === "complete") {
+          this.recordSession(false);
+          this.alertShown = true;
+          this.fireTimerAlert(now, "enduranceComplete");
+          this.stop({ preserveReadout: true });
+          return;
+        }
+        this.updateEnduranceDisplay(now);
+        return;
       }
 
       // Practice timer.
@@ -2284,21 +2636,17 @@
           this.fireTimerAlert(now);
           this.stop({ preserveReadout: true });
         }
-      } else if (this.phase === "playing" && this.state.mode === MODES.SPEEDLOOP) {
-        // Show elapsed time in speed loop mode.
-        const elapsed = now - this.sessionStartTime;
-        this.el.readout.textContent = t("elapsed", { time: formatTime(elapsed) });
       } else {
         this.el.readout.textContent = "";
       }
     }
 
-    fireTimerAlert(now) {
+    fireTimerAlert(now, messageKey = "practiceComplete") {
       // Audio alert: three tones scheduled on the audio clock.
       this.engine.scheduleAlert(now + 0.0, 880, 0.3);
       this.engine.scheduleAlert(now + 0.4, 880, 0.3);
       this.engine.scheduleAlert(now + 0.8, 1100, 0.5);
-      this.el.readout.textContent = t("practiceComplete");
+      this.el.readout.textContent = t(messageKey);
       this.el.readout.classList.add("alert");
       this.setStatus("");
       if (navigator.vibrate) navigator.vibrate([200, 100, 200]);

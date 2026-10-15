@@ -50,6 +50,11 @@
   background: var(--surface-raised);
 }
 
+.beat-activity {
+  display: grid;
+  gap: 8px;
+}
+
 .console-actions {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -105,7 +110,7 @@ body.has-sticky-playback .app {
   display: grid;
   counter-reset: beat;
   grid-template-columns: repeat(var(--beat-count, 4), minmax(0, 1fr));
-  min-height: 48px;
+  min-height: 60px;
   width: 100%;
   align-items: center;
   justify-items: center;
@@ -113,7 +118,7 @@ body.has-sticky-playback .app {
 
 .beat-dot {
   display: grid;
-  width: min(100%, clamp(28px, 8vw, 42px));
+  width: min(100%, clamp(36px, 10vw, 52px));
   aspect-ratio: 1;
   place-items: center;
   border: 2px solid var(--border);
@@ -137,18 +142,24 @@ body.has-sticky-playback .app {
 }
 
 .beat-dot.active {
-  transform: scale(1.12);
+  transform: scale(1.18);
   background: var(--beat-on);
   color: #102018;
-  box-shadow: 0 0 18px rgb(114 221 160 / 28%);
-  box-shadow: 0 0 22px color-mix(in srgb, var(--beat-on) 45%, transparent);
+  animation: beat-pulse 180ms ease-out;
+  box-shadow: 0 0 0 5px color-mix(in srgb, var(--beat-on) 22%, transparent),
+    0 0 26px color-mix(in srgb, var(--beat-on) 65%, transparent);
 }
 
 .beat-dot.downbeat.active {
   background: var(--beat-down);
   color: var(--accent-ink);
-  box-shadow: 0 0 22px rgb(255 173 66 / 30%);
-  box-shadow: 0 0 26px color-mix(in srgb, var(--beat-down) 48%, transparent);
+  box-shadow: 0 0 0 5px color-mix(in srgb, var(--beat-down) 25%, transparent),
+    0 0 30px color-mix(in srgb, var(--beat-down) 70%, transparent);
+}
+
+@keyframes beat-pulse {
+  from { transform: scale(0.88); }
+  to { transform: scale(1.18); }
 }
 
 .meter-badge {

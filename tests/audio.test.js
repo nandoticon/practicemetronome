@@ -57,3 +57,48 @@ test("scheduler applies configurable downbeat, backbeat, every-beat, and no acce
     assert.deepEqual(accents.slice(0, 4), expected, pattern);
   }
 });
+
+test("scheduler does not queue clicks beyond a timed practice interval", () => {
+  const clicks = [];
+  const engine = {
+    now: 0.1,
+    scheduleClick: (time) => clicks.push(time),
+  };
+  const { Scheduler } = createMetronomeAudio({ CONFIG: config, clamp });
+  const scheduler = new Scheduler(engine, () => {});
+  scheduler.setSubdivisions(4);
+  scheduler.start(0, 0.2);
+  scheduler.stop();
+  assert.ok(clicks.length > 0);
+  assert.ok(clicks.every((time) => time < 0.2));
+});
+
+test("endurance cues schedule a quiet, short tone at the requested pitch and time", () => {
+  const tones = [];
+  const params = () => ({
+    setValueAtTime: (value, time) => tones.push({ value, time }),
+    exponentialRampToValueAtTime: (value, time) => tones.push({ value, time }),
+  });
+  const { AudioEngine } = createMetronomeAudio({ CONFIG: config, clamp });
+  const engine = new AudioEngine();
+  engine.ctx = {
+    destination: {},
+    createOscillator: () => ({
+      frequency: params(),
+      connect: () => {},
+      start: (time) => tones.push({ start: time }),
+      stop: (time) => tones.push({ stop: time }),
+      disconnect: () => {},
+    }),
+    createGain: () => ({
+      gain: params(),
+      connect: () => {},
+      disconnect: () => {},
+    }),
+  };
+
+  engine.scheduleCue(12, 440);
+  assert.deepEqual(tones[0], { value: 440, time: 12 });
+  assert.ok(tones.some(({ value }) => value === 0.28));
+  assert.ok(tones.some(({ stop }) => stop === 12.18));
+});

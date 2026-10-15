@@ -106,6 +106,23 @@
       <div class="beat-display">
         <div class="beat-row" id="beatRow" role="img" aria-label="Beat indicator" data-i18n-aria-label="beatIndicator"></div>
         <div class="phrase-label" id="phraseLabel" hidden></div>
+        <div class="beat-activity">
+          <div class="loop-progress" id="loopProgress" hidden>
+            <div class="progress-track" id="progressTrack" role="progressbar" aria-label="Speed Loop ramp progress" data-i18n-aria-label="rampProgress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+              <div class="progress-fill" id="progressFill"></div>
+            </div>
+            <div class="progress-text" id="progressText">0%</div>
+            <p class="progress-elapsed" id="progressElapsed"></p>
+          </div>
+          <div class="endurance-progress" id="enduranceProgress" hidden>
+            <p class="endurance-command" id="enduranceCommand" role="status" aria-live="polite"></p>
+            <p class="endurance-stage" id="enduranceStage"></p>
+            <p class="endurance-countdown" id="enduranceCountdown" aria-live="off"></p>
+            <div class="progress-track" id="enduranceProgressTrack" role="progressbar" aria-label="Workout progress" data-i18n-aria-label="workoutProgress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+              <div class="progress-fill" id="enduranceProgressFill"></div>
+            </div>
+          </div>
+        </div>
       </div>
       <div class="console-actions">
         <button class="btn btn-play" id="playBtn" aria-pressed="false">
@@ -168,6 +185,10 @@
         <svg class="icon" aria-hidden="true"><use href="#repeat"></use></svg>
         <span data-i18n="speedLoop">Speed Loop</span>
       </button>
+      <button class="tab" id="enduranceTab" role="tab" aria-controls="enduranceFields" data-mode="endurance" aria-selected="false">
+        <svg class="icon" aria-hidden="true"><use href="#timer"></use></svg>
+        <span data-i18n="enduranceTraining">Endurance</span>
+      </button>
     </nav>
     <section class="mode-panel card" id="metronomePanel" role="tabpanel" aria-labelledby="metronomeTab">
       <p class="eyebrow" data-i18n="fixedTempo">FIXED TEMPO</p>
@@ -202,18 +223,29 @@
         </div>
       </div>
       <p class="loop-hint" id="loopHint"></p>
-      <div class="loop-progress" id="loopProgress" hidden>
-        <div
-          class="progress-track"
-          id="progressTrack"
-          role="progressbar"
-          aria-label="Speed Loop ramp progress"
-          data-i18n-aria-label="rampProgress"
-          aria-valuemin="0"
-          aria-valuemax="100"
-          aria-valuenow="0"
-        ><div class="progress-fill" id="progressFill"></div></div>
-        <div class="progress-text" id="progressText">0%</div>
+    </section>
+    <section class="mode-panel card endurance-only" id="enduranceFields" role="tabpanel" aria-labelledby="enduranceTab" hidden>
+      <div>
+        <p class="eyebrow" data-i18n="endurancePractice">ENDURANCE PRACTICE</p>
+        <h2 data-i18n="enduranceTitle">Endurance training</h2>
+        <p class="mode-description" data-i18n="enduranceDescription">Set a tempo above, then alternate focused practice intervals with timed rests.</p>
+      </div>
+      <div class="setting-group endurance-settings-group">
+        <h3><svg class="icon" aria-hidden="true"><use href="#timer"></use></svg><span data-i18n="workoutSettings">Workout settings</span></h3>
+        <div class="speedloop-inputs endurance-inputs">
+          <div class="field-row">
+            <label class="icon-label" for="endurancePracticeSeconds"><svg class="icon" aria-hidden="true"><use href="#clock-3"></use></svg><span data-i18n="practiceDurationSeconds">Practice duration (sec)</span></label>
+            <input type="number" id="endurancePracticeSeconds" min="1" max="3600" step="1" value="30" inputmode="numeric" />
+          </div>
+          <div class="field-row">
+            <label class="icon-label" for="enduranceRestSeconds"><svg class="icon" aria-hidden="true"><use href="#hourglass"></use></svg><span data-i18n="restDurationSeconds">Rest duration (sec)</span></label>
+            <input type="number" id="enduranceRestSeconds" min="0" max="3600" step="1" value="30" inputmode="numeric" />
+          </div>
+          <div class="field-row">
+            <label class="icon-label" for="enduranceSessions"><svg class="icon" aria-hidden="true"><use href="#list-ordered"></use></svg><span data-i18n="numberOfSessions">Number of sessions</span></label>
+            <input type="number" id="enduranceSessions" min="1" max="99" step="1" value="4" inputmode="numeric" />
+          </div>
+        </div>
       </div>
     </section>
     <section class="panel card" id="settingsPanel" aria-label="Shared practice settings" data-i18n-aria-label="practiceSettings" tabindex="0">
@@ -240,7 +272,7 @@
               <option value="8">8</option>
             </select>
           </div>
-          <div class="field-row toggle-row">
+          <div class="field-row toggle-row timer-option">
             <label class="icon-label" for="timerEnabled"><svg class="icon" aria-hidden="true"><use href="#timer"></use></svg><span data-i18n="practiceTimer">Practice timer</span></label>
             <input type="checkbox" id="timerEnabled" />
           </div>

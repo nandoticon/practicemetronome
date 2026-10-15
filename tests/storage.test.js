@@ -42,6 +42,37 @@ test("supported language choice is restored and invalid language falls back to E
   assert.equal(storage.load().language, "en-US");
 });
 
+test("endurance workout settings restore with bounds and sensible defaults", () => {
+  global.localStorage = {
+    getItem: () => JSON.stringify({
+      mode: "endurance",
+      endurancePracticeSeconds: 45,
+      enduranceRestSeconds: 0,
+      enduranceSessions: 8,
+    }),
+    setItem: () => {},
+  };
+  assert.deepEqual(
+    (({ mode, endurancePracticeSeconds, enduranceRestSeconds, enduranceSessions }) =>
+      ({ mode, endurancePracticeSeconds, enduranceRestSeconds, enduranceSessions }))(storage.load()),
+    {
+      mode: "endurance",
+      endurancePracticeSeconds: 45,
+      enduranceRestSeconds: 0,
+      enduranceSessions: 8,
+    }
+  );
+  global.localStorage.getItem = () => JSON.stringify({
+    endurancePracticeSeconds: 0,
+    enduranceRestSeconds: 9999,
+    enduranceSessions: 0,
+  });
+  const defaults = storage.load();
+  assert.equal(defaults.endurancePracticeSeconds, 1);
+  assert.equal(defaults.enduranceRestSeconds, 3600);
+  assert.equal(defaults.enduranceSessions, 1);
+});
+
 test("session history is local, ordered, and capped at ten entries", () => {
   const values = new Map();
   global.localStorage = {

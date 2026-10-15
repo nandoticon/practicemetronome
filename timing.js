@@ -54,13 +54,46 @@
     }
   }
 
+  class EnduranceWorkout {
+    constructor({ practiceSeconds, restSeconds, sessions }) {
+      this.practiceSeconds = Math.max(1, practiceSeconds);
+      this.restSeconds = Math.max(0, restSeconds);
+      this.sessions = Math.max(1, sessions);
+      this.currentSession = 0;
+      this.phase = "idle";
+      this.phaseEndsAt = 0;
+    }
+
+    start(atTime) {
+      this.currentSession = 1;
+      this.phase = "practice";
+      this.phaseEndsAt = atTime + this.practiceSeconds;
+    }
+
+    advance(atTime) {
+      if (this.phase === "idle" || atTime < this.phaseEndsAt) return null;
+      if (this.phase === "practice") {
+        if (this.currentSession >= this.sessions) return "complete";
+        if (this.restSeconds > 0) {
+          this.phase = "rest";
+          this.phaseEndsAt += this.restSeconds;
+          return "rest";
+        }
+      }
+      this.currentSession += 1;
+      this.phase = "practice";
+      this.phaseEndsAt = atTime + this.practiceSeconds;
+      return "practice";
+    }
+  }
+
   const initialBpm = (mode, bpm, loopStart) =>
     mode === "speedloop" ? clamp(loopStart, 30, 300) : bpm;
 
   const practiceTimerEnd = (atTime, enabled, minutes) =>
     enabled ? atTime + Math.max(1, minutes) * 60 : null;
 
-  const api = { SpeedRamp, SpeedLoopCadence, initialBpm, practiceTimerEnd };
+  const api = { SpeedRamp, SpeedLoopCadence, EnduranceWorkout, initialBpm, practiceTimerEnd };
   if (typeof module !== "undefined" && module.exports) module.exports = api;
   if (typeof window !== "undefined") window.MetronomeTiming = api;
 })();

@@ -4,7 +4,7 @@
 
 > **Use it online, save it for later, or install it.** Open the live app link above, then bookmark/favorite the page in your browser. To install it as an app, use your browser’s **Install app** option (desktop/Android) or **Add to Home Screen** option (iPhone/iPad). Installation options vary by browser. After the first successful online visit, the app can also work offline.
 
-A lightweight, responsive, multilingual metronome for focused practice. Features include a standard metronome, configurable Speed Loop, tap tempo, count-in, practice timer, note subdivisions, accent patterns, click sounds, volume control, recent-session history, wake lock, and system/light/dark themes. Distinct icons help identify the practice settings, with layouts tuned for translated labels and small screens. The interface is available in English (US), Brazilian Portuguese, Spanish, Italian, French, German, Japanese, Simplified Chinese, and Korean. English (US) is the default; the selected language and other preferences are saved locally on the device. Playback pauses safely when the app is hidden and can be restarted with a tap. All app assets are bundled locally, and the app works offline after its first successful load.
+A lightweight, responsive, multilingual metronome for focused practice. Features include a standard metronome, configurable Speed Loop, interval-based endurance training, tap tempo, count-in, practice timer, note subdivisions, accent patterns, click sounds, volume control, recent-session history, wake lock, and system/light/dark themes. Distinct icons help identify the practice settings, with layouts tuned for translated labels and small screens. The interface is available in English (US), Brazilian Portuguese, Spanish, Italian, French, German, Japanese, Simplified Chinese, and Korean. English (US) is the default; the selected language and other preferences are saved locally on the device. Playback pauses safely when the app is hidden and can be restarted with a tap. All app assets are bundled locally, and the app works offline after its first successful load.
 
 Developed by **Fernando Ticon using IA**.
 
@@ -13,6 +13,7 @@ Developed by **Fernando Ticon using IA**.
 | Version | Year | Notes |
 | --- | --- | --- |
 | 1.0 | 2026 | Initial release with metronome and configurable Speed Loop, responsive interface, light/dark themes, and offline support. |
+| 1.1 | 2026 | Added configurable endurance practice intervals with timed rests and session counting. |
 
 ## Run locally
 
@@ -82,6 +83,10 @@ The service worker caches the static app shell on the first successful visit. Su
 ## Speed Loop
 
 Set the start and target tempos, choose the ramp duration, then set **Bars per tempo change** from 1 to 32. Tempo changes only at the beginning of each selected phrase. The displayed ramp duration is approximate because updates wait for phrase boundaries. Optional quarter-, eighth-, and sixteenth-note subdivisions and first-beat, even-beat, every-beat, or no-accent patterns are also available.
+
+## Endurance training
+
+Set the practice tempo with the main tempo controls, then choose a practice duration, rest duration, and number of sessions. Start the workout to alternate timed practice intervals and rests; the beat stops during rest, and clear on-screen and audio cues announce each phase. The final session ends without an extra rest. Set the rest duration to zero to run practice intervals back to back. Workout settings are saved on this device, and completed or interrupted workouts appear in recent practice history.
 
 Recent session history stays in this browser on this device. It is not uploaded.
 

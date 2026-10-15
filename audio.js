@@ -86,6 +86,25 @@
           gain.disconnect();
         };
       }
+
+      scheduleCue(time, freq = 880, duration = 0.16) {
+        const ctx = this.ctx;
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = "sine";
+        osc.frequency.setValueAtTime(freq, time);
+        gain.gain.setValueAtTime(0.0001, time);
+        gain.gain.exponentialRampToValueAtTime(0.28, time + 0.008);
+        gain.gain.exponentialRampToValueAtTime(0.0001, time + duration);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start(time);
+        osc.stop(time + duration + 0.02);
+        osc.onended = () => {
+          osc.disconnect();
+          gain.disconnect();
+        };
+      }
     }
 
     class Scheduler {
@@ -100,6 +119,7 @@
         this.running = false;
         this.subdivisions = 1;
         this.accentPattern = "downbeat";
+        this.stopAt = null;
       }
 
       get secondsPerBeat() {
@@ -123,6 +143,10 @@
         this.accentPattern = pattern;
       }
 
+      setStopAt(time) {
+        this.stopAt = time;
+      }
+
       isAccented(beatIndex) {
         if (this.accentPattern === "every") return true;
         if (this.accentPattern === "backbeat") return beatIndex % 2 === 1;
@@ -130,11 +154,12 @@
         return beatIndex === 0;
       }
 
-      start(startTime) {
+      start(startTime, stopAt = null) {
         if (this.running) return;
         this.running = true;
         this.beatIndex = 0;
         this.nextNoteTime = startTime ?? this.engine.now + 0.05;
+        this.stopAt = stopAt;
         this.tick();
         this.timerId = setInterval(() => this.tick(), CONFIG.SCHEDULER_INTERVAL);
       }
@@ -145,15 +170,20 @@
           clearInterval(this.timerId);
           this.timerId = null;
         }
+        this.stopAt = null;
       }
 
       tick() {
         if (!this.running) return;
         const horizon = this.engine.now + CONFIG.SCHEDULE_AHEAD;
-        while (this.nextNoteTime < horizon) {
+        while (
+          this.nextNoteTime < horizon &&
+          (this.stopAt === null || this.nextNoteTime < this.stopAt)
+        ) {
           const accent = this.isAccented(this.beatIndex);
           for (let subdivision = 0; subdivision < this.subdivisions; subdivision++) {
             const time = this.nextNoteTime + subdivision * this.secondsPerBeat / this.subdivisions;
+            if (this.stopAt !== null && time >= this.stopAt) continue;
             this.engine.scheduleClick(time, subdivision === 0 && accent, subdivision > 0);
           }
           this.onBeat(this.beatIndex, this.nextNoteTime, this.beatsPerBar);

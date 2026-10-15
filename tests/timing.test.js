@@ -1,6 +1,6 @@
 const test = require("node:test");
 const assert = require("node:assert/strict");
-const { SpeedRamp, SpeedLoopCadence, initialBpm, practiceTimerEnd } = require("../timing.js");
+const { SpeedRamp, SpeedLoopCadence, EnduranceWorkout, initialBpm, practiceTimerEnd } = require("../timing.js");
 
 test("Speed Loop cadence changes tempo only at configured phrase boundaries", () => {
   for (const bars of [1, 2, 4, 8, 32]) {
@@ -46,4 +46,29 @@ test("practice timer has a finite end only when enabled", () => {
   assert.equal(practiceTimerEnd(12, false, 5), null);
   assert.equal(practiceTimerEnd(12, true, 5), 312);
   assert.equal(practiceTimerEnd(12, true, 0), 72);
+});
+
+test("endurance workout alternates work and rest, then completes after the last work interval", () => {
+  const workout = new EnduranceWorkout({ practiceSeconds: 30, restSeconds: 30, sessions: 2 });
+  workout.start(10);
+  assert.equal(workout.currentSession, 1);
+  assert.equal(workout.phase, "practice");
+  assert.equal(workout.phaseEndsAt, 40);
+  assert.equal(workout.advance(39.9), null);
+  assert.equal(workout.advance(40), "rest");
+  assert.equal(workout.phaseEndsAt, 70);
+  assert.equal(workout.advance(70), "practice");
+  assert.equal(workout.currentSession, 2);
+  assert.equal(workout.phaseEndsAt, 100);
+  assert.equal(workout.advance(100), "complete");
+});
+
+test("endurance workout skips rests when rest duration is zero", () => {
+  const workout = new EnduranceWorkout({ practiceSeconds: 5, restSeconds: 0, sessions: 3 });
+  workout.start(0);
+  assert.equal(workout.advance(5), "practice");
+  assert.equal(workout.currentSession, 2);
+  assert.equal(workout.phaseEndsAt, 10);
+  assert.equal(workout.advance(10), "practice");
+  assert.equal(workout.advance(15), "complete");
 });

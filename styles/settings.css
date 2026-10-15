@@ -217,6 +217,73 @@
   min-width: 0;
 }
 
+.endurance-only {
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+}
+
+.endurance-settings-group {
+  min-width: 0;
+}
+
+.endurance-progress {
+  display: grid;
+  gap: 8px;
+  color: var(--text-dim);
+  font-size: 0.88rem;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.5;
+  text-align: center;
+}
+
+.endurance-stage {
+  color: var(--text-dim);
+  font-size: 0.82rem;
+  font-weight: 650;
+}
+
+.endurance-command {
+  padding: 5px 12px;
+  border: 1px solid color-mix(in srgb, var(--beat-on) 42%, var(--border));
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--beat-on) 14%, var(--surface));
+  color: var(--beat-on);
+  font-size: clamp(1.6rem, 7vw, 2.2rem);
+  font-weight: 900;
+  letter-spacing: 0.06em;
+  line-height: 1.15;
+  text-align: center;
+  text-shadow: 0 0 18px color-mix(in srgb, var(--beat-on) 24%, transparent);
+}
+
+.endurance-progress[data-phase="rest"] .endurance-command {
+  border-color: color-mix(in srgb, var(--danger) 48%, var(--border));
+  background: color-mix(in srgb, var(--danger) 16%, var(--surface));
+  color: var(--danger);
+  text-shadow: 0 0 18px color-mix(in srgb, var(--danger) 26%, transparent);
+}
+
+.endurance-countdown {
+  color: var(--beat-on);
+  font-size: clamp(2rem, 9vw, 3rem);
+  font-weight: 900;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.02em;
+  line-height: 1.2;
+}
+
+.endurance-progress[data-phase="rest"] .endurance-countdown {
+  color: var(--danger);
+}
+
+.progress-elapsed {
+  color: var(--text-dim);
+  font-size: 0.78rem;
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+}
+
 .history-panel {
   border-top: 1px solid var(--border);
   padding-top: 14px;
