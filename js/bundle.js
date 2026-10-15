@@ -111,6 +111,7 @@
       rampProgressDetail: "{percent}% complete · {remaining} · elapsed {time}",
       rampFinished: "target reached",
       timeLeft: "Time left {time}",
+      enduranceTimeRemaining: "TIME REMAINING",
       elapsed: "Elapsed {time}",
       practiceComplete: "Practice time complete",
       appInitFailed: "Could not initialize the app.",
@@ -237,6 +238,7 @@
       rampProgressDetail: "{percent}% concluído · {remaining} · decorrido {time}",
       rampFinished: "meta alcançada",
       timeLeft: "Tempo restante {time}",
+      enduranceTimeRemaining: "TEMPO RESTANTE",
       elapsed: "Decorrido {time}",
       practiceComplete: "Tempo de prática concluído",
       appInitFailed: "Não foi possível iniciar o aplicativo.",
@@ -363,6 +365,7 @@
       rampProgressDetail: "{percent}% completado · {remaining} · transcurrido {time}",
       rampFinished: "objetivo alcanzado",
       timeLeft: "Tiempo restante {time}",
+      enduranceTimeRemaining: "TIEMPO RESTANTE",
       elapsed: "Transcurrido {time}",
       practiceComplete: "Práctica completada",
       appInitFailed: "No se pudo iniciar la aplicación.",
@@ -489,6 +492,7 @@
       rampProgressDetail: "{percent}% completato · {remaining} · trascorso {time}",
       rampFinished: "obiettivo raggiunto",
       timeLeft: "Tempo rimanente {time}",
+      enduranceTimeRemaining: "TEMPO RIMANENTE",
       elapsed: "Trascorso {time}",
       practiceComplete: "Esercizio completato",
       appInitFailed: "Impossibile inizializzare l'applicazione.",
@@ -615,6 +619,7 @@
       rampProgressDetail: "{percent}% terminé · {remaining} · écoulé {time}",
       rampFinished: "objectif atteint",
       timeLeft: "Temps restant {time}",
+      enduranceTimeRemaining: "TEMPS RESTANT",
       elapsed: "Écoulé {time}",
       practiceComplete: "Entraînement terminé",
       appInitFailed: "Impossible d’initialiser l’application.",
@@ -741,6 +746,7 @@
       rampProgressDetail: "{percent}% geschafft · {remaining} · vergangen {time}",
       rampFinished: "Ziel erreicht",
       timeLeft: "Verbleibend {time}",
+      enduranceTimeRemaining: "VERBLEIBENDE ZEIT",
       elapsed: "Vergangen {time}",
       practiceComplete: "Übungszeit beendet",
       appInitFailed: "Die App konnte nicht gestartet werden.",
@@ -867,6 +873,7 @@
       rampProgressDetail: "{percent}% 完了 · {remaining} · 経過 {time}",
       rampFinished: "目標に到達",
       timeLeft: "残り時間 {time}",
+      enduranceTimeRemaining: "残り時間",
       elapsed: "経過時間 {time}",
       practiceComplete: "練習時間が終了しました",
       appInitFailed: "アプリを起動できませんでした。",
@@ -993,6 +1000,7 @@
       rampProgressDetail: "已完成 {percent}% · {remaining} · 已用 {time}",
       rampFinished: "已达到目标",
       timeLeft: "剩余时间 {time}",
+      enduranceTimeRemaining: "剩余时间",
       elapsed: "已用时间 {time}",
       practiceComplete: "练习时间结束",
       appInitFailed: "无法初始化应用。",
@@ -1119,6 +1127,7 @@
       rampProgressDetail: "{percent}% 완료 · {remaining} · 경과 {time}",
       rampFinished: "목표 도달",
       timeLeft: "남은 시간 {time}",
+      enduranceTimeRemaining: "남은 시간",
       elapsed: "경과 시간 {time}",
       practiceComplete: "연습 시간이 끝났습니다",
       appInitFailed: "앱을 초기화할 수 없습니다.",
@@ -1768,7 +1777,7 @@
         current: workout.currentSession,
         total: workout.sessions,
       });
-      this.el.enduranceCountdown.textContent = t("timeLeft", { time: formatTime(remaining) });
+      this.el.enduranceCountdown.textContent = formatTime(remaining);
       this.el.enduranceProgress.dataset.phase = workout.phase;
       this.el.enduranceProgressFill.style.width = `${percent}%`;
       this.el.enduranceProgressTrack.setAttribute("aria-valuenow", String(percent));

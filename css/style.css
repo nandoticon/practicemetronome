@@ -1176,7 +1176,7 @@ body.has-sticky-playback .app {
 
 .endurance-progress {
   display: grid;
-  gap: 8px;
+  gap: 14px;
   color: var(--text-dim);
   font-size: 0.88rem;
   font-variant-numeric: tabular-nums;
@@ -1220,10 +1220,11 @@ body.has-sticky-playback .app {
   color: var(--text-dim);
   font-size: 0.82rem;
   font-weight: 650;
+  line-height: 1.4;
 }
 
 .endurance-command {
-  padding: 5px 12px;
+  padding: 10px 14px;
   border: 1px solid color-mix(in srgb, var(--beat-on) 42%, var(--border));
   border-radius: 12px;
   background: color-mix(in srgb, var(--beat-on) 14%, var(--surface));
@@ -1243,13 +1244,28 @@ body.has-sticky-playback .app {
   text-shadow: 0 0 18px color-mix(in srgb, var(--danger) 26%, transparent);
 }
 
+.endurance-timer {
+  display: grid;
+  justify-items: center;
+  gap: 2px;
+  padding-block: 2px;
+}
+
+.endurance-timer-label {
+  color: var(--text-dim);
+  font-size: 0.7rem;
+  font-weight: 750;
+  letter-spacing: 0.1em;
+  line-height: 1.3;
+}
+
 .endurance-countdown {
   color: var(--beat-on);
-  font-size: clamp(2rem, 9vw, 3rem);
+  font-size: clamp(1.8rem, 7vw, 2.6rem);
   font-weight: 900;
   font-variant-numeric: tabular-nums;
   letter-spacing: 0.02em;
-  line-height: 1.2;
+  line-height: 1.1;
 }
 
 .endurance-progress[data-phase="rest"] .endurance-countdown {

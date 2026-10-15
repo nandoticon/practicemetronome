@@ -111,6 +111,7 @@
       rampProgressDetail: "已完成 {percent}% · {remaining} · 已用 {time}",
       rampFinished: "已达到目标",
       timeLeft: "剩余时间 {time}",
+      enduranceTimeRemaining: "剩余时间",
       elapsed: "已用时间 {time}",
       practiceComplete: "练习时间结束",
       appInitFailed: "无法初始化应用。",

@@ -119,7 +119,10 @@
           <div class="endurance-progress" id="enduranceProgress" hidden>
             <p class="endurance-command" id="enduranceCommand" role="status" aria-live="polite"></p>
             <p class="endurance-stage" id="enduranceStage"></p>
-            <p class="endurance-countdown" id="enduranceCountdown" aria-live="off"></p>
+            <div class="endurance-timer">
+              <span class="endurance-timer-label" data-i18n="enduranceTimeRemaining">TIME REMAINING</span>
+              <span class="endurance-countdown" id="enduranceCountdown" aria-live="off"></span>
+            </div>
             <div class="progress-track" id="enduranceProgressTrack" role="progressbar" aria-label="Workout progress" data-i18n-aria-label="workoutProgress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
               <div class="progress-fill" id="enduranceProgressFill"></div>
             </div>

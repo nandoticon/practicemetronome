@@ -111,6 +111,7 @@
       rampProgressDetail: "{percent}% 완료 · {remaining} · 경과 {time}",
       rampFinished: "목표 도달",
       timeLeft: "남은 시간 {time}",
+      enduranceTimeRemaining: "남은 시간",
       elapsed: "경과 시간 {time}",
       practiceComplete: "연습 시간이 끝났습니다",
       appInitFailed: "앱을 초기화할 수 없습니다.",

@@ -111,6 +111,7 @@
       rampProgressDetail: "{percent}% completato · {remaining} · trascorso {time}",
       rampFinished: "obiettivo raggiunto",
       timeLeft: "Tempo rimanente {time}",
+      enduranceTimeRemaining: "TEMPO RIMANENTE",
       elapsed: "Trascorso {time}",
       practiceComplete: "Esercizio completato",
       appInitFailed: "Impossibile inizializzare l'applicazione.",

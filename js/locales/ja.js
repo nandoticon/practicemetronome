@@ -111,6 +111,7 @@
       rampProgressDetail: "{percent}% 完了 · {remaining} · 経過 {time}",
       rampFinished: "目標に到達",
       timeLeft: "残り時間 {time}",
+      enduranceTimeRemaining: "残り時間",
       elapsed: "経過時間 {time}",
       practiceComplete: "練習時間が終了しました",
       appInitFailed: "アプリを起動できませんでした。",

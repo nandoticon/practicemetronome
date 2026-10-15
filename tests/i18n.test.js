@@ -47,6 +47,7 @@ test("Speed Loop and endurance indicators are grouped with the beat display", ()
   assert.match(beatDisplay, /id="progressElapsed"/);
   assert.match(beatDisplay, /id="enduranceProgress"/);
   assert.match(beatDisplay, /id="enduranceCountdown"/);
+  assert.match(beatDisplay, /data-i18n="enduranceTimeRemaining"/);
   assert.match(beatDisplay, /id="enduranceCommand"/);
   assert.match(beatDisplay, /id="progressElapsed"/);
   assert.doesNotMatch(beatDisplay, /id="loopTempoNow"/);

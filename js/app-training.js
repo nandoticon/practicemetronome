@@ -67,7 +67,7 @@
         current: workout.currentSession,
         total: workout.sessions,
       });
-      this.el.enduranceCountdown.textContent = t("timeLeft", { time: formatTime(remaining) });
+      this.el.enduranceCountdown.textContent = formatTime(remaining);
       this.el.enduranceProgress.dataset.phase = workout.phase;
       this.el.enduranceProgressFill.style.width = `${percent}%`;
       this.el.enduranceProgressTrack.setAttribute("aria-valuenow", String(percent));
