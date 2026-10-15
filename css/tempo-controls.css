@@ -24,6 +24,16 @@
   padding: 12px 0;
 }
 
+.bpm-display.tempo-changed {
+  animation: tempo-change-pulse 240ms ease-out;
+}
+
+@keyframes tempo-change-pulse {
+  0% { transform: scale(1); }
+  45% { transform: scale(1.025); }
+  100% { transform: scale(1); }
+}
+
 .bpm-value {
   display: block;
   width: 100%;
@@ -44,6 +54,12 @@
   font-weight: 700;
   letter-spacing: 0.16em;
   line-height: 1.2;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bpm-display.tempo-changed {
+    animation-duration: 1ms;
+  }
 }
 
 .tempo-context {

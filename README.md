@@ -42,13 +42,15 @@ node build.mjs
 The build combines:
 
 - HTML components from `src/html/`
-- CSS modules from `styles/`
-- JavaScript modules: `storage.js`, `audio.js`, `timing.js`, `i18n.js`, `app.js`, and `pwa.js`
-- `locales/` — one translation catalog per supported language
+- CSS modules from `css/`
+- JavaScript sources and generated bundle from `js/`
+- `js/locales/` — one translation catalog per supported language
 
-into the static `index.html`, `style.css`, and `bundle.js` files. The build embeds the curated Lucide sprite from `icons/lucide.svg` into the HTML; only icons used by the interface are included. There are no runtime package or network dependencies. When changing source files, rebuild and commit both the source and generated files so the published site stays current.
+into the static `index.html`, `css/style.css`, and `js/bundle.js` files. Images and icon sources live in `img/`; the build embeds the curated Lucide sprite from `img/lucide.svg` into the HTML. There are no runtime package or network dependencies. When changing source files, rebuild and commit both the source and generated files so the published site stays current.
 
-To add or edit a translation, update the matching file in `locales/` and keep its message keys and `{placeholders}` consistent with `locales/en-US.js`. Run the build and tests before publishing.
+Application behavior is split across `js/app-controls.js` (beat and tap-tempo controls), `js/app-training.js` (Speed Loop and endurance runtime), and `js/app-ui.js` (shared UI, language, and theme handling). `js/app.js` coordinates playback and application state; `build.mjs` bundles these modules into the offline-ready script.
+
+To add or edit a translation, update the matching file in `js/locales/` and keep its message keys and `{placeholders}` consistent with `js/locales/en-US.js`. Run the build and tests before publishing.
 
 Run the dependency-free automated tests with:
 

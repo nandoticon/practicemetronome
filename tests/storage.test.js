@@ -1,6 +1,6 @@
 const test = require("node:test");
 const assert = require("node:assert/strict");
-const storage = require("../storage.js");
+const storage = require("../js/storage.js");
 
 test("saved settings are clamped and invalid options fall back to defaults", () => {
   global.localStorage = {

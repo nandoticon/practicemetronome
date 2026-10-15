@@ -12,11 +12,12 @@
         <div class="phrase-label" id="phraseLabel" hidden></div>
         <div class="beat-activity">
           <div class="loop-progress" id="loopProgress" hidden>
+            <p class="loop-progress-heading" data-i18n="rampProgressHeading">RAMP PROGRESS</p>
             <div class="progress-track" id="progressTrack" role="progressbar" aria-label="Speed Loop ramp progress" data-i18n-aria-label="rampProgress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
               <div class="progress-fill" id="progressFill"></div>
             </div>
             <div class="progress-text" id="progressText">0%</div>
-            <p class="progress-elapsed" id="progressElapsed"></p>
+            <p class="progress-elapsed" id="progressElapsed" aria-live="polite"></p>
           </div>
           <div class="endurance-progress" id="enduranceProgress" hidden>
             <p class="endurance-command" id="enduranceCommand" role="status" aria-live="polite"></p>
@@ -30,12 +31,12 @@
       </div>
       <div class="console-actions">
         <button class="btn btn-play" id="playBtn" aria-pressed="false">
-          <svg class="play-icon" aria-hidden="true"><use href="./icons/lucide.svg#play"></use></svg>
-          <svg class="pause-icon" aria-hidden="true"><use href="./icons/lucide.svg#pause"></use></svg>
+          <svg class="play-icon" aria-hidden="true"><use href="./img/lucide.svg#play"></use></svg>
+          <svg class="pause-icon" aria-hidden="true"><use href="./img/lucide.svg#pause"></use></svg>
           <span id="playLabel" data-i18n="start">Start</span>
         </button>
         <button class="btn btn-tap" id="tapBtn" aria-label="Tap tempo" data-i18n-aria-label="tapTempo">
-          <svg class="icon" aria-hidden="true"><use href="./icons/lucide.svg#hand"></use></svg>
+          <svg class="icon" aria-hidden="true"><use href="./img/lucide.svg#hand"></use></svg>
           <span data-i18n="tapTempo">Tap Tempo</span>
         </button>
         <div class="status-line" id="statusLine" role="status" aria-live="polite"></div>

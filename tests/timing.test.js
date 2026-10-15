@@ -1,6 +1,6 @@
 const test = require("node:test");
 const assert = require("node:assert/strict");
-const { SpeedRamp, SpeedLoopCadence, EnduranceWorkout, initialBpm, practiceTimerEnd } = require("../timing.js");
+const { SpeedRamp, SpeedLoopCadence, EnduranceWorkout, initialBpm, practiceTimerEnd } = require("../js/timing.js");
 
 test("Speed Loop cadence changes tempo only at configured phrase boundaries", () => {
   for (const bars of [1, 2, 4, 8, 32]) {

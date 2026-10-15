@@ -1,6 +1,6 @@
 const test = require("node:test");
 const assert = require("node:assert/strict");
-const createMetronomeAudio = require("../audio.js");
+const createMetronomeAudio = require("../js/audio.js");
 
 const config = {
   DEFAULT_BPM: 120,

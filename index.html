@@ -6,10 +6,10 @@
   <meta name="color-scheme" content="light dark" />
   <meta name="theme-color" content="#101114" />
   <link rel="manifest" href="manifest.webmanifest" />
-  <link rel="icon" href="icon.svg" type="image/svg+xml" />
-  <link rel="apple-touch-icon" sizes="180x180" type="image/png" href="/apple-touch-icon-v2.png" />
+  <link rel="icon" href="img/icon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" sizes="180x180" type="image/png" href="img/apple-touch-icon-v2.png" />
   <title data-i18n="pageTitle">Practice Metronome — Find your rhythm</title>
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
 <svg class="icon-definitions" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg"><symbol id="audio-waveform" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 13a2 2 0 0 0 2-2V7a2 2 0 0 1 4 0v13a2 2 0 0 0 4 0V4a2 2 0 0 1 4 0v13a2 2 0 0 0 4 0v-4a2 2 0 0 1 2-2" />
@@ -108,11 +108,12 @@
         <div class="phrase-label" id="phraseLabel" hidden></div>
         <div class="beat-activity">
           <div class="loop-progress" id="loopProgress" hidden>
+            <p class="loop-progress-heading" data-i18n="rampProgressHeading">RAMP PROGRESS</p>
             <div class="progress-track" id="progressTrack" role="progressbar" aria-label="Speed Loop ramp progress" data-i18n-aria-label="rampProgress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
               <div class="progress-fill" id="progressFill"></div>
             </div>
             <div class="progress-text" id="progressText">0%</div>
-            <p class="progress-elapsed" id="progressElapsed"></p>
+            <p class="progress-elapsed" id="progressElapsed" aria-live="polite"></p>
           </div>
           <div class="endurance-progress" id="enduranceProgress" hidden>
             <p class="endurance-command" id="enduranceCommand" role="status" aria-live="polite"></p>
@@ -149,7 +150,7 @@
       <div class="bpm-display">
         <span class="bpm-value" id="bpmValue" aria-live="polite">120</span>
         <span class="bpm-unit">BPM</span>
-        <span class="tempo-context" id="loopTempoContext" data-i18n="speedLoopTempoContext" hidden></span>
+        <span class="tempo-context" id="loopTempoContext" hidden></span>
       </div>
 
       <div class="stepper-row" aria-label="Adjust tempo" data-i18n-aria-label="adjustTempo">
@@ -362,6 +363,6 @@
       <span data-i18n="tapTempo">Tap tempo</span>
     </button>
   </nav>
-  <script src="bundle.js"></script>
+  <script src="js/bundle.js"></script>
 </body>
 </html>

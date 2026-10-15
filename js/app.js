@@ -58,108 +58,7 @@
   const t = (key, params) => window.MetronomeI18n.translate(key, params);
   const { SpeedRamp, SpeedLoopCadence, EnduranceWorkout, initialBpm, practiceTimerEnd } = window.MetronomeTiming;
   const { AudioEngine, Scheduler } = window.createMetronomeAudio({ CONFIG, clamp });
-
-  /* ============================================================
-   * Visual sync: plays beat events at the moment the audio sounds
-   * ============================================================ */
-  class BeatVisualizer {
-    constructor(container, onBeatDraw = () => {}) {
-      this.container = container;
-      this.onBeatDraw = onBeatDraw;
-      this.dots = [];
-      this.queue = [];
-      this.rafId = null;
-      this.engine = null;
-    }
-
-    attach(engine) {
-      this.engine = engine;
-    }
-
-    rebuild(count) {
-      this.container.textContent = "";
-      this.container.style.setProperty("--beat-count", String(count));
-      this.dots = [];
-      for (let i = 0; i < count; i++) {
-        const dot = document.createElement("div");
-        dot.className = "beat-dot" + (i === 0 ? " downbeat" : "");
-        this.container.appendChild(dot);
-        this.dots.push(dot);
-      }
-      this.queue.length = 0;
-    }
-
-    /** Queue a beat event to be drawn when audio time reaches it. */
-    enqueue(beatIndex, time, count) {
-      if (this.dots.length !== count) this.rebuild(count);
-      this.queue.push({ beatIndex, time });
-      if (!this.rafId) this.loop();
-    }
-
-    loop = () => {
-      const now = this.engine.now;
-      let latest = null;
-      while (this.queue.length && this.queue[0].time <= now) {
-        latest = this.queue.shift();
-      }
-      if (latest) {
-        this.draw(latest.beatIndex);
-        this.onBeatDraw(latest.beatIndex, latest.time);
-      }
-      if (this.queue.length || latest) {
-        this.rafId = requestAnimationFrame(this.loop);
-      } else {
-        this.rafId = null;
-      }
-    };
-
-    draw(index) {
-      this.dots.forEach((dot, i) => dot.classList.toggle("active", i === index));
-      this.container.setAttribute("aria-label", t("beat", { current: index + 1, total: this.dots.length }));
-    }
-
-    clear() {
-      this.queue.length = 0;
-      if (this.rafId) cancelAnimationFrame(this.rafId);
-      this.rafId = null;
-      this.dots.forEach((d) => d.classList.remove("active"));
-    }
-  }
-
-  /* ============================================================
-   * Tap tempo
-   * ============================================================ */
-  class TapTempo {
-    constructor(onTempo) {
-      this.onTempo = onTempo;
-      this.taps = [];
-    }
-
-    tap(now = performance.now()) {
-      if (this.taps.length && now - this.taps[this.taps.length - 1] > CONFIG.TAP_WINDOW_MS) {
-        this.taps = [];
-      }
-      this.taps.push(now);
-      if (this.taps.length > CONFIG.TAP_MAX_SAMPLES + 1) {
-        this.taps.shift();
-      }
-      if (this.taps.length < CONFIG.TAP_MIN_SAMPLES + 1) return null;
-
-      const intervals = [];
-      for (let i = 1; i < this.taps.length; i++) {
-        intervals.push(this.taps[i] - this.taps[i - 1]);
-      }
-      const avgMs = intervals.reduce((a, b) => a + b, 0) / intervals.length;
-      const bpm = Math.round(60000 / avgMs);
-      const clamped = clamp(bpm, CONFIG.MIN_BPM, CONFIG.MAX_BPM);
-      this.onTempo(clamped);
-      return clamped;
-    }
-
-    reset() {
-      this.taps = [];
-    }
-  }
+  const { BeatVisualizer, TapTempo } = window.createMetronomeAppControls({ CONFIG, t });
 
   /* ============================================================
    * Application controller
@@ -171,6 +70,7 @@
 
       // DOM refs
       this.el = {
+        bpmDisplay: document.querySelector(".bpm-display"),
         bpmValue: document.getElementById("bpmValue"),
         tempoTitle: document.getElementById("tempoTitle"),
         loopTempoContext: document.getElementById("loopTempoContext"),
@@ -288,6 +188,11 @@
     bindEvents() {
       const e = this.el;
 
+      e.bpmDisplay.addEventListener("animationend", (event) => {
+        if (event.animationName === "tempo-change-pulse") {
+          e.bpmDisplay.classList.remove("tempo-changed");
+        }
+      });
       e.playBtn.addEventListener("click", () => this.toggle());
       e.tapBtn.addEventListener("click", () => this.handleTap());
       e.stickyPlayBtn.addEventListener("click", () => e.playBtn.click());
@@ -316,7 +221,16 @@
           e.enduranceProgress.classList.remove("is-exiting");
         }
       });
-
+      e.loopProgress.addEventListener("animationend", (event) => {
+        if (event.target !== e.loopProgress) return;
+        if (event.animationName === "loop-enter") {
+          e.loopProgress.classList.remove("is-entering");
+        } else if (event.animationName === "loop-exit" &&
+            e.loopProgress.classList.contains("is-exiting")) {
+          e.loopProgress.hidden = true;
+          e.loopProgress.classList.remove("is-exiting");
+        }
+      });
       e.minus5.addEventListener("click", () => this.nudge(-5));
       e.minus1.addEventListener("click", () => this.nudge(-1));
       e.plus1.addEventListener("click", () => this.nudge(1));
@@ -401,7 +315,7 @@
           this.state[key] = clamp(toInt(input.value, this.state[key]), min, max);
           input.value = this.state[key];
           if (key === "loopBars") this.updateLoopPhraseText();
-          if (key === "loopStart") this.updateLoopTempoContext();
+          if (key === "loopStart" || key === "loopTarget") this.updateLoopTempoContext();
           this.persist();
         });
       });
@@ -459,150 +373,6 @@
         if (document.hidden) this.handlePlaybackInterruption();
       });
       window.addEventListener("pagehide", () => this.handlePlaybackInterruption());
-    }
-
-    /* -------------------- UI application -------------------- */
-    applyStateToUI() {
-      const s = this.state;
-      this.el.beatsPerBar.value = String(s.beatsPerBar);
-      this.el.timerEnabled.checked = s.timerEnabled;
-      this.el.timerFields.hidden = !s.timerEnabled;
-      this.el.timerMinutes.value = s.timerMinutes;
-      this.el.clickTone.value = s.clickTone;
-      this.el.subdivisions.value = String(s.subdivisions);
-      this.el.accentPattern.value = s.accentPattern;
-      this.el.volume.value = String(s.volume);
-      this.el.volumeValue.value = `${Math.round(s.volume * 100)}%`;
-      this.engine.setClickTone(s.clickTone);
-      this.engine.setVolume(s.volume);
-      this.el.countdownEnabled.checked = s.countdownEnabled;
-      this.el.countdownFields.hidden = !s.countdownEnabled;
-      this.el.countdownBeats.value = String(s.countdownBeats);
-      this.el.wakeLockEnabled.checked = s.wakeLockEnabled;
-      this.el.wakeLockEnabled.disabled = this.running || !("wakeLock" in navigator);
-      if (!("wakeLock" in navigator)) this.setWakeLockStatus("screenLockUnsupported");
-      this.el.loopStart.value = s.loopStart;
-      this.el.loopTarget.value = s.loopTarget;
-      this.el.loopMinutes.value = s.loopMinutes;
-      this.el.loopBars.value = s.loopBars;
-      this.el.endurancePracticeSeconds.value = s.endurancePracticeSeconds;
-      this.el.enduranceRestSeconds.value = s.enduranceRestSeconds;
-      this.el.enduranceSessions.value = s.enduranceSessions;
-      this.updateLoopPhraseText();
-
-      this.scheduler.setBpm(s.bpm);
-      this.scheduler.setBeatsPerBar(s.beatsPerBar);
-      this.scheduler.setSubdivisions(s.subdivisions);
-      this.scheduler.setAccentPattern(s.accentPattern);
-      this.renderBpm();
-      this.setMode(s.mode, { persistChange: false });
-    }
-
-    applyTheme(theme) {
-      const value = ["system", "light", "dark"].includes(theme) ? theme : "system";
-      this.el.themeSelect.value = value;
-      if (value === "system") delete document.documentElement.dataset.theme;
-      else document.documentElement.dataset.theme = value;
-      const systemLight = window.matchMedia?.("(prefers-color-scheme: light)").matches ?? false;
-      document.querySelector('meta[name="theme-color"]')?.setAttribute(
-        "content",
-        (value === "light" || (value === "system" && systemLight)) ? "#f3f5f8" : "#101114"
-      );
-    }
-
-    applyLanguage(language) {
-      this.state.language = window.MetronomeI18n.setLanguage(language);
-      this.el.languageSelect.value = this.state.language;
-      this.el.playLabel.textContent = t(this.running ? "stop" : "start");
-      this.setStatus(this.statusMessageKey, this.statusMessageParams);
-      this.setWakeLockStatus(this.wakeLockMessageKey);
-      this.updateTempoControlAvailability();
-      this.el.tempoTitle.textContent = t(this.state.mode === MODES.SPEEDLOOP ? "manualTempo" : "tempo");
-      this.updateLoopTempoContext();
-      this.updateLoopPhraseText();
-      this.renderBpm();
-      this.renderHistory();
-      if (this.el.readout.classList.contains("alert")) {
-        this.el.readout.textContent = t(this.state.mode === MODES.ENDURANCE
-          ? "enduranceComplete"
-          : "practiceComplete");
-        if (this.state.mode === MODES.ENDURANCE) {
-          this.el.enduranceCommand.textContent = "";
-          this.el.enduranceStage.textContent = t("enduranceComplete");
-        }
-      }
-    }
-
-    bindColorScheme() {
-      const query = window.matchMedia?.("(prefers-color-scheme: light)");
-      if (!query) return;
-      const update = () => {
-        if (this.state.theme === "system") this.applyTheme("system");
-      };
-      if (query.addEventListener) query.addEventListener("change", update);
-      else query.addListener(update);
-    }
-
-    renderBpm() {
-      const bpm = this.state.bpm;
-      this.el.bpmValue.textContent = String(bpm);
-      this.el.slider.value = String(bpm);
-      const fill = ((bpm - CONFIG.MIN_BPM) / (CONFIG.MAX_BPM - CONFIG.MIN_BPM)) * 100;
-      this.el.slider.style.setProperty("--fill", `${fill}%`);
-      this.el.slider.setAttribute("aria-valuetext", t("bpmAccessible", { bpm }));
-    }
-
-    updateTempoControlAvailability() {
-      const locked = this.running && this.state.mode === MODES.SPEEDLOOP;
-      [this.el.slider, this.el.minus5, this.el.minus1, this.el.plus1, this.el.plus5, this.el.tapBtn]
-        .forEach((control) => { control.disabled = locked; });
-      [
-        this.el.beatsPerBar, this.el.timerEnabled, this.el.timerMinutes,
-        this.el.clickTone, this.el.volume, this.el.countdownEnabled,
-        this.el.countdownBeats, this.el.wakeLockEnabled, this.el.subdivisions,
-        this.el.accentPattern, this.el.loopStart,
-        this.el.loopTarget, this.el.loopMinutes, this.el.loopBars,
-        this.el.endurancePracticeSeconds, this.el.enduranceRestSeconds, this.el.enduranceSessions,
-      ].forEach((control) => { control.disabled = this.running; });
-      this.el.wakeLockEnabled.disabled = this.running || !("wakeLock" in navigator);
-      this.el.tabs.forEach((tab) => {
-        tab.disabled = this.running;
-        tab.title = this.running ? t("stopPlaybackToChangeMode") : "";
-      });
-      this.el.stickyPlayLabel.textContent = t(this.running ? "stop" : "start");
-      this.el.stickyPlayBtn.classList.toggle("running", this.running);
-      this.el.stickyPlayBtn.setAttribute("aria-pressed", String(this.running));
-      this.el.stickyTapBtn.disabled = this.el.tapBtn.disabled;
-      this.el.settingsHint.hidden = !this.running;
-    }
-
-    observePlaybackControls() {
-      if (!("IntersectionObserver" in window) || !this.el.consoleActions) return;
-      const mobile = window.matchMedia("(max-width: 759px)");
-      let actionsVisible = true;
-      const update = () => {
-        const visible = mobile.matches && !actionsVisible;
-        this.el.stickyPlayback.hidden = !visible;
-        document.body.classList.toggle("has-sticky-playback", visible);
-      };
-      const observer = new IntersectionObserver(([entry]) => {
-        actionsVisible = entry.isIntersecting && entry.intersectionRatio >= 0.25;
-        update();
-      }, { threshold: [0, 0.25] });
-      observer.observe(this.el.consoleActions);
-      if (mobile.addEventListener) mobile.addEventListener("change", update);
-      else mobile.addListener(update);
-      update();
-    }
-
-    updateLoopTempoContext() {
-      this.el.tempoTitle.textContent = t(this.state.mode === MODES.SPEEDLOOP ? "manualTempo" : "tempo");
-      this.el.loopTempoContext.textContent = t("speedLoopTempoContext", { bpm: this.state.loopStart });
-      this.el.loopTempoContext.hidden = this.state.mode !== MODES.SPEEDLOOP;
-    }
-
-    updateBeatCounter() {
-      this.el.meterLabel.textContent = `${this.state.beatsPerBar}/4`;
     }
 
     setMode(mode, { persistChange = true } = {}) {
@@ -764,7 +534,7 @@
         this.state.bpm = this.ramp.start;
         this.scheduler.setBpm(this.ramp.start);
         this.renderBpm();
-        this.el.loopProgress.hidden = false;
+        this.showLoopProgress();
         const pendingBeats = this.pendingSpeedLoopBeats;
         this.pendingSpeedLoopBeats = [];
         pendingBeats.forEach(({ time, beatsPerBar }) => this.advanceSpeedLoop(time, beatsPerBar));
@@ -795,113 +565,6 @@
       }
     }
 
-    startEndurancePractice(atTime) {
-      const continueCountIn = this.scheduler.running && this.phase === "playing";
-      this.phase = "playing";
-      this.scheduler.setBpm(this.state.bpm);
-      if (continueCountIn) {
-        this.scheduler.setStopAt(this.enduranceWorkout.phaseEndsAt);
-      } else {
-        this.scheduler.stop();
-        this.visualizer.clear();
-        this.scheduler.start(atTime, this.enduranceWorkout.phaseEndsAt);
-      }
-      this.updateEnduranceDisplay(atTime);
-    }
-
-    playEnduranceCue(phase, atTime) {
-      this.engine.scheduleCue(atTime, phase === "rest" ? 440 : 880);
-    }
-
-    showEnduranceProgress() {
-      const progress = this.el.enduranceProgress;
-      progress.hidden = false;
-      progress.classList.remove("is-entering", "is-exiting");
-      progress.classList.add("is-entering");
-    }
-
-    hideEnduranceProgress() {
-      const progress = this.el.enduranceProgress;
-      progress.classList.remove("is-entering");
-      progress.classList.add("is-exiting");
-    }
-
-    updateEnduranceDisplay(now) {
-      if (!this.enduranceWorkout) return;
-      const workout = this.enduranceWorkout;
-      const remaining = Math.max(0, workout.phaseEndsAt - now);
-      const phaseSeconds = workout.phase === "rest"
-        ? workout.restSeconds
-        : workout.practiceSeconds;
-      const phaseElapsed = Math.min(phaseSeconds, Math.max(0, phaseSeconds - remaining));
-      const completedSeconds = (workout.currentSession - 1) *
-        (workout.practiceSeconds + workout.restSeconds) +
-        (workout.phase === "rest" ? workout.practiceSeconds + phaseElapsed : phaseElapsed);
-      const totalSeconds = workout.sessions * workout.practiceSeconds +
-        (workout.sessions - 1) * workout.restSeconds;
-      const percent = Math.round(Math.min(1, completedSeconds / totalSeconds) * 100);
-      this.el.enduranceCommand.textContent = t(workout.phase === "rest"
-        ? "enduranceRestNow"
-        : "endurancePracticeNow");
-      this.el.enduranceStage.textContent = t(workout.phase === "rest"
-        ? "enduranceRestStatus"
-        : "endurancePracticeStatus", {
-        current: workout.currentSession,
-        total: workout.sessions,
-      });
-      this.el.enduranceCountdown.textContent = t("timeLeft", { time: formatTime(remaining) });
-      this.el.enduranceProgress.dataset.phase = workout.phase;
-      this.el.enduranceProgressFill.style.width = `${percent}%`;
-      this.el.enduranceProgressTrack.setAttribute("aria-valuenow", String(percent));
-    }
-
-    currentBpm() {
-      return initialBpm(this.state.mode, this.state.bpm, this.state.loopStart);
-    }
-
-    handleScheduledBeat(time, beatsPerBar) {
-      if (this.state.mode !== MODES.SPEEDLOOP) return;
-
-      if (this.phase === "countin" && time >= this.countInEndTime) {
-        this.pendingSpeedLoopBeats.push({ time, beatsPerBar });
-        return;
-      }
-      if (this.phase !== "playing" || time < this.sessionStartTime) return;
-
-      this.advanceSpeedLoop(time, beatsPerBar);
-    }
-
-    advanceSpeedLoop(time, beatsPerBar) {
-      if (!this.speedLoopCadence.advance(beatsPerBar)) return;
-
-      const { bpm } = this.ramp.sample(time);
-      if (bpm !== this.state.bpm) {
-        this.state.bpm = bpm;
-        this.scheduler.setBpm(bpm);
-        this.renderBpm();
-      }
-    }
-
-    updatePhraseIndicator(beatIndex, time) {
-      if (
-        this.phase !== "playing" ||
-        this.state.mode !== MODES.SPEEDLOOP ||
-        time < this.sessionStartTime ||
-        beatIndex !== 0
-      ) return;
-      this.speedLoopBar = this.speedLoopCadence.bar;
-      this.el.phraseLabel.textContent = t("bar", { current: this.speedLoopBar, total: this.state.loopBars });
-    }
-
-    nextSpeedLoopBpm(now) {
-      if (this.speedLoopCadence.beatCount < 1) return this.ramp.sample(now).bpm;
-      const phraseBeats = this.state.beatsPerBar * this.state.loopBars;
-      const beatsUntilBoundary = phraseBeats - ((this.speedLoopCadence.beatCount - 1) % phraseBeats);
-      const boundaryTime = this.scheduler.nextNoteTime +
-        (beatsUntilBoundary - 1) * (60 / Math.max(CONFIG.MIN_BPM, this.state.bpm));
-      return this.ramp.sample(Math.max(now, boundaryTime)).bpm;
-    }
-
     stop({ preserveReadout = false } = {}) {
       this.recordSession(false);
       this.running = false;
@@ -916,7 +579,8 @@
       this.el.playBtn.classList.remove("running");
       this.el.playBtn.setAttribute("aria-pressed", "false");
       this.el.playLabel.textContent = t("start");
-      this.el.loopProgress.hidden = true;
+      if (this.state.mode === MODES.SPEEDLOOP) this.hideLoopProgress();
+      else this.el.loopProgress.hidden = true;
       this.el.progressFill.style.width = "0%";
       this.el.progressTrack.setAttribute("aria-valuenow", "0");
       this.el.progressText.textContent = "0%";
@@ -990,26 +654,6 @@
       this.renderHistory(sessions);
     }
 
-    renderHistory(sessions = window.MetronomeStorage.loadSessions()) {
-      this.el.historyList.textContent = "";
-      this.el.historyEmpty.hidden = sessions.length > 0;
-      this.el.historyClear.hidden = sessions.length === 0;
-      sessions.forEach((session) => {
-        const item = document.createElement("li");
-        const title = document.createElement("strong");
-        const details = document.createElement("span");
-        const date = new Date(session.startedAt);
-        const duration = formatTime(session.durationSec);
-        const mode = t(session.mode === MODES.SPEEDLOOP
-          ? "speedLoop"
-          : session.mode === MODES.ENDURANCE ? "enduranceTraining" : "metronome");
-        title.textContent = t("historyEntry", { mode, start: session.startBpm, end: session.endBpm });
-        details.textContent = `${date.toLocaleString(this.state.language)} · ${duration}${session.interrupted ? ` · ${t("interrupted")}` : ""}`;
-        item.append(title, details);
-        this.el.historyList.appendChild(item);
-      });
-    }
-
     /* -------------------- Frame loop (UI sync only) -------------------- */
     startFrameLoop() {
       if (this.rafId) return;
@@ -1029,23 +673,7 @@
 
       // Speed loop: drive tempo from the audio clock.
       if (this.phase === "playing" && this.state.mode === MODES.SPEEDLOOP) {
-        const { progress, rampDone } = this.ramp.sample(now);
-        const pct = Math.round(progress * 100);
-        this.el.progressFill.style.width = `${pct}%`;
-        this.el.progressTrack.setAttribute("aria-valuenow", String(pct));
-        this.el.progressText.textContent = rampDone
-          ? this.state.bpm === this.ramp.target
-            ? t("rampTargetReached", { bpm: this.state.bpm })
-            : t("rampNextPhrase", { bpm: this.state.bpm, next: this.nextSpeedLoopBpm(now) })
-          : t("rampProgressText", {
-            bpm: this.state.bpm,
-            next: this.nextSpeedLoopBpm(now),
-            percent: pct,
-            time: formatTime(this.ramp.durationSec - (now - this.ramp.startedAt)),
-          });
-        this.el.progressElapsed.textContent = t("elapsed", {
-          time: formatTime(now - this.sessionStartTime),
-        });
+        this.updateSpeedLoopFrame(now);
         // Ramp finishes and holds at target indefinitely; no stop.
       }
 
@@ -1054,25 +682,7 @@
         (this.phase === "playing" || this.phase === "resting") &&
         this.enduranceWorkout
       ) {
-        const transition = this.enduranceWorkout.advance(now);
-        if (transition === "rest") {
-          this.phase = "resting";
-          this.scheduler.stop();
-          this.visualizer.clear();
-          this.playEnduranceCue("rest", now);
-        } else if (transition === "practice") {
-          const nextStart = now + 0.05;
-          this.enduranceWorkout.phaseEndsAt += 0.05;
-          this.startEndurancePractice(nextStart);
-          this.playEnduranceCue("practice", nextStart);
-        } else if (transition === "complete") {
-          this.recordSession(false);
-          this.alertShown = true;
-          this.fireTimerAlert(now, "enduranceComplete");
-          this.stop({ preserveReadout: true });
-          return;
-        }
-        this.updateEnduranceDisplay(now);
+        this.updateEnduranceFrame(now);
         return;
       }
 
@@ -1133,30 +743,10 @@
       this.setWakeLockStatus("");
     }
 
-    setWakeLockStatus(key) {
-      this.wakeLockMessageKey = key;
-      this.el.wakeLockStatus.textContent = key ? t(key) : "";
-    }
-
-    setStatus(key, params = {}) {
-      this.statusMessageKey = key;
-      this.statusMessageParams = params;
-      this.el.statusLine.textContent = key ? t(key, params) : "";
-    }
-
-    updateLoopPhraseText() {
-      this.el.loopHint.textContent = t("rampHint", {
-        count: this.state.loopBars,
-        unit: t(this.state.loopBars === 1 ? "barUnit" : "barsUnit"),
-      });
-      if (this.state.mode === MODES.SPEEDLOOP && this.phase === "playing") {
-        this.el.phraseLabel.textContent = t("bar", {
-          current: Math.min(this.speedLoopBar || 1, this.state.loopBars),
-          total: this.state.loopBars,
-        });
-      }
-    }
   }
+
+  Object.assign(MetronomeApp.prototype, window.createMetronomeAppUiMethods({ MODES, CONFIG, t, formatTime }));
+  Object.assign(MetronomeApp.prototype, window.createMetronomeTrainingMethods({ MODES, t, formatTime, CONFIG }));
 
   /* ============================================================
    * Boot

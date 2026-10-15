@@ -1,7 +1,7 @@
 const test = require("node:test");
 const assert = require("node:assert/strict");
 const fs = require("node:fs");
-const i18n = require("../i18n.js");
+const i18n = require("../js/i18n.js");
 
 test("all supported locales provide the complete interface message catalog", () => {
   assert.deepEqual(i18n.supported, ["en-US", "pt-BR", "es", "it", "fr", "de", "ja", "zh-CN", "ko"]);
@@ -10,9 +10,9 @@ test("all supported locales provide the complete interface message catalog", () 
 
 test("translation placeholders are consistent across languages", () => {
   const placeholderNames = (message) => [...message.matchAll(/\{(\w+)\}/g)].map((match) => match[1]).sort();
-  const source = require("../locales/en-US.js");
+  const source = require("../js/locales/en-US.js");
   for (const language of i18n.supported) {
-    const locale = require(`../locales/${language}.js`);
+    const locale = require(`../js/locales/${language}.js`);
     for (const key of i18n.keys) {
       assert.deepEqual(placeholderNames(locale[key]), placeholderNames(source[key]), `${language}.${key}`);
     }
@@ -42,15 +42,32 @@ test("Speed Loop and endurance indicators are grouped with the beat display", ()
   assert.ok(beatDisplayEnd > beatDisplayStart);
   const beatDisplay = html.slice(beatDisplayStart, beatDisplayEnd);
   assert.match(beatDisplay, /id="loopProgress"/);
+  assert.match(beatDisplay, /data-i18n="rampProgressHeading"/);
+  assert.match(beatDisplay, /id="progressText"/);
   assert.match(beatDisplay, /id="progressElapsed"/);
   assert.match(beatDisplay, /id="enduranceProgress"/);
   assert.match(beatDisplay, /id="enduranceCountdown"/);
   assert.match(beatDisplay, /id="enduranceCommand"/);
   assert.match(beatDisplay, /id="progressElapsed"/);
+  assert.doesNotMatch(beatDisplay, /id="loopTempoNow"/);
+});
+
+test("app source modules are bundled before the application controller", () => {
+  const build = fs.readFileSync("build.mjs", "utf8");
+  const bundle = fs.readFileSync("js/bundle.js", "utf8");
+  for (const module of ["app-controls.js", "app-training.js", "app-ui.js"]) {
+    assert.ok(build.indexOf(module) < build.indexOf('"app.js"'), `${module} must load before app.js`);
+  }
+  const controller = bundle.indexOf("class MetronomeApp");
+  assert.ok(controller > bundle.indexOf("window.createMetronomeAppControls ="));
+  assert.ok(controller > bundle.indexOf("window.createMetronomeTrainingMethods ="));
+  assert.ok(controller > bundle.indexOf("window.createMetronomeAppUiMethods ="));
 });
 
 test("all dynamic application messages resolve to translated catalog entries", () => {
-  const app = fs.readFileSync("app.js", "utf8");
+  const app = ["js/app.js", "js/app-ui.js", "js/app-training.js"]
+    .map((path) => fs.readFileSync(path, "utf8"))
+    .join("\n");
   const used = [
     ...app.matchAll(/\bt\("([^"]+)"/g),
     ...app.matchAll(/setStatus\("([^"]+)"/g),
