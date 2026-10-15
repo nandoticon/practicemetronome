@@ -1168,6 +1168,38 @@ body.has-sticky-playback .app {
   text-align: center;
 }
 
+.endurance-progress.is-entering {
+  animation: endurance-enter 320ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+
+.endurance-progress.is-exiting {
+  animation: endurance-exit 180ms ease-in both;
+}
+
+@keyframes endurance-enter {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.99);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes endurance-exit {
+  from {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+
+  to {
+    opacity: 0;
+    transform: translateY(4px) scale(0.99);
+  }
+}
+
 .endurance-stage {
   color: var(--text-dim);
   font-size: 0.82rem;
@@ -1213,6 +1245,13 @@ body.has-sticky-playback .app {
   font-size: 0.78rem;
   font-variant-numeric: tabular-nums;
   text-align: center;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .endurance-progress.is-entering,
+  .endurance-progress.is-exiting {
+    animation-duration: 1ms;
+  }
 }
 
 .history-panel {

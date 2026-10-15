@@ -1880,6 +1880,16 @@
         window.MetronomeStorage.clearSessions();
         this.renderHistory();
       });
+      e.enduranceProgress.addEventListener("animationend", (event) => {
+        if (event.target !== e.enduranceProgress) return;
+        if (event.animationName === "endurance-enter") {
+          e.enduranceProgress.classList.remove("is-entering");
+        } else if (event.animationName === "endurance-exit" &&
+            e.enduranceProgress.classList.contains("is-exiting")) {
+          e.enduranceProgress.hidden = true;
+          e.enduranceProgress.classList.remove("is-exiting");
+        }
+      });
 
       e.minus5.addEventListener("click", () => this.nudge(-5));
       e.minus1.addEventListener("click", () => this.nudge(-1));
@@ -2340,7 +2350,7 @@
           restSeconds: this.state.enduranceRestSeconds,
           sessions: this.state.enduranceSessions,
         });
-        this.el.enduranceProgress.hidden = false;
+        this.showEnduranceProgress();
         this.enduranceWorkout.start(atTime);
         this.startEndurancePractice(atTime);
         this.playEnduranceCue("practice", atTime);
@@ -2375,6 +2385,19 @@
 
     playEnduranceCue(phase, atTime) {
       this.engine.scheduleCue(atTime, phase === "rest" ? 440 : 880);
+    }
+
+    showEnduranceProgress() {
+      const progress = this.el.enduranceProgress;
+      progress.hidden = false;
+      progress.classList.remove("is-entering", "is-exiting");
+      progress.classList.add("is-entering");
+    }
+
+    hideEnduranceProgress() {
+      const progress = this.el.enduranceProgress;
+      progress.classList.remove("is-entering");
+      progress.classList.add("is-exiting");
     }
 
     updateEnduranceDisplay(now) {
@@ -2479,7 +2502,7 @@
           this.el.enduranceProgressFill.style.width = "100%";
           this.el.enduranceProgressTrack.setAttribute("aria-valuenow", "100");
         } else {
-          this.el.enduranceProgress.hidden = true;
+          this.hideEnduranceProgress();
           this.el.enduranceProgressFill.style.width = "0%";
           this.el.enduranceProgressTrack.setAttribute("aria-valuenow", "0");
         }

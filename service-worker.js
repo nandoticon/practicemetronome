@@ -1,4 +1,4 @@
-const CACHE_NAME = "practice-metronome-v15";
+const CACHE_NAME = "practice-metronome-v16";
 const APP_FILES = [
   "./",
   "./index.html",
